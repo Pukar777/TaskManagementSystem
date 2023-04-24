@@ -11,7 +11,7 @@ class TaskUser extends Model
 {
     use HasFactory;
 
-    protected $table = 'task_users';
+    // protected $table = 'task_users';
 
     protected $fillable = [
         'user_id',

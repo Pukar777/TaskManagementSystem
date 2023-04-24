@@ -31,7 +31,7 @@ class UserRequest extends FormRequest
             'contact' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             'role_id' => 'required',
-               //'required|exists:roles,id',
+            //    'required|exists:roles,id',
             
         ];
     }

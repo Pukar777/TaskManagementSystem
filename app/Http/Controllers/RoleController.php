@@ -7,6 +7,8 @@ use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Services\RoleService;
 use App\Services\ServiceIface;
+use App\Helpers\ResponseHelper;
+
 
 class RoleController extends Controller
 {
@@ -36,7 +38,7 @@ class RoleController extends Controller
 
 
 
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -53,7 +55,7 @@ class RoleController extends Controller
     {
         // $role = $this->roleService->store($request->all());
         // dd($request->all());
-        
+
         $data = $this->roleService->store($request->validated());
 
         // if($request->expectsJson()) {
@@ -64,22 +66,29 @@ class RoleController extends Controller
         //     ]);
         // }
         // dd($data);
-        if ($data) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'role created successfully',
-                    'data' => $request->input(),
-                ], 200);
-            }
+        // if (!empty($data))
+        // if ($data) {
+        //     if ($request->expectsJson()) {
+        //         return response()->json([
+        //             'status' => 'success',
+        //             'message' => 'role created successfully',
+        //             'data' => $request->input(),
+        //         ], 200);
+        //     }
+        // } else {
+        //     if ($request->expectsJson()) {
+        //         return response()->json([
+        //             'status' => 'error',
+        //             'message' => 'role creation failed',
+        //             'data' => null,
+        //         ], 400);
+        //     }
+        // }
+
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'role created successfully', $request->input(), 200);
         } else {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'role creation failed',
-                    'data' => null,
-                ], 400);
-            }
+            return ResponseHelper::generateResponse($request, 'error', 'role creation failed', null, 400);
         }
     }
 
@@ -109,13 +118,18 @@ class RoleController extends Controller
 
 
         $data = $this->roleService->update($request->validated(), $id);
-        if ($request->expectsJson()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'role updated successfully',
-                'data' => $request->input(),
+        // if ($request->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'role updated successfully',
+        //         'data' => $request->input(),
 
-            ]);
+        //     ]);
+        // }
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'role updated successfully', $request->input(), 200);
+        } else {
+            return ResponseHelper::generateResponse($request, 'error', 'role  failed to update', null, 400);
         }
     }
 
@@ -129,6 +143,7 @@ class RoleController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'role deleted successfully',
+                'data' => $id,
             ]);
         }
     }

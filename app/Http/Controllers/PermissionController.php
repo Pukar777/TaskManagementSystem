@@ -16,8 +16,6 @@ class PermissionController extends Controller
     {
         // $role = Permission::find($id)->permission_role;
         $role = Permission::with('permission_role')->find($id);
-
-
         // dd($role);
         if (request()->expectsJson()) {
             return response()->json($role);
