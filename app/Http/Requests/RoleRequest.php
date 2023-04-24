@@ -26,7 +26,9 @@ class RoleRequest extends FormRequest
 
             'name' => ['required', 'string', 'max:255', 
              Rule::unique('roles','name')->ignore($this->role)],
-            'permission_id' => ['required'] 
+            // 'permission_id' => 'required', 
+            'permission_id' => 'required|exists:permissions,id',
+
             
         ];
     }
@@ -39,6 +41,7 @@ class RoleRequest extends FormRequest
             'name.string' => 'The role must be a string.',
             'name.max' => 'Length is 255 .',
             'permission_id.required' => 'Please enter permission.',
+            'permission_id.exists' => 'Please select available permssion.',
         ];
     }
     }

@@ -31,7 +31,10 @@ class TaskRequest extends FormRequest
             'status' => 'required|string|in:ready to start,watiting to review,done,stuck',
             'type' => 'required|string|in:feature,bug',
             'created_by' => 'required',
-            'user_id' => 'required',
+            // 'user_id' => 'required',
+            'user_id' =>'required|exists:users,id',
+
+            
               
             
         ];
@@ -58,6 +61,7 @@ class TaskRequest extends FormRequest
             'type.in' => 'Should be among the value.',
             'created_by.required' => 'Please Enter the created_by.',
             'user_id.required' => 'Please Enter the users.',
+            'user_id.exists' => 'Please select available users.',
 
         ];
     }
