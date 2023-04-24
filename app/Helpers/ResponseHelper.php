@@ -21,6 +21,39 @@ class ResponseHelper
     }
 
 
+    public static function generateGetResponse($datas) : JsonResponse
+    {
+        // if (request()->expectsJson()) {
+        //     return response()->json($get);
+        // } else {
+            
+        // }
+
+        // dd($users);
+        if (request()->expectsJson()) {
+            return response()->json($datas);
+        }
+
+      
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
     // public static function generateResponse(Request $request, string $status, string $message, $data, int $statusCode) : JsonResponse
     // {
     //     if ($data) {

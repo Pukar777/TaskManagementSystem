@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use App\Services\ServiceIface;
 use App\Services\TaskService;
+use App\Services\ServiceIface;
+use App\Helpers\ResponseHelper;
+use App\Http\Requests\TaskRequest;
 
 class TaskController extends Controller
 
@@ -29,11 +30,14 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = $this->taskService->getall();
-        if (request()->expectsJson()) {
-            return response()->json($tasks);
-        }
+        // if (request()->expectsJson()) {
+        //     return response()->json($tasks);
+        // }
 
-        return response()->json($tasks);
+        // return response()->json($tasks);
+        $response  = ResponseHelper::generateGetResponse($tasks);
+
+        return $response;
     }
 
     /**
@@ -54,12 +58,17 @@ class TaskController extends Controller
 
         // dd($request->all());
         $data= $this->taskService->store($request->validated());
-        if ($request->expectsJson()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Task created successfully',
-                'data' => $data,
-            ]);
+        // if ($request->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Task created successfully',
+        //         'data' => $data,
+        //     ]);
+        // }
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'task created successfully', $request->input(), 200);
+        } else {
+            return ResponseHelper::generateResponse($request, 'error', 'task creation failed', null, 400);
         }
     }
 
@@ -85,13 +94,18 @@ class TaskController extends Controller
     public function update(TaskRequest $request, $id)
     {
         $data = $this->taskService->update($request->validated(), $id);
-        if ($request->expectsJson()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Task updated successfully',
-                'data' => $data,
+        // if ($request->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Task updated successfully',
+        //         'data' => $data,
 
-            ]);
+        //     ]);
+        // }
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'task updated successfully', $request->input(), 200);
+        } else {
+            return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
         }
     }
 
@@ -101,11 +115,16 @@ class TaskController extends Controller
     public function destroy($id)
     {
         $this->taskService->delete($id);
-        if (request()->expectsJson()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Task deleted successfully',
-            ]);
+        // if (request()->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Task deleted successfully',
+        //     ]);
+        // }
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse(request(), 'success', 'task deleteded successfully', $id, 200);
+        } else {
+            return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
         }
     }
 }

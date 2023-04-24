@@ -13,6 +13,7 @@ use App\Helpers\ResponseHelper;
 class RoleController extends Controller
 {
     protected $roleService;
+
     //public $test;
 
     public function __construct(RoleService $roleService)
@@ -29,13 +30,16 @@ class RoleController extends Controller
     public function index()
     {
         $roles = $this->roleService->getall();
-        if (request()->expectsJson()) {
-            return response()->json($roles);
-        }
+        // if (request()->expectsJson()) {
+        //     return response()->json($roles);
+        // }
 
-        return response()->json($roles);
+        $response  = ResponseHelper::generateGetResponse($roles);
+
+        return $response;
+
+        //return response()->json($roles);
     }
-
 
 
 
@@ -139,12 +143,18 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $this->roleService->delete($id);
-        if (request()->expectsJson()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'role deleted successfully',
-                'data' => $id,
-            ]);
+
+        if (!empty($id)) {
+            return ResponseHelper::generateResponse(request(), 'success', 'role deleted successfully', $id, 200);
+        } else {
+            return ResponseHelper::generateResponse(request(), 'error', 'role deletion failed', null, 400);
         }
+        // if (request()->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'role deleted successfully',
+        //         'data' => $id,
+        //     ]);
+        // }
     }
 }

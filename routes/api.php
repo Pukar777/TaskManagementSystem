@@ -41,5 +41,6 @@ Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
 Route::resource('task', TaskController::class);
 Route::resource('role', RoleController::class);
 Route::resource('user', UserController::class);
+Route::resource('permission', PermissionController::class);
 Route::get('getrole/{id}', [PermissionController::class,'show_role']);
 // Route::get('getrole', [PermissionController::class,'show_role']);

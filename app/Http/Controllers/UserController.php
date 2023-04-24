@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\UserRequest;
 
 
@@ -26,11 +27,17 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->userService->getall();
-        if (request()->expectsJson()) {
-            return response()->json($users);
-        }
+        // if (request()->expectsJson()) {
+        //     return response()->json($users);
+        // }
+
+       $response  = ResponseHelper::generateGetResponse($users);
+
+       return $response;
+
+       
         
-        return response()->json($users);
+        // return response()->json($users);
     }
 
     /**
@@ -52,12 +59,17 @@ class UserController extends Controller
         
         // dd($request->all());
         $data = $this->userService->store($request->validated());
-        if($request->expectsJson()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'user created successfully',
-                'data' => $data,
-            ]);
+        // if($request->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'user created successfully',
+        //         'data' => $data,
+        //     ]);
+        // }
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'user created successfully', $request->input(), 200);
+        } else {
+            return ResponseHelper::generateResponse($request, 'error', 'user creation failed', null, 400);
         }
       
     }
@@ -87,14 +99,19 @@ class UserController extends Controller
         
         
         $data = $this->userService->update($request->validated(),$id);
-        if ($request->expectsJson()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'user updated  successfully',    
-                'data' => $data,
+        // if ($request->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'user updated  successfully',    
+        //         'data' => $data,
                 
-            ]);
-        } 
+        //     ]);
+        // } 
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'user updated successfully', $request->input(), 200);
+        } else {
+            return ResponseHelper::generateResponse($request, 'error', 'user update failed', null, 400);
+        }
     }
 
     /**
@@ -103,11 +120,16 @@ class UserController extends Controller
     public function destroy($id)
     {
         $this->userService->delete($id);  
-           if(request()->expectsJson()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'user deleted successfully',
-            ]);
+        //    if(request()->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'user deleted successfully',
+        //     ]);
+        // }
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse(request(), 'success', 'user deleted successfully', $id, 200);
+        } else {
+            return ResponseHelper::generateResponse(request(), 'error', 'user deletion failed', null, 400);
         }
        
     }
