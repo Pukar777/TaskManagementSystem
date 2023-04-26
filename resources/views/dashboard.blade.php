@@ -33,5 +33,7 @@
     </nav>
     
     @yield('content')
+
+    {{-- {{ Auth::user()->name }} --}}
 </body>
 </html>

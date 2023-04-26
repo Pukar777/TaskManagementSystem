@@ -19,18 +19,22 @@ use App\Http\Controllers\PermissionController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 
 
-Route::get('dashboard', [AuthController::class, 'dashboard']); 
-Route::get('login', [AuthController::class, 'index'])->name('login');
+// Route::get('dashboard', [AuthController::class, 'dashboard']); 
+// Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('custom-login', [AuthController::class, 'customLogin'])->name('login.custom'); 
 Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
 Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom'); 
-Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
+// Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
+Route::post('/signout', [AuthController::class, 'signOut'])->middleware('auth:api');
+// Route::middleware('auth:api')->get('/getUser', [AuthController::class, 'getUser']);
+Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
+
 
 // Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom'); 
 

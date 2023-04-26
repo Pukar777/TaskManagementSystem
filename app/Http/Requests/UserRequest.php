@@ -28,6 +28,7 @@ class UserRequest extends FormRequest
             'email' => ['required','email','string','max:255',
                         Rule::unique('users','email')->ignore($this->user)],
             'password' => 'required|string|max:255|confirmed',
+            // 'password_confirmation' => 'required',
             'contact' => 'required|string|max:255',
             'address' => 'required|string|max:255',
             // 'role_id' => 'required',
