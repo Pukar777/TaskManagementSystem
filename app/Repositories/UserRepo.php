@@ -23,7 +23,12 @@ class UserRepo implements RepoIface
 
     public function all()
     {
-        return $this->user->all();
+        return $this->user->all()->load('role');
+    }
+
+    public function getById($id)
+    {
+        return $this->user->findOrFail($id);
     }
 
 

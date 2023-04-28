@@ -14,7 +14,8 @@ class UserController extends Controller
     protected $userService;
     //public $test;
 
-    public function __construct(UserService $userService){
+    public function __construct(UserService $userService)
+    {
 
         $this->userService = $userService;
         // $this->test = $test;
@@ -31,13 +32,20 @@ class UserController extends Controller
         //     return response()->json($users);
         // }
 
-       $response  = ResponseHelper::generateGetResponse($users);
+        $response  = ResponseHelper::generateGetResponse($users);
 
-       return $response;
+        return $response;
 
-       
-        
+
+
         // return response()->json($users);
+    }
+
+    public function getUserById($id)
+    {
+        $user = $this->userService->getUserById($id);
+
+        return response()->json($user);
     }
 
     /**
@@ -55,8 +63,8 @@ class UserController extends Controller
     {
         // $user = $this->userService->store($request->all());
 
-        
-        
+
+
         // dd($request->all());
         $data = $this->userService->store($request->validated());
         // if($request->expectsJson()) {
@@ -71,7 +79,6 @@ class UserController extends Controller
         } else {
             return ResponseHelper::generateResponse($request, 'error', 'user creation failed', null, 400);
         }
-      
     }
 
     /**
@@ -95,16 +102,16 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        
-        
-        
-        $data = $this->userService->update($request->validated(),$id);
+
+
+
+        $data = $this->userService->update($request->validated(), $id);
         // if ($request->expectsJson()) {
         //     return response()->json([
         //         'status' => 'success',
         //         'message' => 'user updated  successfully',    
         //         'data' => $data,
-                
+
         //     ]);
         // } 
         if (!empty($data)) {
@@ -119,18 +126,17 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->userService->delete($id);  
+        $this->userService->delete($id);
         //    if(request()->expectsJson()) {
         //     return response()->json([
         //         'status' => 'success',
         //         'message' => 'user deleted successfully',
         //     ]);
         // }
-        if (!empty($data)) {
+        if (!empty($id)) {
             return ResponseHelper::generateResponse(request(), 'success', 'user deleted successfully', $id, 200);
         } else {
             return ResponseHelper::generateResponse(request(), 'error', 'user deletion failed', null, 400);
         }
-       
     }
 }

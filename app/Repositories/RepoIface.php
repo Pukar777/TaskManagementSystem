@@ -8,6 +8,8 @@ interface RepoIface{
     
     public function all();
 
+    
+
     public function store(array $data); //store change
 
     public function update(array $data,$id);

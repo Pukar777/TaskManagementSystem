@@ -16,6 +16,3 @@ interface ServiceIface
     public function delete($id);
 
 }
-
-
-?>

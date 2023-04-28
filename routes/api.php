@@ -44,7 +44,9 @@ Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
 
 Route::resource('task', TaskController::class);
 Route::resource('role', RoleController::class);
+Route::get('/users/{id}', [UserController::class, 'getUserById']);
 Route::resource('user', UserController::class);
 Route::resource('permission', PermissionController::class);
 Route::get('getrole/{id}', [PermissionController::class,'show_role']);
+
 // Route::get('getrole', [PermissionController::class,'show_role']);

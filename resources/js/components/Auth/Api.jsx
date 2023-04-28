@@ -4,28 +4,36 @@ const API_URL = "http://127.0.0.1:8000/api";
 
 const config = {
     headers: {
-      'Accept': 'application/json',
-    }
-  };
-  
+        Accept: "application/json",
+    },
+};
+
+// ===============================Auth======================================================
 export const register = async (name, email, contact, address, password) => {
-   
-    const response = await axios.post(`${API_URL}/custom-registration`, {
-        name,
-        email,
-        contact,
-        address,
-        password,
-        password_confirmation: password,
-    },config);
+    const response = await axios.post(
+        `${API_URL}/custom-registration`,
+        {
+            name,
+            email,
+            contact,
+            address,
+            password,
+            password_confirmation: password,
+        },
+        config
+    );
     return response.data;
 };
 
 export const login = async (email, password) => {
-    const response = await axios.post(`${API_URL}/custom-login`, {
-        email,
-        password,
-    },config);
+    const response = await axios.post(
+        `${API_URL}/custom-login`,
+        {
+            email,
+            password,
+        },
+        config
+    );
     return response.data;
 };
 
@@ -47,4 +55,108 @@ export const getUser = async (accessToken) => {
         },
     });
     return response.data;
+};
+
+// ===============================User======================================================
+export const createUser = async (
+    accessToken,
+    name,
+    email,
+    contact,
+    address,
+    password,
+    role_id
+) => {
+    const response = await axios.post(
+        `${API_URL}/user`,
+        {
+            name,
+            email,
+            contact,
+            address,
+            password,
+            password_confirmation: password,
+            role_id,
+        },
+
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+            },
+        }
+    );
+    return response.data;
+};
+
+export const getStoredUser = async (accessToken) => {
+    const responseUser = await axios.get(`${API_URL}/user`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+
+            Accept: "application/json",
+        },
+    });
+    return responseUser.data;
+};
+
+export const deleteUser = async (accessToken, id) => {
+    //    console.log(id);
+    await axios.delete(`${API_URL}/user/${id}`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/json",
+        },
+    });
+    // console.log(responseDelete);
+    return id;
+};
+
+export const updateUser = async (
+    id,
+    accessToken,
+    name,
+    email,
+    contact,
+    address,
+    password,
+    role_id
+) => {
+    //    console.log(id);
+    const responseUpdate = await axios.put(
+        `${API_URL}/user/${id}`,
+        {
+            name,
+            email,
+            contact,
+            address,
+            password,
+            password_confirmation: password,
+            role_id,
+        },
+
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+            },
+        }
+    );
+
+    return responseUpdate.data;
+};
+
+//=========================Role==============================================================================
+
+
+
+export const getStoredRoles = async (accessToken) =>{
+    const responseRole = await axios.get(`${API_URL}/role`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+
+            Accept: "application/json",
+        },
+    });
+    return responseRole.data;
 };

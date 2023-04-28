@@ -24,6 +24,10 @@ class UserService implements ServiceIface
         return $this->userRepository->all();
     }
 
+    public function getUserById($id)
+    {
+        return $this->userRepository->getById($id);
+    }
 
 
     public function store(array $data)
@@ -36,6 +40,8 @@ class UserService implements ServiceIface
         return $data;
     }
 
+
+    
 
 
     public function edit($id)

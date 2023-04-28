@@ -17,9 +17,13 @@ use App\Http\Controllers\AuthController;
 Route::get('/welcome', function () {
     return view('welcome');
 });
-Route::get('/', function () {
+// Route::get('/', function () {
+//     return view('index');
+// });
+
+Route::get('/{any}', function () {
     return view('index');
-});
+})->where('any', '.*');
 
 
 /*
@@ -33,6 +37,3 @@ Route::get('/', function () {
 // Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
 // Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom'); 
 // Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
-
-
-
