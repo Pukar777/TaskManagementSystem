@@ -24,11 +24,28 @@ class RoleService implements ServiceIface
         return $this->roleRepo->all();
     }
 
+    public function getRoleById($id)
+    {
+        return $this->roleRepo->getRById($id);
+    }
+
+
+    public function showAssocPer($id)
+    {
+        return $this->roleRepo->showAssociatePermissions($id);
+        
+    }
+
+    public function showall_per()
+    {
+        return $this->roleRepo->showall_permission();
+    }
+
 
     public function store(array $data)
     {
 
-        
+
         $this->roleRepo->store($data);
 
         return $data;
@@ -42,16 +59,14 @@ class RoleService implements ServiceIface
 
     public function update(array $data, $id)
     {
-        
-        $this->roleRepo->update($data, $id);
-        
-        return $data;
 
+        $this->roleRepo->update($data, $id);
+
+        return $data;
     }
 
     public function delete($id)
     {
         return $this->roleRepo->delete($id);
-
     }
 }

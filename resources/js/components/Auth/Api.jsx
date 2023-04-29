@@ -148,9 +148,25 @@ export const updateUser = async (
 
 //=========================Role==============================================================================
 
+export const createRole = async (accessToken, name, permission_id) => {
+    const response = await axios.post(
+        `${API_URL}/role`,
+        {
+            name,
+            permission_id,
+        },
 
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+            },
+        }
+    );
+    return response.data;
+};
 
-export const getStoredRoles = async (accessToken) =>{
+export const getStoredRoles = async (accessToken) => {
     const responseRole = await axios.get(`${API_URL}/role`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -159,4 +175,55 @@ export const getStoredRoles = async (accessToken) =>{
         },
     });
     return responseRole.data;
+};
+
+export const deleteRole = async (accessToken, id) => {
+    //    console.log(id);
+    await axios.delete(`${API_URL}/role/${id}`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/json",
+        },
+    });
+    // console.log(responseDelete);
+    return id;
+};
+
+export const updateRole = async (
+    id,
+    accessToken,
+    name,
+    permission_id,
+) => {
+    //    console.log(id);
+    const responseUpdate = await axios.put(
+        `${API_URL}/role/${id}`,
+        {
+            name,
+            permission_id,
+        },
+
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+            },
+        }
+    );
+
+    return responseUpdate.data;
+};
+
+//====================================Permission=========================================================================
+
+export const getStoredPermissions = async (accessToken) => {
+    const responsePermission = await axios.get(`${API_URL}/permission`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+
+            Accept: "application/json",
+        },
+    });
+    // console.log(responsePermission);
+    return responsePermission.data;
 };

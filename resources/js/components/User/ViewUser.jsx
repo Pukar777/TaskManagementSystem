@@ -65,7 +65,7 @@ function ViewUser() {
         // console.log(id);
         try {
             const accessToken = localStorage.getItem("accessToken");
-            console.log(accessToken);
+            // console.log(accessToken);
             await deleteUser(accessToken, id);
             fetchUsers();
         } catch (error) {

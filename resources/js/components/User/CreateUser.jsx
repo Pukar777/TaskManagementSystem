@@ -26,6 +26,8 @@ function CreateUser() {
         fetchRoles();
     }, []);
 
+
+    
     return (
         <>
             <SideNavBar />
@@ -141,6 +143,7 @@ function CreateUser() {
                                     setRoleId(event.target.value)
                                 }
                             >
+                                <option>Select</option>
                                 {roles.map((role) => (
                                     <option key={role.id} value={role.id}>
                                         {role.name}

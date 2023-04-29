@@ -34,6 +34,8 @@ class UserController extends Controller
 
         $response  = ResponseHelper::generateGetResponse($users);
 
+        
+
         return $response;
 
 

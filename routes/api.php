@@ -43,10 +43,15 @@ Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
 
 
 Route::resource('task', TaskController::class);
+Route::get('/role/{id}', [RoleController::class, 'getRoleById']); //get only role based id
+Route::get('/roles/{id}', [RoleController::class, 'showAssociatePermissionId']);  //get associated permissions based on role
+// Route::get('/showPermission/{id}', [RoleController::class, 'show_permission']);
+Route::get('roleOnPer',[RoleController::class, 'getAllPermissionBasedOnRole']);
 Route::resource('role', RoleController::class);
 Route::get('/users/{id}', [UserController::class, 'getUserById']);
 Route::resource('user', UserController::class);
 Route::resource('permission', PermissionController::class);
-Route::get('getrole/{id}', [PermissionController::class,'show_role']);
+Route::get('getrole/{id}', [PermissionController::class,'show_role']);//get associated role based on permissions id
+Route::get('getAllRole', [PermissionController::class,'showall_role']);//get associated role based on permissions 
 
 // Route::get('getrole', [PermissionController::class,'show_role']);

@@ -24,19 +24,19 @@ class PermissionController extends Controller
         return response()->json($role);
     }
 
-    // public function show_role()
-    // {
-    //     // $role = Permission::find($id)->permission_role;
-    //     $role = Permission::with('permission_role')->get();
+    public function showall_role()
+    {
+        // $role = Permission::find($id)->permission_role;
+        $role = Permission::with('permission_role')->get();
 
 
-    //     dd($role);
-    //     if (request()->expectsJson()) {
-    //         return response()->json($role);
-    //     }
+        // dd($role);
+        if (request()->expectsJson()) {
+            return response()->json($role);
+        }
 
-    //     return response()->json($role);
-    // }
+        // return response()->json($role);
+    }
 
 
 
@@ -46,7 +46,8 @@ class PermissionController extends Controller
     public function index()
     {
         $permisssions = Permission::all();
-        return $permisssions;
+        return response()->json($permisssions);
+
     }
 
     /**

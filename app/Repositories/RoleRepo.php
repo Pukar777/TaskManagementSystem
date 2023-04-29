@@ -35,7 +35,30 @@ class RoleRepo implements RepoIface
     // }
 
 
+    public function getRById($id)
+    {
+        return $this->role->findOrFail($id);
+    }
 
+
+
+    public function showAssociatePermissions($id)
+    {
+
+        return  $this->role::with('permission_role')->find($id);
+    }
+
+    public function showall_permission()    //show all permissions based on role
+    {
+        // $role = Permission::find($id)->permission_role;
+        $permission = $this->role::with('permission_role')->get();
+
+
+        // dd($role);
+        if (request()->expectsJson()) {
+            return response()->json($permission);
+        }
+    }
 
     // public function store(array $data)
     // {
@@ -93,13 +116,13 @@ class RoleRepo implements RepoIface
 
 
             // $permissionIds = [1, 2];
-            
+
             $permissionIds = $data['permission_id'];
             // dd($data);
-        //dd($permissionIds);
+            //dd($permissionIds);
 
             // $permissionIds = $data['permission_id'];
-            
+
 
             // Loop through the permission ids and create a new permission_role entry for each
             foreach ($permissionIds as $permissionId) {
@@ -111,7 +134,7 @@ class RoleRepo implements RepoIface
 
             DB::commit();
 
-           return $dataEntry;
+            return $dataEntry;
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
@@ -133,40 +156,40 @@ class RoleRepo implements RepoIface
     // }
 
     public function update(array $data, $id)
-{
-    DB::beginTransaction();
+    {
+        DB::beginTransaction();
 
-    try {
-        // Update the Role entry
-        $this->role::where('id', $id)->update([
-            'name' => $data['name'],
-        ]);
-
-        // Create an array of permission ids from the input data
-        // $permissionIds = [4,5];
-        $permissionIds = $data['permission_id'];
-
-        // Delete any existing permission_role entries for the Role
-        $this->perRole::where('role_id', $id)->delete();
-        
-
-        // Loop through the permission ids and create a new permission_role entry for each
-        foreach ($permissionIds as $permissionId) {
-            $this->perRole->create([
-                'permission_id' => $permissionId,
-                'role_id' => $id,
+        try {
+            // Update the Role entry
+            $this->role::where('id', $id)->update([
+                'name' => $data['name'],
             ]);
-        }
-        // $permissionIds = [4, 5];
-        // $this->role->permission_role()->sync($permissionIds);
-        DB::commit();
 
-        return true;
-    } catch (\Exception $e) {
-        DB::rollback();
-        throw $e;
+            // Create an array of permission ids from the input data
+            // $permissionIds = [4,5];
+            $permissionIds = $data['permission_id'];
+
+            // Delete any existing permission_role entries for the Role
+            $this->perRole::where('role_id', $id)->delete();
+
+
+            // Loop through the permission ids and create a new permission_role entry for each
+            foreach ($permissionIds as $permissionId) {
+                $this->perRole->create([
+                    'permission_id' => $permissionId,
+                    'role_id' => $id,
+                ]);
+            }
+            // $permissionIds = [4, 5];
+            // $this->role->permission_role()->sync($permissionIds);
+            DB::commit();
+
+            return true;
+        } catch (\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
-}
 
     public function delete($id)
     {
@@ -174,7 +197,7 @@ class RoleRepo implements RepoIface
         // $this->perRole::where('role_id', $id)->delete();
 
         DB::beginTransaction();
-        try{
+        try {
             $this->role->destroy($id);
             $this->perRole::where('role_id', $id)->delete();
             DB::commit();

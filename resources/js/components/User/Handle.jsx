@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { createUser, updateUser } from "../Auth/Api";
+import { createUser, updateUser, getStoredRoles } from "../Auth/Api";
 import { useState } from "react";
-import { getStoredRoles } from "../Auth/Api";
+
 
 const userHandle = () => {
     const [error, setError] = useState(null);
@@ -70,7 +70,7 @@ const userHandle = () => {
             const accessToken = localStorage.getItem("accessToken");
             const roleData = await getStoredRoles(accessToken);
             setRoles(roleData);
-            console.log(roleData);
+            // console.log(roleData);
         } catch (error) {
             console.error(error);
         }

@@ -43,6 +43,57 @@ class RoleController extends Controller
 
 
 
+    public function getRoleById($id)
+    {
+        $role = $this->roleService->getRoleById($id);
+
+        return response()->json($role);
+    }
+
+
+    public function showAssociatePermissionId($id)
+    {
+
+        $role = $this->roleService->showAssocPer($id);
+
+        if (request()->expectsJson()) {
+            return response()->json($role);
+        }
+        return response()->json($role);
+    }
+
+
+    // public function show_permission($id)
+    // {
+    //     // $role = Permission::find($id)->permission_role;
+    //     $role = Role::with('permission_role')->find($id);
+    //     // dd($role);
+    //     if (request()->expectsJson()) {
+    //         return response()->json($role);
+    //     }
+       
+    //     return response()->json($role);
+    // }
+
+
+
+
+
+    public function getAllPermissionBasedOnRole()
+    {
+        $roles = $this->roleService->showall_per();
+        // if (request()->expectsJson()) {
+        //     return response()->json($roles);
+        // }
+
+        $response  = ResponseHelper::generateGetResponse($roles);
+
+        return $response;
+
+        //return response()->json($roles);
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

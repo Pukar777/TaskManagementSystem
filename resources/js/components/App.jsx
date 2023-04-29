@@ -7,7 +7,9 @@ import useAuth from "./Auth/Auth";
 import CreateUser from "./User/CreateUser";
 import ViewUser from "./User/ViewUser";
 import EditUser from "./User/EditUser";
-
+import CreateRole from "./Role/CreateRole";
+import ViewRole from "./Role/ViewRole";
+import EditRole from "./Role/EditRole";
 const App = () => {
     const { isLogged } = useAuth();
 
@@ -61,6 +63,9 @@ const App = () => {
                 <Route exact path="/create-user" element={<CreateUser/>} />
                 <Route exact path="/view-user" element={<ViewUser/>} />
                 <Route exact path="/update/:id" element={<EditUser/>} />
+                <Route exact path="/create-role" element={<CreateRole/>} />
+                <Route exact path="/view-role" element={<ViewRole/>} />
+                <Route exact path="/update-role/:id" element={<EditRole/>} />
             </Routes>
             {/* </Router> */}
         </>

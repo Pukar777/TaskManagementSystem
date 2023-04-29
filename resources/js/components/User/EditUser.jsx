@@ -30,6 +30,7 @@ function EditUser() {
                 setAddress(response.data.address);
                 setPassword(response.data.password);
                 setRoleId(response.data.role_id);
+                // console.log(response.data.name);
             })
             .catch((error) => console.error(error));
             fetchRoles();
@@ -42,7 +43,7 @@ function EditUser() {
             return;
         }
         handleUpdate(id, name, email, contact, address, password, role_id);
-        console.log(id);
+        // console.log(id);
     };
 
     return (
