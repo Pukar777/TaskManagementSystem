@@ -189,12 +189,7 @@ export const deleteRole = async (accessToken, id) => {
     return id;
 };
 
-export const updateRole = async (
-    id,
-    accessToken,
-    name,
-    permission_id,
-) => {
+export const updateRole = async (id, accessToken, name, permission_id) => {
     //    console.log(id);
     const responseUpdate = await axios.put(
         `${API_URL}/role/${id}`,
@@ -226,4 +221,100 @@ export const getStoredPermissions = async (accessToken) => {
     });
     // console.log(responsePermission);
     return responsePermission.data;
+};
+
+// =====================================Task===================================================================================
+
+export const createTask = async (
+    accessToken,
+    title,
+    description,
+    dueDate,
+    priority,
+    status,
+    type,
+    created_by,
+    user_id
+) => {
+    const response = await axios.post(
+        `${API_URL}/task`,
+        {
+            title,
+            description,
+            dueDate,
+            priority,
+            status,
+            type,
+            created_by,
+            user_id,
+        },
+
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+            },
+        }
+    );
+    return response.data;
+};
+
+export const getStoredTasks = async (accessToken) => {
+    const responseTask = await axios.get(`${API_URL}/task`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+
+            Accept: "application/json",
+        },
+    });
+    return responseTask.data;
+};
+
+export const deleteTask = async (accessToken, id) => {
+    //    console.log(id);
+    await axios.delete(`${API_URL}/task/${id}`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/json",
+        },
+    });
+    // console.log(responseDelete);
+    return id;
+};
+
+export const updateTask = async (
+    id,
+    accessToken,
+    title,
+    description,
+    dueDate,
+    priority,
+    status,
+    type,
+    created_by,
+    user_id
+) => {
+    //    console.log(id);
+    const responseUpdate = await axios.put(
+        `${API_URL}/task/${id}`,
+        {
+            title,
+            description,
+            dueDate,
+            priority,
+            status,
+            type,
+            created_by,
+            user_id,
+        },
+
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+            },
+        }
+    );
+
+    return responseUpdate.data;
 };

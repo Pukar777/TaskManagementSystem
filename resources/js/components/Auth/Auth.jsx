@@ -17,6 +17,7 @@ const useAuth = () => {
     //   }, [isLogged]);
       
 
+    // console.log(user);
     const handleLogin = async (email, password) => {
         try {
             const { access_token } = await login(email, password);
@@ -78,6 +79,7 @@ const useAuth = () => {
         handleLogin,
         handleRegister,
         handleLogout,
+        setIsLogged
     };
 };
 

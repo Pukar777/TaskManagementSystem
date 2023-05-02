@@ -10,7 +10,7 @@ const roleHandle = () => {
 
     const handleCreate = async (name, permission_id) => {
         try {
-            console.log(permission_id);
+            // console.log(permission_id);
             const accessToken = localStorage.getItem("accessToken");
             // console.log(accessToken);
             await createRole(accessToken, name, permission_id);

@@ -73,11 +73,9 @@ function ViewUser() {
         }
     };
 
-
     const UpdateUser = (id) => {
         navigate(`/update/${id}`);
-      };
-    
+    };
 
     useEffect(() => {
         fetchUsers();
@@ -104,6 +102,7 @@ function ViewUser() {
                             <th>Action</th>
                         </tr>
                     </thead>
+                   {/* {console.log(users)} */}
                     {users && users.length > 0 ? (
                         users.map((user) => {
                             const role = user.role; // Assuming that the `user` property is loaded with the `role` relationship

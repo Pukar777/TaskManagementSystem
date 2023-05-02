@@ -21,27 +21,29 @@ function EditRole() {
             })
             .then((response) => {
                 setName(response.data.name);
-              
-                // console.log(response.data);
+                // setPermissionId(response.data.permission_role.map(pr => pr.permission_id));
+
+                // console.log(
+                //     response.data.permission_role.map((pr) => pr.permission_id)
+                // );
             })
             .catch((error) => console.error(error));
         fetchPermissons();
     }, [id]);
 
     const handleOnChange = (e) => {
-        
-      if (e.target.checked) {
-          setPermissionId((current) => [...current, e.target.value]);
-      } else {
-          setPermissionId((current) =>
-              current.filter((id) => id !== e.target.value)
-          );
-      }
-  };
+        if (e.target.checked) {
+            setPermissionId((current) => [...current, e.target.value]);
+        } else {
+            setPermissionId((current) =>
+                current.filter((id) => id !== e.target.value)
+            );
+        }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-    
+
         handleUpdate(id, name, permission_id);
         // console.log(id);
     };
@@ -81,6 +83,9 @@ function EditRole() {
                                             type="checkbox"
                                             id={`permission-${permission.id}`}
                                             value={permission.id}
+                                            // checked={permission_id.includes(
+                                            //     permission.id
+                                            // )}
                                             onChange={handleOnChange}
                                         />
                                         <label

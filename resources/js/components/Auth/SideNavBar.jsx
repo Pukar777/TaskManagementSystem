@@ -82,6 +82,37 @@ const SideNavBar = () => {
                             </div>
                         </li>
                     </ul>
+                    <ul className="navbar-nav">
+                        <li className="nav-item dropdown">
+                            <a
+                                className="nav-link dropdown-toggle"
+                                href="#"
+                                id="navbarDropdown"
+                                role="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                Task
+                            </a>
+                            <div
+                                className="dropdown-menu"
+                                aria-labelledby="navbarDropdown"
+                            >
+                                <Link
+                                    className="dropdown-item"
+                                    to="/create-task"
+                                >
+                                    Create
+                                </Link>
+
+                                <div className="dropdown-divider"></div>
+                                <Link className="dropdown-item" to="/view-task">
+                                    View
+                                </Link>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>

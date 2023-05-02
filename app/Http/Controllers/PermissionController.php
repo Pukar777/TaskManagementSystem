@@ -40,14 +40,10 @@ class PermissionController extends Controller
 
 
 
-
-
-
     public function index()
     {
         $permisssions = Permission::all();
         return response()->json($permisssions);
-
     }
 
     /**

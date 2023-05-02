@@ -24,6 +24,11 @@ class TaskService implements ServiceIface
         return $this->taskRepository->all();
     }
 
+    public function showAssocUser($id)
+    {
+        return $this->taskRepository->showAssociateUsers($id);
+        
+    }
 
 
     public function store(array $data)

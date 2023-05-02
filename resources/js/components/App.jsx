@@ -10,9 +10,15 @@ import EditUser from "./User/EditUser";
 import CreateRole from "./Role/CreateRole";
 import ViewRole from "./Role/ViewRole";
 import EditRole from "./Role/EditRole";
+import CreateTask from "./Task/CreateTask";
+import ViewTask from "./Task/ViewTask";
+import EditTask from "./Task/EditTask";
+import ViewTaskDetail from "./Task/ViewTaskDetail";
 const App = () => {
+    
     const { isLogged } = useAuth();
 
+    // console.log(isLogged);
     return (
         <>
             {/* <Router> */}
@@ -66,6 +72,10 @@ const App = () => {
                 <Route exact path="/create-role" element={<CreateRole/>} />
                 <Route exact path="/view-role" element={<ViewRole/>} />
                 <Route exact path="/update-role/:id" element={<EditRole/>} />
+                <Route exact path="/create-task" element={<CreateTask/>} />
+                <Route exact path="/view-task" element={<ViewTask/>} />
+                <Route exact path="/update-task/:id" element={<EditTask/>} />
+                <Route exact path="/detail-task/:id" element={<ViewTaskDetail/>} />
             </Routes>
             {/* </Router> */}
         </>

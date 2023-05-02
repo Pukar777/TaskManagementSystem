@@ -48,6 +48,11 @@ class RoleRepo implements RepoIface
         return  $this->role::with('permission_role')->find($id);
     }
 
+
+
+
+
+    
     public function showall_permission()    //show all permissions based on role
     {
         // $role = Permission::find($id)->permission_role;

@@ -23,7 +23,16 @@ class TaskRepo implements RepoIface
 
     public function all()
     {
-        return $this->task->all();
+        return $this->task->all()->load('user','task_user.user');
+    }
+
+
+
+
+    public function showAssociateUsers($id)
+    {
+
+        return  $this->task::with('task_user.user', 'user')->find($id);
     }
 
 

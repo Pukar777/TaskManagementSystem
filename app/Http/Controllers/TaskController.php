@@ -40,6 +40,18 @@ class TaskController extends Controller
         return $response;
     }
 
+
+    public function showAssociateUserId($id)
+    {
+
+        $role = $this->taskService->showAssocUser($id);
+
+        if (request()->expectsJson()) {
+            return response()->json($role);
+        }
+        return response()->json($role);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -121,7 +133,7 @@ class TaskController extends Controller
         //         'message' => 'Task deleted successfully',
         //     ]);
         // }
-        if (!empty($data)) {
+        if (!empty($id)) {
             return ResponseHelper::generateResponse(request(), 'success', 'task deleteded successfully', $id, 200);
         } else {
             return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
