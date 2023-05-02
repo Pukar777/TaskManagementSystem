@@ -40,7 +40,7 @@ Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
 
 
 // ======================================================================================================================
-
+Route::put('update-status/{id}', [TaskController::class, 'updatStatus']);
 Route::get('/tasks/{id}', [TaskController::class, 'showAssociateUserId']);  //get associated permissions based on role
 Route::resource('task', TaskController::class);
 Route::get('/role/{id}', [RoleController::class, 'getRoleById']); //get only role based id
@@ -53,5 +53,6 @@ Route::resource('user', UserController::class);
 Route::resource('permission', PermissionController::class);
 Route::get('getrole/{id}', [PermissionController::class,'show_role']);//get associated role based on permissions id
 Route::get('getAllRole', [PermissionController::class,'showall_role']);//get associated role based on permissions 
+
 
 // Route::get('getrole', [PermissionController::class,'show_role']);

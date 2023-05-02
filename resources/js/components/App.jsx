@@ -14,6 +14,7 @@ import CreateTask from "./Task/CreateTask";
 import ViewTask from "./Task/ViewTask";
 import EditTask from "./Task/EditTask";
 import ViewTaskDetail from "./Task/ViewTaskDetail";
+
 const App = () => {
     
     const { isLogged } = useAuth();
@@ -63,6 +64,7 @@ const App = () => {
             </nav>
 
             <Routes>
+               <Route exact path="/" element={<Login />} />
                 <Route exact path="/login" element={<Login />} />
                 <Route exact path="/dashboard-react" element={<Dashboard />} />
                 <Route exact path="/register" element={<Register />} />

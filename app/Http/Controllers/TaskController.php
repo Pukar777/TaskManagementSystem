@@ -16,7 +16,7 @@ class TaskController extends Controller
     protected $taskService;
     //public $test;
 
-    public function __construct(TaskService $taskService, )
+    public function __construct(TaskService $taskService,)
     {
 
         $this->taskService = $taskService;
@@ -69,7 +69,7 @@ class TaskController extends Controller
 
 
         // dd($request->all());
-        $data= $this->taskService->store($request->validated());
+        $data = $this->taskService->store($request->validated());
         // if ($request->expectsJson()) {
         //     return response()->json([
         //         'status' => 'success',
@@ -83,6 +83,9 @@ class TaskController extends Controller
             return ResponseHelper::generateResponse($request, 'error', 'task creation failed', null, 400);
         }
     }
+
+
+
 
     /**
      * Display the specified resource.
@@ -120,6 +123,27 @@ class TaskController extends Controller
             return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
         }
     }
+
+
+    public function updatStatus(Request $request, $id)
+    {
+        $task = Task::find($id);
+        $task->status = $request->input('status');
+        if ($task->save()) {
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'status upadte successfully',
+
+
+            ]);
+        }
+    }
+    // return redirect()->back()->with('failed','Could not update'); 
+
+
+
+
 
     /**
      * Remove the specified resource from storage.

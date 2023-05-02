@@ -162,8 +162,11 @@ class AuthController extends Controller
     // }
 
     public function me()
-    {
-        return response()->json(auth()->user()->load('role','task_user.task', 'task_user.user'));
+    {   
+        
+        return response()->json(auth()->user()->load('role','task_user.task.user', 'task_user.user'));
     }
 
+    
 }
+

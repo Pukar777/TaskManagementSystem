@@ -81,6 +81,7 @@ function ViewUser() {
         fetchUsers();
     }, []);
 
+    // console.log(users);
     return (
         <>
             <SideNavBar />

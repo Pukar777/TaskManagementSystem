@@ -18,6 +18,7 @@ function ViewTask() {
         }
     };
 
+    // console.log(tasks);
     useEffect(() => {
         fetchTasks();
     }, []);

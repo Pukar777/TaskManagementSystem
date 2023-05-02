@@ -71,6 +71,15 @@ function ViewRole() {
                                             >
                                                 Delete
                                             </button>
+
+                                             {/* <button
+                                                className="btn btn-danger"
+                                                onClick={() =>
+                                                    console.log(role.id)
+                                                }
+                                            >
+                                                id
+                                            </button> */}
                                         </td>
                                     </tr>
                                 </tbody>

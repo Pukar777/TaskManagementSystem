@@ -17,6 +17,16 @@ use App\Http\Controllers\AuthController;
 Route::get('/welcome', function () {
     return view('welcome');
 });
+
+
+// Route::get('/abc', function() {
+//    $credentials= [
+//        'email' => 'nile@gmail.com',
+//        'password' =>'12345678'
+//    ];
+//    Auth::attempt($credentials);
+//    dd(getType(auth()->user()));
+// });
 // Route::get('/', function () {
 //     return view('index');
 // });

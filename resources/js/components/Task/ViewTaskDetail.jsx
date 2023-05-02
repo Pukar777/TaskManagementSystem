@@ -21,7 +21,7 @@ function ViewTaskDetail() {
                 // setUser( response.data.task_user.map((ur) => ur.user_id));
 
                 // console.log(response.data);
-                // console.log(response.data.task_user.map((ur) => ur.user.name));
+                //  console.log(response.data.task_user.map((ur) => ur.user.name));
             })
             .catch((error) => console.error(error));
     };
@@ -72,7 +72,7 @@ function ViewTaskDetail() {
                         <p key={ur.user.id}>
                             {ur.user.name
                                 ? ur.user.name
-                                : "No user name available"}
+                                : "No Associate user"}
                         </p>
                     ))}
             </div>

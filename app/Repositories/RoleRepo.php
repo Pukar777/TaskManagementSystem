@@ -56,7 +56,7 @@ class RoleRepo implements RepoIface
     public function showall_permission()    //show all permissions based on role
     {
         // $role = Permission::find($id)->permission_role;
-        $permission = $this->role::with('permission_role')->get();
+        $permission = $this->role::with('permission_role.permission')->get();
 
 
         // dd($role);

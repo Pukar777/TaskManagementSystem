@@ -32,7 +32,7 @@ function EditTask() {
                 setStatus(response.data.status);
                 setType(response.data.type);
                 // setCreatedBy(response.data.created_by);   //check the created_by delay
-                // setUser( response.data.task_user.map((ur) => ur.user_id));
+                 setUser( response.data.task_user.map((ur) => ur.user_id));
 
                 //console.log(response.data);
                 // console.log(
@@ -47,9 +47,9 @@ function EditTask() {
 
     const handleOnChange = (e) => {
         if (e.target.checked) {
-            setUser((current) => [...current, e.target.value]);
+            setUser((current) => [...current, +e.target.value]);
         } else {
-            setUser((current) => current.filter((id) => id !== e.target.value));
+            setUser((current) => current.filter((id) => id !== +e.target.value));
         }
     };
 
@@ -224,9 +224,9 @@ function EditTask() {
                                                 type="checkbox"
                                                 id={`user-${user.id}`}
                                                 value={user.id}
-                                                // checked={user_id.includes(
-                                                //     user.id
-                                                // )}
+                                                checked={user_id.includes(
+                                                    user.id
+                                                )}
                                                 onChange={handleOnChange}
                                             />
                                             <label htmlFor={`user-${user.id}`}>

@@ -31,7 +31,6 @@ class TaskRepo implements RepoIface
 
     public function showAssociateUsers($id)
     {
-
         return  $this->task::with('task_user.user', 'user')->find($id);
     }
 
