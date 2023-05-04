@@ -23,11 +23,35 @@ class DatabaseSeeder extends Seeder
         // ]);
 
 
-        $permission = new Permission();
-        $permission->name ="create";
-        $permission->save();
+        // $permission = new Permission();
+        // $permission->name ="create-user";
+        // $permission->save();
+        // $permission->name ="read-user";
+        // $permission->save();
+        // $permission->name ="update-user";
+        // $permission->save();
+        // $permission->name ="delete-user";
+        // $permission->save();
         // $permissions = [
         //     "name"=>""
         // ]
+
+
+        $data = [
+            ['name' => 'create-user'],
+            ['name' => 'read-user'],
+            ['name' => 'update-user'],
+            ['name' => 'delete-user'],
+            ['name' => 'create-role'],
+            ['name' => 'read-role'],
+            ['name' => 'update-role'],
+            ['name' => 'delete-role'],
+            ['name' => 'create-task'],
+            ['name' => 'read-task'],
+            ['name' => 'update-task'],
+            ['name' => 'delete-task'],
+        ];
+
+        Permission::insert($data);
     }
 }

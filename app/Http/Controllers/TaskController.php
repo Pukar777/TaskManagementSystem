@@ -8,6 +8,8 @@ use App\Services\TaskService;
 use App\Services\ServiceIface;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\TaskRequest;
+use Illuminate\Support\Facades\DB;
+
 
 class TaskController extends Controller
 
@@ -40,6 +42,61 @@ class TaskController extends Controller
         return $response;
     }
 
+
+    public function showAssUser()
+    {
+        $task = $this->taskService->getAllAssoUser();
+        if (request()->expectsJson()) {
+            return response()->json($task);
+        }
+        return response()->json($task);
+    }
+
+
+
+    public function queryShowAssoUser(){
+
+        // $tasks = DB::table('tasks')->join('task_users','tasks.id','=','task_users.task_id')->join('users','users.id','=','task_users.user_id')->get();
+        // $tasks = $tasks = DB::table('tasks')
+        // ->join('task_users', 'tasks.id', '=', 'task_users.task_id')
+        // ->join('users', 'users.id', '=', 'task_users.user_id')
+        // ->select('tasks.title', 'users.name')
+        // // ->distinct()
+        // ->get();
+
+        // $tasks = $tasks = DB::table('tasks')
+        // ->join('task_users', 'tasks.id', '=', 'task_users.task_id')
+        // ->join('users', 'users.id', '=', 'task_users.user_id')
+        // ->selectRaw('tasks.title, concat(users.name)')
+        // ->groupBy('tasks.id')
+        // // ->distinct()
+        // ->get();
+
+        // $tasks = $tasks = DB::table('tasks')
+        // ->join('task_users', 'tasks.id', '=', 'task_users.task_id')
+        // ->join('users', 'users.id', '=', 'task_users.user_id')
+        // ->selectRaw('concat(users.name)')
+        // ->groupBy('tasks.id')
+        // // ->distinct()
+        // ->get();
+
+
+
+        $tasks = $tasks = DB::table('tasks')
+        ->join('task_users', 'tasks.id', '=', 'task_users.task_id')
+        ->join('users', 'users.id', '=', 'task_users.user_id')
+        ->selectRaw('group_concat ( users.name, " " )')
+        ->groupBy('tasks.id')
+        // ->distinct()
+        ->get();
+      
+      
+        if (request()->expectsJson()) {
+            return response()->json($tasks);
+        }
+        return response()->json($tasks);
+
+    }
 
     public function showAssociateUserId($id)
     {

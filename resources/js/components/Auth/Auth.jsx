@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { register, login, logout, getUser } from "./Api";
 import { useNavigate } from "react-router-dom";
+import {AuthContext} from "./AuthContext";
 
 const useAuth = () => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
-    const [isLogged, setIsLogged] = useState(false);
+    // const [isLogged, setIsLogged] = useState(false);
+    const {isLogged, setIsLogged} = useContext(AuthContext);
+
+    // console.log(isLogged);
 
     // useEffect(() => {
     //   console.log(isLogged); // log the updated value of isLogged
@@ -75,11 +79,11 @@ const useAuth = () => {
         setUser,
         error,
         setError,
-        isLogged,
+        // isLogged,
         handleLogin,
         handleRegister,
         handleLogout,
-        setIsLogged
+        // setIsLogged
     };
 };
 

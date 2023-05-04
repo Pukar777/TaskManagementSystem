@@ -198,7 +198,7 @@ function CreateTask() {
                                                 onChange={handleOnChange}
                                             />
                                             <label htmlFor={`user-${user.id}`}>
-                                                {user.name} {roleName}
+                                                {user.name}  Role: {roleName}
                                             </label>
                                         </div>
                                     );

@@ -66,6 +66,7 @@ function ViewTask() {
                             <th>Priority</th>
                             <th>Status</th>
                             <th>Type</th>
+                            {/* <th>Assigned Users</th> */}
                             <th>Action</th>
                             <th></th>
                         </tr>

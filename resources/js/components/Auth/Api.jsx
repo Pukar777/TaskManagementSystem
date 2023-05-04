@@ -259,8 +259,19 @@ export const createTask = async (
     return response.data;
 };
 
+// export const getStoredTasks = async (accessToken) => {
+//     const responseTask = await axios.get(`${API_URL}/task`, {
+//         headers: {
+//             Authorization: `Bearer ${accessToken}`,
+
+//             Accept: "application/json",
+//         },
+//     });
+//     return responseTask.data;
+// };
+
 export const getStoredTasks = async (accessToken) => {
-    const responseTask = await axios.get(`${API_URL}/task`, {
+    const responseTask = await axios.get(`${API_URL}/showAssUsers`, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
 

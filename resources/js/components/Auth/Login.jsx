@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
 import useAuth from "./Auth";
 import { Navigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { handleLogin, error, isLogged } = useAuth();
+    const { handleLogin, error} = useAuth();
+    const {isLogged} = useContext(AuthContext);
 
     // console.log(isLogged);
+
+
     if (isLogged == true) {
         return <Navigate to="/dashboard-react" />;
     }

@@ -33,9 +33,6 @@ class TaskRequest extends FormRequest
             'created_by' => 'required|exists:users,id',
             // 'user_id' => 'required',
             'user_id' =>'required|exists:users,id',
-
-            
-              
             
         ];
     }

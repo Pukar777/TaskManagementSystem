@@ -14,11 +14,14 @@ import CreateTask from "./Task/CreateTask";
 import ViewTask from "./Task/ViewTask";
 import EditTask from "./Task/EditTask";
 import ViewTaskDetail from "./Task/ViewTaskDetail";
+import { AuthContext } from "./Auth/AuthContext";
 
 const App = () => {
     
-    const { isLogged } = useAuth();
+    // const { isLogged } = useAuth();
+    const {isLogged} = React.useContext(AuthContext);
 
+    
     // console.log(isLogged);
     return (
         <>
