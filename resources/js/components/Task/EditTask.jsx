@@ -219,7 +219,7 @@ function EditTask() {
                                     const role = user.role; // Assuming that the `user` property is loaded with the `role` relationship
                                     // console.log(role);
                                     const roleName = user.isSuper
-                                        ? "Super"
+                                        ? "Yes"
                                         : role
                                         ? role.name
                                         : "No Role"; // handle case where role not found

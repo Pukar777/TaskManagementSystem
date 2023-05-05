@@ -7,6 +7,7 @@ const useAuth = () => {
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
     // const [isLogged, setIsLogged] = useState(false);
     const {isLogged, setIsLogged} = useContext(AuthContext);
 
@@ -39,6 +40,19 @@ const useAuth = () => {
             setError(error.response.data.error);
         }
     };
+
+
+    const fetchMe = async() => {
+        try {
+        const accessToken = localStorage.getItem("accessToken");
+        const userDetails = await getUser(accessToken);
+        setUser(userDetails);
+        } catch (error) {
+            console.error(error);
+        }finally{
+            setIsLoading(false);
+        }
+    }
 
     const handleRegister = async (name, email, contact, address, password) => {
         try {
@@ -80,9 +94,11 @@ const useAuth = () => {
         error,
         setError,
         // isLogged,
+        isLoading,
         handleLogin,
         handleRegister,
         handleLogout,
+        fetchMe
         // setIsLogged
     };
 };
