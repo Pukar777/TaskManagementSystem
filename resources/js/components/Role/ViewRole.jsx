@@ -24,11 +24,9 @@ function ViewRole() {
         }
     };
 
-
     const UpdateRole = (id) => {
         navigate(`/update-role/${id}`);
-      };
-    
+    };
 
     return (
         <>
@@ -43,7 +41,7 @@ function ViewRole() {
                             <th>Action</th>
                         </tr>
                     </thead>
-               
+
                     {roles && roles.length > 0 ? (
                         roles.map((role) => {
                             return (
@@ -72,7 +70,7 @@ function ViewRole() {
                                                 Delete
                                             </button>
 
-                                             {/* <button
+                                            {/* <button
                                                 className="btn btn-danger"
                                                 onClick={() =>
                                                     console.log(role.id)

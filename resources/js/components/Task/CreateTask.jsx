@@ -34,7 +34,7 @@ function CreateTask() {
             priority,
             status,
             type,
-            created_by=user.id,
+            (created_by = user.id),
             // created_by,
             user_id
         );
@@ -186,9 +186,11 @@ function CreateTask() {
                                 {users.map((user) => {
                                     const role = user.role; // Assuming that the `user` property is loaded with the `role` relationship
                                     // console.log(role);
-                                    const roleName = role
+                                    const roleName = user.isSuper
+                                        ? "Yes"
+                                        : role
                                         ? role.name
-                                        : "Unknown"; // handle case where role not found
+                                        : "No Role"; // handle case where role not found
                                     return (
                                         <div key={user.id}>
                                             <input
@@ -198,7 +200,7 @@ function CreateTask() {
                                                 onChange={handleOnChange}
                                             />
                                             <label htmlFor={`user-${user.id}`}>
-                                                {user.name}  Role: {roleName}
+                                                {user.name}  {user.isSuper ? "Super" : "Role"} : {roleName}
                                             </label>
                                         </div>
                                     );

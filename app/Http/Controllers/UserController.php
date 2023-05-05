@@ -33,7 +33,43 @@ class UserController extends Controller
         //     Gate::authorize('delete-user');
         //     return $next($request);
         // });
+
+        
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('create-user')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('store');
+        
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('read-user')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('index');
+      
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('update-user')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('update');
+      
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('delete-user')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('destroy');
+
+        
     }
+
 
 
     /**
@@ -42,7 +78,7 @@ class UserController extends Controller
     public function index()
     {
 
-        if (Gate::check('read-user')) {
+        // if (Gate::check('read-user')) {
             // Allow user to delete role
             $users = $this->userService->getall();
             // if (request()->expectsJson()) {
@@ -56,9 +92,9 @@ class UserController extends Controller
     
             return $response;
     
-        } else {
-            abort(403, 'Unauthorized action.');
-        }
+        // } else {
+        //     abort(403, 'Unauthorized action.');
+        // }
       
 
 
@@ -90,7 +126,7 @@ class UserController extends Controller
 
 
         // dd($request->all());
-        if (Gate::check('create-user')) {
+        // if (Gate::check('create-user')) {
             $data = $this->userService->store($request->validated());
             // if($request->expectsJson()) {
             //     return response()->json([
@@ -104,9 +140,9 @@ class UserController extends Controller
             } else {
                 return ResponseHelper::generateResponse($request, 'error', 'user creation failed', null, 400);
             }
-        } else {
-            abort(403, 'Unauthorized action.');
-        }
+        // } else {
+        //     abort(403, 'Unauthorized action.');
+        // }
     
         
     }
@@ -134,8 +170,8 @@ class UserController extends Controller
     {
 
 
-        if (Gate::check('update-user')) {
-            // Allow user to delete role
+        // if (Gate::check('update-user')) {
+            
             $data = $this->userService->update($request->validated(), $id);
             // if ($request->expectsJson()) {
             //     return response()->json([
@@ -150,9 +186,9 @@ class UserController extends Controller
             } else {
                 return ResponseHelper::generateResponse($request, 'error', 'user update failed', null, 400);
             }
-        } else {
-            abort(403, 'Unauthorized action.');
-        }
+        // } else {
+        //     abort(403, 'Unauthorized action.');
+        // }
     
     }
 
@@ -162,7 +198,7 @@ class UserController extends Controller
     public function destroy($id)
     {
 
-        if (Gate::check('delete-user')) {
+        // if (Gate::check('delete-user')) {
             // Allow user to delete role
             $this->userService->delete($id);
             //    if(request()->expectsJson()) {
@@ -176,9 +212,9 @@ class UserController extends Controller
             } else {
                 return ResponseHelper::generateResponse(request(), 'error', 'user deletion failed', null, 400);
             }
-        } else {
-            abort(403, 'Unauthorized action.');
-        }
+        // } else {
+        //     abort(403, 'Unauthorized action.');
+        // }
     
     }
 }

@@ -30,6 +30,39 @@ class RoleController extends Controller
         //     Gate::authorize('delete-role');
         //     return $next($request);
         // });
+
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('create-role')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('store');
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('read-role')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('index');
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('update-role')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('update');
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('delete-role')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('destroy');
     }
 
 
@@ -38,24 +71,25 @@ class RoleController extends Controller
      */
     public function index()
     {
-        if (Gate::check('read-role')) {
-            $roles = $this->roleService->getall();
-            // if (request()->expectsJson()) {
-            //     return response()->json($roles);
-            // }
+        // if (Gate::check('read-role')) {
+        $roles = $this->roleService->getall();
+        // if (request()->expectsJson()) {
+        //     return response()->json($roles);
+        // }
 
-            $response  = ResponseHelper::generateGetResponse($roles);
+        $response  = ResponseHelper::generateGetResponse($roles);
 
-            return $response;
-        } else {
-            abort(403, 'Unauthorized action.');
-        }
+        return $response;
+        // } else {
+        //     abort(403, 'Unauthorized action.');
+        // }
 
 
         //return response()->json($roles);
     }
 
-    public function getRoleDropdownAction(){
+    public function getRoleDropdownAction()
+    {
         $roles = $this->roleService->getall();
         // if (request()->expectsJson()) {
         //     return response()->json($roles);
@@ -63,7 +97,6 @@ class RoleController extends Controller
 
         $response  = ResponseHelper::generateGetResponse($roles);
         return $response;
-
     }
 
     public function getRoleById($id)
@@ -134,16 +167,16 @@ class RoleController extends Controller
         // $role = $this->roleService->store($request->all());
         // dd($request->all());
 
-        if (Gate::check('create-role')) {
-            $data = $this->roleService->store($request->validated());
-            if (!empty($data)) {
-                return ResponseHelper::generateResponse($request, 'success', 'role created successfully', $request->input(), 200);
-            } else {
-                return ResponseHelper::generateResponse($request, 'error', 'role creation failed', null, 400);
-            }
+        // if (Gate::check('create-role')) {
+        $data = $this->roleService->store($request->validated());
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'role created successfully', $request->input(), 200);
         } else {
-            abort(403, 'Unauthorized action.');
+            return ResponseHelper::generateResponse($request, 'error', 'role creation failed', null, 400);
         }
+        // } else {
+        //     abort(403, 'Unauthorized action.');
+        // }
 
 
 
@@ -201,25 +234,25 @@ class RoleController extends Controller
     public function update(RoleRequest $request, $id)
     {
 
-        if (Gate::check('update-role')) {
-            // Allow user to delete role
-            $data = $this->roleService->update($request->validated(), $id);
-            // if ($request->expectsJson()) {
-            //     return response()->json([
-            //         'status' => 'success',
-            //         'message' => 'role updated successfully',
-            //         'data' => $request->input(),
+        // if (Gate::check('update-role')) {
+        // Allow user to delete role
+        $data = $this->roleService->update($request->validated(), $id);
+        // if ($request->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'role updated successfully',
+        //         'data' => $request->input(),
 
-            //     ]);
-            // }
-            if (!empty($data)) {
-                return ResponseHelper::generateResponse($request, 'success', 'role updated successfully', $request->input(), 200);
-            } else {
-                return ResponseHelper::generateResponse($request, 'error', 'role  failed to update', null, 400);
-            }
+        //     ]);
+        // }
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'role updated successfully', $request->input(), 200);
         } else {
-            abort(403, 'Unauthorized action.');
+            return ResponseHelper::generateResponse($request, 'error', 'role  failed to update', null, 400);
         }
+        // } else {
+        //     abort(403, 'Unauthorized action.');
+        // }
     }
 
     /**
@@ -227,17 +260,17 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        if (Gate::check('delete-role')) {
-            $this->roleService->delete($id);
+        // if (Gate::check('delete-role')) {
+        $this->roleService->delete($id);
 
-            if (!empty($id)) {
-                return ResponseHelper::generateResponse(request(), 'success', 'role deleted successfully', $id, 200);
-            } else {
-                return ResponseHelper::generateResponse(request(), 'error', 'role deletion failed', null, 400);
-            }
+        if (!empty($id)) {
+            return ResponseHelper::generateResponse(request(), 'success', 'role deleted successfully', $id, 200);
         } else {
-            abort(403, 'Unauthorized action.');
+            return ResponseHelper::generateResponse(request(), 'error', 'role deletion failed', null, 400);
         }
+        // } else {
+        //     abort(403, 'Unauthorized action.');
+        // }
 
 
 

@@ -100,7 +100,7 @@ const Dashboard = () => {
                         {/* <p>Role: {user.role.name}</p> */}
                         {/* <p>Super: {user.isSuper}</p>  */}
                         <p>
-                            {user.isSuper ? "Super:" : "Role"} :{" "}
+                            {user.isSuper ? "Super" : "Role"} : {" "}
                             {user.isSuper
                                 ? "Yes"
                                 : user.role

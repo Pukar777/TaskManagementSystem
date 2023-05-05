@@ -24,6 +24,38 @@ class TaskController extends Controller
 
         $this->taskService = $taskService;
         // $this->test = $test;
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('create-task')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('store');
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('read-task')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('index', 'showAssUser');
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('update-task')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('update');
+
+        $this->middleware(function ($request, $next) {
+            if (Gate::check('delete-task')) {
+                return $next($request);
+            } else {
+                abort(403, 'Unauthorized action.');
+            }
+        })->only('destroy');
     }
 
 
@@ -33,31 +65,31 @@ class TaskController extends Controller
     public function index()
     {
 
-        if (Gate::check('read-task')) {
-            $tasks = $this->taskService->getall();
-            // if (request()->expectsJson()) {
-            //     return response()->json($tasks);
-            // }
+        // if (Gate::check('read-task')) {
+        $tasks = $this->taskService->getall();
+        // if (request()->expectsJson()) {
+        //     return response()->json($tasks);
+        // }
 
-            // return response()->json($tasks);
-            $response  = ResponseHelper::generateGetResponse($tasks);
+        // return response()->json($tasks);
+        $response  = ResponseHelper::generateGetResponse($tasks);
 
-            return $response;
-        }
-        abort(403, 'Unauthorized action.');
+        return $response;
+        // }
+        // abort(403, 'Unauthorized action.');
     }
 
 
     public function showAssUser()
     {
-        if (Gate::check('read-task')) {
-            $task = $this->taskService->getAllAssoUser();
-            if (request()->expectsJson()) {
-                return response()->json($task);
-            }
+        // if (Gate::check('read-task')) {
+        $task = $this->taskService->getAllAssoUser();
+        if (request()->expectsJson()) {
             return response()->json($task);
         }
-        abort(403, 'Unauthorized action.');
+        return response()->json($task);
+        // }
+        // abort(403, 'Unauthorized action.');
     }
 
 
@@ -132,7 +164,7 @@ class TaskController extends Controller
     {
         // $task = $this->taskService->store($request->all());
 
-        if (Gate::check('create-task')) {
+        // if (Gate::check('create-task')) {
             // dd($request->all());
             $data = $this->taskService->store($request->validated());
             // if ($request->expectsJson()) {
@@ -147,8 +179,8 @@ class TaskController extends Controller
             } else {
                 return ResponseHelper::generateResponse($request, 'error', 'task creation failed', null, 400);
             }
-        }
-        abort(403, 'Unauthorized action.');
+        // }
+        // abort(403, 'Unauthorized action.');
     }
 
 
@@ -176,7 +208,7 @@ class TaskController extends Controller
     public function update(TaskRequest $request, $id)
     {
 
-        if (Gate::check('update-task')) {
+        // if (Gate::check('update-task')) {
             $data = $this->taskService->update($request->validated(), $id);
             // if ($request->expectsJson()) {
             //     return response()->json([
@@ -191,8 +223,8 @@ class TaskController extends Controller
             } else {
                 return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
             }
-        }
-        abort(403, 'Unauthorized action.');
+        // }
+        // abort(403, 'Unauthorized action.');
     }
 
 
@@ -221,7 +253,7 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        if (Gate::check('delete-task')) {
+        // if (Gate::check('delete-task')) {
             $this->taskService->delete($id);
             // if (request()->expectsJson()) {
             //     return response()->json([
@@ -234,7 +266,7 @@ class TaskController extends Controller
             } else {
                 return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
             }
-        }
-        abort(403, 'Unauthorized action.');
+        // }
+        // abort(403, 'Unauthorized action.');
     }
 }

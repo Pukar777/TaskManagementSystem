@@ -13,7 +13,15 @@ function EditTask() {
     const [type, setType] = useState("");
     let [created_by, setCreatedBy] = useState("");
     const [user_id, setUser] = useState([]);
-    const { handleUpdate, error, users, fetchUsers, user, loadUser, isLoading } = taskHandle();
+    const {
+        handleUpdate,
+        error,
+        users,
+        fetchUsers,
+        user,
+        loadUser,
+        isLoading,
+    } = taskHandle();
 
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");
@@ -32,13 +40,12 @@ function EditTask() {
                 setStatus(response.data.status);
                 setType(response.data.type);
                 // setCreatedBy(response.data.created_by);   //check the created_by delay
-                 setUser( response.data.task_user.map((ur) => ur.user_id));
+                setUser(response.data.task_user.map((ur) => ur.user_id));
 
                 //console.log(response.data);
                 // console.log(
                 //     response.data.task_user.map((ur) => ur.user_id)
                 // );
-
             })
             .catch((error) => console.error(error));
         fetchUsers();
@@ -49,7 +56,9 @@ function EditTask() {
         if (e.target.checked) {
             setUser((current) => [...current, +e.target.value]);
         } else {
-            setUser((current) => current.filter((id) => id !== +e.target.value));
+            setUser((current) =>
+                current.filter((id) => id !== +e.target.value)
+            );
         }
     };
 
@@ -65,19 +74,18 @@ function EditTask() {
             priority,
             status,
             type,
-            created_by=user.id,
+            (created_by = user.id),
             user_id
         );
         // console.log(id);
     };
-
 
     // console.log(user);
 
     if (isLoading) {
         return <div className="row justify-content-center">Loading...</div>;
     }
-    
+
     return (
         // <div>EditTask</div>
         <>
@@ -181,13 +189,8 @@ function EditTask() {
                                 }
                             >
                                 <option value="">Select Type</option>
-                                <option value="feature">
-                                    Feature
-                                </option>
-                                <option value="bug">
-                                    Bug
-                                </option>
-                    
+                                <option value="feature">Feature</option>
+                                <option value="bug">Bug</option>
                             </select>
                         </div>
                         {/* <div className="mb-3">
@@ -215,9 +218,11 @@ function EditTask() {
                                 {users.map((user) => {
                                     const role = user.role; // Assuming that the `user` property is loaded with the `role` relationship
                                     // console.log(role);
-                                    const roleName = role
+                                    const roleName = user.isSuper
+                                        ? "Super"
+                                        : role
                                         ? role.name
-                                        : "Unknown"; // handle case where role not found
+                                        : "No Role"; // handle case where role not found
                                     return (
                                         <div key={user.id}>
                                             <input
@@ -230,7 +235,7 @@ function EditTask() {
                                                 onChange={handleOnChange}
                                             />
                                             <label htmlFor={`user-${user.id}`}>
-                                                {user.name} {roleName}
+                                                {user.name}  {user.isSuper ? "Super" : "Role"} : {roleName}
                                             </label>
                                         </div>
                                     );
