@@ -29,6 +29,10 @@ class RoleService implements ServiceIface
         return $this->roleRepo->getRById($id);
     }
 
+    public function getRData(){
+        return $this->roleRepo->getRoleData();
+    }
+
 
     public function showAssocPer($id)
     {

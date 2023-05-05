@@ -23,7 +23,12 @@ class UserRepo implements RepoIface
 
     public function all()
     {
-        return $this->user->all()->load('role');
+        
+        if(auth()->user()->isSuper){
+            return $this->user->all()->load('role');
+        }
+        return $this->user::where('isSuper', NULL)->with('role')->get();
+
     }
 
     public function getById($id)

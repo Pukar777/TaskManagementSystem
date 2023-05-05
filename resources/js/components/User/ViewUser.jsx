@@ -103,12 +103,16 @@ function ViewUser() {
                             <th>Action</th>
                         </tr>
                     </thead>
-                   {/* {console.log(users)} */}
+                    {/* {console.log(users)} */}
                     {users && users.length > 0 ? (
                         users.map((user) => {
                             const role = user.role; // Assuming that the `user` property is loaded with the `role` relationship
                             // console.log(role);
-                            const roleName = role ? role.name : "Unknown"; // handle case where role not found
+                            const roleName = user.isSuper
+                                ? "Super"
+                                : role
+                                ? role.name
+                                : "No Role"; // handle case where role not found
                             return (
                                 <tbody key={user.id}>
                                     <tr>

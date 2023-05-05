@@ -69,6 +69,7 @@ Route::resource('task', TaskController::class);
 
 //--------------------------------------------Role-------------------------------------------------------------------------
 
+Route::get('/roleDropDown', [RoleController::class, 'getRoleDropDownAction']); //get only role based id
 // not used
 Route::get('/role/{id}', [RoleController::class, 'getRoleById']); //get only role based id
 

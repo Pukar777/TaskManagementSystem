@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Gate;
 
 
 class UserController extends Controller
@@ -19,6 +20,19 @@ class UserController extends Controller
 
         $this->userService = $userService;
         // $this->test = $test;
+        // Gate::authorize('create-user');
+        // Gate::authorize('read-user');
+        // dd('test');
+        // Gate::authorize('update-user');
+        // Gate::authorize('delete-user');
+
+        // $this->middleware(function ($request, $next) {
+        //     Gate::authorize('create-user');
+        //     Gate::authorize('read-user');
+        //     Gate::authorize('update-user');
+        //     Gate::authorize('delete-user');
+        //     return $next($request);
+        // });
     }
 
 
@@ -27,17 +41,25 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getall();
-        // if (request()->expectsJson()) {
-        //     return response()->json($users);
-        // }
 
-        $response  = ResponseHelper::generateGetResponse($users);
-
-        
-
-        return $response;
-
+        if (Gate::check('read-user')) {
+            // Allow user to delete role
+            $users = $this->userService->getall();
+            // if (request()->expectsJson()) {
+            //     return response()->json($users);
+            // }
+    
+            // Gate::authorize('read-user',$users);
+            $response  = ResponseHelper::generateGetResponse($users);
+    
+    
+    
+            return $response;
+    
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
+      
 
 
         // return response()->json($users);
@@ -68,19 +90,25 @@ class UserController extends Controller
 
 
         // dd($request->all());
-        $data = $this->userService->store($request->validated());
-        // if($request->expectsJson()) {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'user created successfully',
-        //         'data' => $data,
-        //     ]);
-        // }
-        if (!empty($data)) {
-            return ResponseHelper::generateResponse($request, 'success', 'user created successfully', $request->input(), 200);
+        if (Gate::check('create-user')) {
+            $data = $this->userService->store($request->validated());
+            // if($request->expectsJson()) {
+            //     return response()->json([
+            //         'status' => 'success',
+            //         'message' => 'user created successfully',
+            //         'data' => $data,
+            //     ]);
+            // }
+            if (!empty($data)) {
+                return ResponseHelper::generateResponse($request, 'success', 'user created successfully', $request->input(), 200);
+            } else {
+                return ResponseHelper::generateResponse($request, 'error', 'user creation failed', null, 400);
+            }
         } else {
-            return ResponseHelper::generateResponse($request, 'error', 'user creation failed', null, 400);
+            abort(403, 'Unauthorized action.');
         }
+    
+        
     }
 
     /**
@@ -106,21 +134,26 @@ class UserController extends Controller
     {
 
 
-
-        $data = $this->userService->update($request->validated(), $id);
-        // if ($request->expectsJson()) {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'user updated  successfully',    
-        //         'data' => $data,
-
-        //     ]);
-        // } 
-        if (!empty($data)) {
-            return ResponseHelper::generateResponse($request, 'success', 'user updated successfully', $request->input(), 200);
+        if (Gate::check('update-user')) {
+            // Allow user to delete role
+            $data = $this->userService->update($request->validated(), $id);
+            // if ($request->expectsJson()) {
+            //     return response()->json([
+            //         'status' => 'success',
+            //         'message' => 'user updated  successfully',    
+            //         'data' => $data,
+    
+            //     ]);
+            // } 
+            if (!empty($data)) {
+                return ResponseHelper::generateResponse($request, 'success', 'user updated successfully', $request->input(), 200);
+            } else {
+                return ResponseHelper::generateResponse($request, 'error', 'user update failed', null, 400);
+            }
         } else {
-            return ResponseHelper::generateResponse($request, 'error', 'user update failed', null, 400);
+            abort(403, 'Unauthorized action.');
         }
+    
     }
 
     /**
@@ -128,17 +161,24 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->userService->delete($id);
-        //    if(request()->expectsJson()) {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'user deleted successfully',
-        //     ]);
-        // }
-        if (!empty($id)) {
-            return ResponseHelper::generateResponse(request(), 'success', 'user deleted successfully', $id, 200);
+
+        if (Gate::check('delete-user')) {
+            // Allow user to delete role
+            $this->userService->delete($id);
+            //    if(request()->expectsJson()) {
+            //     return response()->json([
+            //         'status' => 'success',
+            //         'message' => 'user deleted successfully',
+            //     ]);
+            // }
+            if (!empty($id)) {
+                return ResponseHelper::generateResponse(request(), 'success', 'user deleted successfully', $id, 200);
+            } else {
+                return ResponseHelper::generateResponse(request(), 'error', 'user deletion failed', null, 400);
+            }
         } else {
-            return ResponseHelper::generateResponse(request(), 'error', 'user deletion failed', null, 400);
+            abort(403, 'Unauthorized action.');
         }
+    
     }
 }

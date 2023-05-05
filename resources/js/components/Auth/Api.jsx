@@ -177,6 +177,19 @@ export const getStoredRoles = async (accessToken) => {
     return responseRole.data;
 };
 
+export const getRoleDropDown = async (accessToken) => {
+    const responseRole = await axios.get(`${API_URL}/roleDropDown`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+
+            Accept: "application/json",
+        },
+    });
+    return responseRole.data;
+};
+
+
+
 export const deleteRole = async (accessToken, id) => {
     //    console.log(id);
     await axios.delete(`${API_URL}/role/${id}`, {

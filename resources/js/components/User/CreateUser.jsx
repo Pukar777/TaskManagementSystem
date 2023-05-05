@@ -11,7 +11,7 @@ function CreateUser() {
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [role_id, setRoleId] = useState("");
-    const { handleCreate, error, setError, roles, fetchRoles } = userHandle();
+    const { handleCreate, error, setError, roles, fetchRoles, fetchRolesDropDown } = userHandle();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -23,7 +23,8 @@ function CreateUser() {
     };
 
     useEffect(() => {
-        fetchRoles();
+        // fetchRoles();
+        fetchRolesDropDown();
     }, []);
 
 

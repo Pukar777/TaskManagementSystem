@@ -97,7 +97,16 @@ const Dashboard = () => {
                         <p>Email: {user.email}</p>
                         <p>Contact: {user.contact}</p>
                         <p>Address: {user.address}</p>
-                        <p>Role: {user.role.name}</p>
+                        {/* <p>Role: {user.role.name}</p> */}
+                        {/* <p>Super: {user.isSuper}</p>  */}
+                        <p>
+                            {user.isSuper ? "Super:" : "Role"} :{" "}
+                            {user.isSuper
+                                ? "Yes"
+                                : user.role
+                                ? user.role.name
+                                : "No Role"}
+                        </p>
                         <button
                             onClick={handleLogout}
                             className="btn btn-danger"
@@ -113,57 +122,65 @@ const Dashboard = () => {
                             <h1>My Task Info</h1>
                         </div>
                         <div className="card-body">
-                            {user.task_user.map((tk, index) => (
-                                <div key={tk.task.id}>
-                                    {/* <p>Id :{tk.task.id}</p> */}
-                                    <p>Title: {tk.task.title}</p>
-                                    <p>Description: {tk.task.description}</p>
-                                    <p>DueDate: {tk.task.dueDate}</p>
-                                    <p>Priority: {tk.task.priority}</p>
-                                    <p>Status: {tk.task.status}</p>
-                                    <form>
-                                        <div className="mb-3">
-                                            <label
-                                                htmlFor="status"
-                                                className="form-label"
-                                            >
-                                               Change Status: 
-                                            </label>
-                                            <select
-                                                id="status"
-                                                value={tk.task.status}
-                                                // onChange={(event) => handleOptChange(event.target.value,index)}
-                                                onChange={(event) =>
-                                                    handleOptChange(
-                                                        event.target.value,
-                                                        tk.task.id
-                                                    )
-                                                }
-                                            >
-                                                <option value="">
-                                                    Select Status
-                                                </option>
-                                                <option value="ready to start">
-                                                    Ready to Start
-                                                </option>
-                                                <option value="waiting to review">
-                                                    Waiting to Review
-                                                </option>
-                                                <option value="done">
-                                                    Done
-                                                </option>
-                                                <option value="stuck">
-                                                    Stuck
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </form>
-                                    <p>Type: {tk.task.type}</p>
-                                    <p>Created By: {tk.task.user?.name}</p>
+                            {user.task_user && user.task_user.length > 0 ? (
+                                user.task_user.map((tk, index) => (
+                                    <div key={tk.task.id}>
+                                        {/* <p>Id :{tk.task.id}</p> */}
+                                        <p>Title: {tk.task.title}</p>
+                                        <p>
+                                            Description: {tk.task.description}
+                                        </p>
+                                        <p>DueDate: {tk.task.dueDate}</p>
+                                        <p>Priority: {tk.task.priority}</p>
+                                        <p>Status: {tk.task.status}</p>
+                                        <form>
+                                            <div className="mb-3">
+                                                <label
+                                                    htmlFor="status"
+                                                    className="form-label"
+                                                >
+                                                    Change Status:
+                                                </label>
+                                                <select
+                                                    id="status"
+                                                    value={tk.task.status}
+                                                    // onChange={(event) => handleOptChange(event.target.value,index)}
+                                                    onChange={(event) =>
+                                                        handleOptChange(
+                                                            event.target.value,
+                                                            tk.task.id
+                                                        )
+                                                    }
+                                                >
+                                                    <option value="">
+                                                        Select Status
+                                                    </option>
+                                                    <option value="ready to start">
+                                                        Ready to Start
+                                                    </option>
+                                                    <option value="waiting to review">
+                                                        Waiting to Review
+                                                    </option>
+                                                    <option value="done">
+                                                        Done
+                                                    </option>
+                                                    <option value="stuck">
+                                                        Stuck
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                        <p>Type: {tk.task.type}</p>
+                                        <p>Created By: {tk.task.user?.name}</p>
 
-                                    <hr></hr>
-                                </div>
-                            ))}
+                                        <hr></hr>
+                                    </div>
+                                ))
+                            ) : (
+                                <h4 style={{ textAlign: "center" }}>
+                                    No Task Assigned
+                                </h4>
+                            )}
                         </div>
                     </div>
                 </div>

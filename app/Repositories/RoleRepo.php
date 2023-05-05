@@ -28,6 +28,10 @@ class RoleRepo implements RepoIface
     }
 
 
+    public function getRoleData(){
+        return $this->role->all();
+    }
+
 
     // public function create(array $data){
 

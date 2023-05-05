@@ -10,6 +10,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -28,7 +29,7 @@ class User extends Authenticatable
         'address',
         'isSuper',
         'role_id',
-        
+
     ];
 
     public function role()
@@ -41,7 +42,53 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class);
     }
-    
+
+
+    public function hasPermission($permissionName)
+    {
+
+        // dd(Auth::User());
+        $userPermissionIds = $this->role->permission_role->pluck('permission_id');
+        $Permissions=Permission::whereIn('id',$userPermissionIds)->pluck('name');
+        // dd($Permissions);
+        // dd($permissionName);
+        return $Permissions->contains($permissionName);
+
+
+//==============================================another way===============================================================
+            // $Permissions=Permission::whereIn('id',$userPermissionIds)->pluck('name')->toArray();
+
+            // if (in_array($permissionName, $Permissions)) {
+
+            //     // dd($Permissions);
+            //     // Permission exists in the array
+            //     return true;
+            // } else {
+            //     // Permission does not exist in the array
+            //     return false;
+            // }
+        //     $PermissionsCollection = collect($Permissions);
+        //  //   dd($PermissionsCollection);
+        //     return $PermissionsCollection->contains($permissionName);
+
+
+
+        ///===============================wrong=================================================================
+
+        // foreach ($Permissions as $permission){
+        //    $permission->contains('name', $permissionName);
+        // }
+
+        // return $this->role->permission_role->permission->name->contains('name', $permissionName);
+        // return auth()->user()->role->permission_role->permission->contains('name', $permissionName);
+        // return auth()->user()->role->permission_role->permission->contains('name', $permissionName);
+        // return $this->role::with('permission_role.permission')->contains('name', $permissionName);
+        // $permissions = $this->role->permission_role->permission->pluck('name');
+        // return $permissions->contains('name', $permissionName);
+
+    }
+
+
 
     // public function atask()
     // {

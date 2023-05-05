@@ -12,7 +12,7 @@ function EditUser() {
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [role_id, setRoleId] = useState("");
-    const { handleUpdate, error, setError, roles, fetchRoles } = userHandle();
+    const { handleUpdate, error, setError, roles, fetchRoles, fetchRolesDropDown } = userHandle();
 
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");
@@ -33,7 +33,8 @@ function EditUser() {
                 // console.log(response.data.name);
             })
             .catch((error) => console.error(error));
-            fetchRoles();
+            // fetchRoles();
+            fetchRolesDropDown();
     }, [id]);
 
     const handleSubmit = (event) => {

@@ -9,6 +9,7 @@ use App\Services\ServiceIface;
 use App\Helpers\ResponseHelper;
 use App\Http\Requests\TaskRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 
 class TaskController extends Controller
@@ -31,30 +32,38 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = $this->taskService->getall();
-        // if (request()->expectsJson()) {
-        //     return response()->json($tasks);
-        // }
 
-        // return response()->json($tasks);
-        $response  = ResponseHelper::generateGetResponse($tasks);
+        if (Gate::check('read-task')) {
+            $tasks = $this->taskService->getall();
+            // if (request()->expectsJson()) {
+            //     return response()->json($tasks);
+            // }
 
-        return $response;
+            // return response()->json($tasks);
+            $response  = ResponseHelper::generateGetResponse($tasks);
+
+            return $response;
+        }
+        abort(403, 'Unauthorized action.');
     }
 
 
     public function showAssUser()
     {
-        $task = $this->taskService->getAllAssoUser();
-        if (request()->expectsJson()) {
+        if (Gate::check('read-task')) {
+            $task = $this->taskService->getAllAssoUser();
+            if (request()->expectsJson()) {
+                return response()->json($task);
+            }
             return response()->json($task);
         }
-        return response()->json($task);
+        abort(403, 'Unauthorized action.');
     }
 
 
 
-    public function queryShowAssoUser(){
+    public function queryShowAssoUser()
+    {
 
         // $tasks = DB::table('tasks')->join('task_users','tasks.id','=','task_users.task_id')->join('users','users.id','=','task_users.user_id')->get();
         // $tasks = $tasks = DB::table('tasks')
@@ -82,20 +91,19 @@ class TaskController extends Controller
 
 
 
-        $tasks = $tasks = DB::table('tasks')
-        ->join('task_users', 'tasks.id', '=', 'task_users.task_id')
-        ->join('users', 'users.id', '=', 'task_users.user_id')
-        ->selectRaw('group_concat ( users.name, " " )')
-        ->groupBy('tasks.id')
-        // ->distinct()
-        ->get();
-      
-      
+        $tasks = DB::table('tasks')
+            ->join('task_users', 'tasks.id', '=', 'task_users.task_id')
+            ->join('users', 'users.id', '=', 'task_users.user_id')
+            ->selectRaw('group_concat ( users.name, " " )')
+            ->groupBy('tasks.id')
+            // ->distinct()
+            ->get();
+
+
         if (request()->expectsJson()) {
             return response()->json($tasks);
         }
         return response()->json($tasks);
-
     }
 
     public function showAssociateUserId($id)
@@ -124,21 +132,23 @@ class TaskController extends Controller
     {
         // $task = $this->taskService->store($request->all());
 
-
-        // dd($request->all());
-        $data = $this->taskService->store($request->validated());
-        // if ($request->expectsJson()) {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'Task created successfully',
-        //         'data' => $data,
-        //     ]);
-        // }
-        if (!empty($data)) {
-            return ResponseHelper::generateResponse($request, 'success', 'task created successfully', $request->input(), 200);
-        } else {
-            return ResponseHelper::generateResponse($request, 'error', 'task creation failed', null, 400);
+        if (Gate::check('create-task')) {
+            // dd($request->all());
+            $data = $this->taskService->store($request->validated());
+            // if ($request->expectsJson()) {
+            //     return response()->json([
+            //         'status' => 'success',
+            //         'message' => 'Task created successfully',
+            //         'data' => $data,
+            //     ]);
+            // }
+            if (!empty($data)) {
+                return ResponseHelper::generateResponse($request, 'success', 'task created successfully', $request->input(), 200);
+            } else {
+                return ResponseHelper::generateResponse($request, 'error', 'task creation failed', null, 400);
+            }
         }
+        abort(403, 'Unauthorized action.');
     }
 
 
@@ -165,20 +175,24 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, $id)
     {
-        $data = $this->taskService->update($request->validated(), $id);
-        // if ($request->expectsJson()) {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'Task updated successfully',
-        //         'data' => $data,
 
-        //     ]);
-        // }
-        if (!empty($data)) {
-            return ResponseHelper::generateResponse($request, 'success', 'task updated successfully', $request->input(), 200);
-        } else {
-            return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
+        if (Gate::check('update-task')) {
+            $data = $this->taskService->update($request->validated(), $id);
+            // if ($request->expectsJson()) {
+            //     return response()->json([
+            //         'status' => 'success',
+            //         'message' => 'Task updated successfully',
+            //         'data' => $data,
+
+            //     ]);
+            // }
+            if (!empty($data)) {
+                return ResponseHelper::generateResponse($request, 'success', 'task updated successfully', $request->input(), 200);
+            } else {
+                return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
+            }
         }
+        abort(403, 'Unauthorized action.');
     }
 
 
@@ -207,17 +221,20 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $this->taskService->delete($id);
-        // if (request()->expectsJson()) {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'Task deleted successfully',
-        //     ]);
-        // }
-        if (!empty($id)) {
-            return ResponseHelper::generateResponse(request(), 'success', 'task deleteded successfully', $id, 200);
-        } else {
-            return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
+        if (Gate::check('delete-task')) {
+            $this->taskService->delete($id);
+            // if (request()->expectsJson()) {
+            //     return response()->json([
+            //         'status' => 'success',
+            //         'message' => 'Task deleted successfully',
+            //     ]);
+            // }
+            if (!empty($id)) {
+                return ResponseHelper::generateResponse(request(), 'success', 'task deleteded successfully', $id, 200);
+            } else {
+                return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
+            }
         }
+        abort(403, 'Unauthorized action.');
     }
 }
