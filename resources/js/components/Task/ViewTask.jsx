@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 function ViewTask() {
     const [tasks, setTasks] = useState([]);
+    const [error, setError] = useState(null);
 
     const navigate = useNavigate();
 
@@ -31,7 +32,8 @@ function ViewTask() {
             await deleteTask(accessToken, id);
             fetchTasks();
         } catch (error) {
-            console.error(error);
+            setError(error.response.data);
+            // console.error(error);
         }
     };
 
@@ -58,6 +60,18 @@ function ViewTask() {
                         </li>
                     ))}
                 </ul> */}
+                 {error && (
+                    <div className="alert alert-danger alert-dismissible">
+                        <button
+                            type="button"
+                            className="close"
+                            data-dismiss="alert"
+                        >
+                            &times;
+                        </button>
+                        <strong>{error.message}</strong> Your are not allowed to delete
+                    </div>
+                )}
                 <table className="table col-md-4 border-1">
                     <thead className="thead-dark">
                         <tr>

@@ -5,8 +5,9 @@ import useAuth from "../Auth/Auth";
 
 const taskHandle = () => {
     const [error, setError] = useState(null);
-    const [users, setUsers] = useState([]); //all users 
-    const { user, setUser } = useAuth();  //get logged in user detail credentials
+    const [errorAuthorization, setAuthorizationError] = useState(null);
+    const [users, setUsers] = useState([]); //all users
+    const { user, setUser } = useAuth(); //get logged in user detail credentials
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -37,7 +38,8 @@ const taskHandle = () => {
             setError(null);
             navigate("/view-task");
         } catch (error) {
-            setError(error.response.data.error);
+            // console.log(error.response.data.errors);
+            setError(error.response.data.errors);
         }
     };
 
@@ -70,10 +72,13 @@ const taskHandle = () => {
             setError(null);
             navigate("/view-task");
         } catch (error) {
-            setError(error.response.data.error);
+            if (error.response.status == "403") {
+                setAuthorizationError(error.response.data);
+            }
+
+            setError(error.response.data.errors);
         }
     };
-
 
     const loadUser = async () => {
         try {
@@ -99,7 +104,18 @@ const taskHandle = () => {
         }
     };
 
-    return { handleCreate, user,  loadUser, isLoading ,  handleUpdate, error, setError, users, fetchUsers };
+    return {
+        handleCreate,
+        user,
+        loadUser,
+        isLoading,
+        handleUpdate,
+        error,
+        setError,
+        errorAuthorization,
+        users,
+        fetchUsers,
+    };
 };
 
 export default taskHandle;

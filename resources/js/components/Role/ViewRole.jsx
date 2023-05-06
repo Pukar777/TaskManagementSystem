@@ -20,7 +20,8 @@ function ViewRole() {
             await deleteRole(accessToken, id);
             fetchRoles();
         } catch (error) {
-            console.error(error);
+            setError(error.response.data);
+            // console.error(error.response.data.message);
         }
     };
 
@@ -33,6 +34,18 @@ function ViewRole() {
             <SideNavBar />
             <div className="container row">
                 <h1>All Roles</h1>
+                {error && (
+                    <div className="alert alert-danger alert-dismissible">
+                        <button
+                            type="button"
+                            className="close"
+                            data-dismiss="alert"
+                        >
+                            &times;
+                        </button>
+                        <strong>{error.message}</strong> Your are not allowed to delete
+                    </div>
+                )}
                 <table className="table col-md-4 border-1">
                     <thead className="thead-dark">
                         <tr>
@@ -94,7 +107,9 @@ function ViewRole() {
                     )}
                 </table>
             </div>
+            
         </>
+        
     );
 }
 

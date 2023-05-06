@@ -3,8 +3,8 @@ import { createRole, getStoredPermissions, updateRole } from "../Auth/Api";
 import { useState } from "react";
 
 const roleHandle = () => {
-
     const [error, setError] = useState(null);
+    const [errorAuthorization, setAuthorizationError] = useState(null);
     const [permissions, setPermissions] = useState([]);
     const navigate = useNavigate();
 
@@ -17,32 +17,25 @@ const roleHandle = () => {
             setError(null);
             navigate("/view-role");
         } catch (error) {
-            setError(error.response.data.error);
+            // console.log(error.response.data.errors);
+            setError(error.response.data.errors);
         }
     };
 
-
-    const handleUpdate = async (
-        id,
-        name,
-        permission_id
-    ) => {
+    const handleUpdate = async (id, name, permission_id) => {
         try {
             const accessToken = localStorage.getItem("accessToken");
             // console.log(accessToken);
-            await updateRole(
-                id,
-                accessToken,
-                name,
-                permission_id
-            );
+            await updateRole(id, accessToken, name, permission_id);
             setError(null);
             navigate("/view-role");
         } catch (error) {
-            setError(error.response.data.error);
+            if (error.response.status == "403") {
+                setAuthorizationError(error.response.data);
+            }
+            setError(error.response.data.errors);
         }
     };
-
 
     const fetchPermissons = async () => {
         try {
@@ -55,11 +48,15 @@ const roleHandle = () => {
         }
     };
 
-
-    return {handleCreate, error, setError, permissions, fetchPermissons, handleUpdate}
+    return {
+        handleCreate,
+        error,
+        setError,
+        errorAuthorization,
+        permissions,
+        fetchPermissons,
+        handleUpdate,
+    };
 };
-
-
-
 
 export default roleHandle;

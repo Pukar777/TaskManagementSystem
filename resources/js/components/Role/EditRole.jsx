@@ -7,8 +7,14 @@ function EditRole() {
     const { id } = useParams();
     const [name, setName] = useState("");
     const [permission_id, setPermissionId] = useState([]);
-    const { handleUpdate, error, setError, permissions, fetchPermissons } =
-        roleHandle();
+    const {
+        handleUpdate,
+        error,
+        setError,
+        permissions,
+        errorAuthorization,
+        fetchPermissons,
+    } = roleHandle();
 
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");
@@ -21,8 +27,10 @@ function EditRole() {
             })
             .then((response) => {
                 setName(response.data.name);
-                setPermissionId(response.data.permission_role.map(pr => pr.permission_id));
-            // console.log(response.data.permission_role)
+                setPermissionId(
+                    response.data.permission_role.map((pr) => pr.permission_id)
+                );
+                // console.log(response.data.permission_role)
 
                 // console.log(
                 //     response.data.permission_role.map((pr) => pr.permission_id)
@@ -32,7 +40,6 @@ function EditRole() {
         fetchPermissons();
     }, [id]);
 
-    
     const handleOnChange = (e) => {
         if (e.target.checked) {
             setPermissionId((current) => [...current, +e.target.value]);
@@ -55,7 +62,20 @@ function EditRole() {
             <div className="row container justify-content-center">
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Update Role</h1>
-                    {error && <div className="alert alert-danger">{error}</div>}
+                    {/* {error && <div className="alert alert-danger">{error}</div>} */}
+                    {errorAuthorization && (
+                        <div className="alert alert-danger alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{errorAuthorization.message}</strong> Your
+                            are not allowed to Update
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">
@@ -64,12 +84,19 @@ function EditRole() {
                             <input
                                 type="text"
                                 id="name"
-                                className="form-control"
+                                className={`form-control ${
+                                    error && error.name && "is-invalid"
+                                }`}
                                 value={name}
                                 onChange={(event) =>
                                     setName(event.target.value)
                                 }
                             />
+                            {error && error.name && (
+                                <div className="invalid-feedback">
+                                    {error.name[0]}
+                                </div>
+                            )}
                         </div>
                         <div className="mb-3">
                             <label
@@ -97,6 +124,15 @@ function EditRole() {
                                         </label>
                                     </div>
                                 ))}
+                                {error && (
+                                    <div
+                                        className="text-danger
+
+"
+                                    >
+                                        {error.permission_id}
+                                    </div>
+                                )}
                             </div>
                         </div>
 

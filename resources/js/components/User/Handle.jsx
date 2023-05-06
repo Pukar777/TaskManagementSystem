@@ -1,10 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { createUser, updateUser, getStoredRoles, getRoleDropDown } from "../Auth/Api";
+import {
+    createUser,
+    updateUser,
+    getStoredRoles,
+    getRoleDropDown,
+} from "../Auth/Api";
 import { useState } from "react";
-
 
 const userHandle = () => {
     const [error, setError] = useState(null);
+    const [errorAuthorization, setAuthorizationError] = useState(null);
     const [roles, setRoles] = useState([]);
 
     const navigate = useNavigate();
@@ -32,7 +37,8 @@ const userHandle = () => {
             setError(null);
             navigate("/view-user");
         } catch (error) {
-            setError(error.response.data.error);
+            // console.log(error.response.data.errors)
+            setError(error.response.data.errors);
         }
     };
 
@@ -61,7 +67,12 @@ const userHandle = () => {
             setError(null);
             navigate("/view-user");
         } catch (error) {
-            setError(error.response.data.error);
+            // console.log(error.response.data.errors);
+            if (error.response.status == "403") {
+                setAuthorizationError(error.response.data);
+            }
+
+            setError(error.response.data.errors);
         }
     };
 
@@ -76,7 +87,6 @@ const userHandle = () => {
         }
     };
 
-
     const fetchRolesDropDown = async () => {
         try {
             const accessToken = localStorage.getItem("accessToken");
@@ -88,14 +98,16 @@ const userHandle = () => {
         }
     };
 
-
-
-    return { handleCreate, error, setError, handleUpdate, roles, fetchRoles, fetchRolesDropDown };
+    return {
+        handleCreate,
+        error,
+        setError,
+        errorAuthorization,
+        handleUpdate,
+        roles,
+        fetchRoles,
+        fetchRolesDropDown,
+    };
 };
 
 export default userHandle;
-
-
-
-
-  

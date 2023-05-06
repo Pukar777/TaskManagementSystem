@@ -42,7 +42,7 @@ class UserRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required' => 'Please enter the name name.',
+            'name.required' => 'Please enter the name.',
             'name.string' => 'The name name must be a string.',
             'name.max' => 'Length is 255 .',
             'email.required' => 'Please Enter the email.',

@@ -64,7 +64,7 @@ function CreateTask() {
             <div className="row container justify-content-center">
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Create Task</h1>
-                    {error && <div className="alert alert-danger">{error}</div>}
+                    {/* {error && <div className="alert alert-danger">{error}</div>} */}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">
@@ -73,12 +73,19 @@ function CreateTask() {
                             <input
                                 type="text"
                                 id="name"
-                                className="form-control"
+                                className={`form-control ${
+                                    error && error.title && "is-invalid"
+                                }`}
                                 value={title}
                                 onChange={(event) =>
                                     setTitle(event.target.value)
                                 }
                             />
+                            {error && error.title && (
+                                <div className="invalid-feedback">
+                                    {error.title[0]}
+                                </div>
+                            )}
                         </div>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">
@@ -87,12 +94,19 @@ function CreateTask() {
                             <textarea
                                 type="text"
                                 id="name"
-                                className="form-control"
+                                className={`form-control ${
+                                    error && error.description && "is-invalid"
+                                }`}
                                 value={description}
                                 onChange={(event) =>
                                     setDescription(event.target.value)
                                 }
                             />
+                            {error && error.description && (
+                                <div className="invalid-feedback">
+                                    {error.description[0]}
+                                </div>
+                            )}
                         </div>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">
@@ -101,12 +115,19 @@ function CreateTask() {
                             <input
                                 type="date"
                                 id="name"
-                                className="form-control"
+                                className={`form-control ${
+                                    error && error.dueDate && "is-invalid"
+                                }`}
                                 value={dueDate}
                                 onChange={(event) =>
                                     setDueDate(event.target.value)
                                 }
                             />
+                            {error && error.dueDate && (
+                                <div className="invalid-feedback">
+                                    {error.dueDate[0]}
+                                </div>
+                            )}
                         </div>
                         <div className="mb-3">
                             <label htmlFor="priority" className="form-label">
@@ -114,6 +135,9 @@ function CreateTask() {
                             </label>
                             <select
                                 id="priority"
+                                className={`form-control ${
+                                    error && error.priority && "is-invalid"
+                                }`}
                                 value={priority}
                                 onChange={(event) =>
                                     setPriority(event.target.value)
@@ -125,6 +149,11 @@ function CreateTask() {
                                 <option value="medium">Medium</option>
                                 <option value="low">Low</option>
                             </select>
+                            {error && error.priority && (
+                                <div className="invalid-feedback">
+                                    {error.priority[0]}
+                                </div>
+                            )}
                         </div>
                         <div className="mb-3">
                             <label htmlFor="status" className="form-label">
@@ -132,6 +161,9 @@ function CreateTask() {
                             </label>
                             <select
                                 id="status"
+                                className={`form-control ${
+                                    error && error.status && "is-invalid"
+                                }`}
                                 value={status}
                                 onChange={(event) =>
                                     setStatus(event.target.value)
@@ -147,6 +179,11 @@ function CreateTask() {
                                 <option value="done">Done</option>
                                 <option value="stuck">Stuck</option>
                             </select>
+                            {error && error.status && (
+                                <div className="invalid-feedback">
+                                    {error.status[0]}
+                                </div>
+                            )}
                         </div>
                         <div className="mb-3">
                             <label htmlFor="status" className="form-label">
@@ -154,6 +191,9 @@ function CreateTask() {
                             </label>
                             <select
                                 id="type"
+                                className={`form-control ${
+                                    error && error.type && "is-invalid"
+                                }`}
                                 value={type}
                                 onChange={(event) =>
                                     setType(event.target.value)
@@ -163,6 +203,12 @@ function CreateTask() {
                                 <option value="feature">Feature</option>
                                 <option value="bug">Bug</option>
                             </select>
+                            {error && error.type && (
+                                <div className="invalid-feedback">
+                                    {error.type[0]}
+                                </div>
+                            )}
+                            
                         </div>
                         {/* <div className="mb-3">
                             <label htmlFor="name" className="form-label">
@@ -200,11 +246,22 @@ function CreateTask() {
                                                 onChange={handleOnChange}
                                             />
                                             <label htmlFor={`user-${user.id}`}>
-                                                {user.name}  {user.isSuper ? "Super" : "Role"} : {roleName}
+                                                {user.name}{" "}
+                                                {user.isSuper
+                                                    ? "Super"
+                                                    : "Role"}{" "}
+                                                : {roleName}
                                             </label>
                                         </div>
                                     );
                                 })}
+                                 {error && (
+                                    <div
+                                        className="text-danger"
+                                    >
+                                        {error.user_id}
+                                    </div>
+                                )}
                             </div>
                         </div>
 

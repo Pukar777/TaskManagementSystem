@@ -19,7 +19,6 @@ function CreateRole() {
     }, []);
 
     const handleOnChange = (e) => {
-        
         if (e.target.checked) {
             setPermissionId((current) => [...current, e.target.value]);
         } else {
@@ -34,7 +33,7 @@ function CreateRole() {
             <div className="row container justify-content-center">
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Create Role</h1>
-                    {error && <div className="alert alert-danger">{error}</div>}
+                    {/* {error && <div className="alert alert-danger">{error.name}</div>} */}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">
@@ -43,12 +42,19 @@ function CreateRole() {
                             <input
                                 type="text"
                                 id="name"
-                                className="form-control"
+                                className={`form-control ${
+                                    error && error.name && "is-invalid"
+                                }`}
                                 value={name}
                                 onChange={(event) =>
                                     setName(event.target.value)
                                 }
                             />
+                            {error && error.name && (
+                                <div className="invalid-feedback">
+                                    {error.name[0]}
+                                </div>
+                            )}
                         </div>
                         <div className="mb-3">
                             <label
@@ -73,6 +79,15 @@ function CreateRole() {
                                         </label>
                                     </div>
                                 ))}
+                                {error && (
+                                    <div
+                                        className="text-danger
+
+"
+                                    >
+                                        {error.permission_id}
+                                    </div>
+                                )}
                             </div>
                         </div>
 
