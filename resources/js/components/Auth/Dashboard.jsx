@@ -172,7 +172,7 @@ const Dashboard = () => {
                                                 className="row"
                                                 key={nt.task.id}
                                             >
-                                                <div className="col-2">
+                                                {/* <div className="col-2">
                                                     <i
                                                         style={{
                                                             paddingLeft: 20,
@@ -193,9 +193,9 @@ const Dashboard = () => {
                                                                 ? "bi-exclamation-square-fill text-primary"
                                                                 : "bi-exclamation-square-fill text-secondary"
                                                         }`}
-                                                    ></i>
-                                                </div>
-                                                <div className="col-9">
+                                                    />
+                                                </div> */}
+                                                <div className="col-12">
                                                     <a
                                                         style={{
                                                             textDecoration:
@@ -204,8 +204,9 @@ const Dashboard = () => {
                                                             overflow: "hidden",
                                                             textOverflow:
                                                                 "ellipsis",
+
                                                         }}
-                                                        className="dropdown-item"
+                                                        className="dropdown-item hover-none"
                                                         href={`#${nt.task.id}`}
                                                         onClick={() =>
                                                             handleTaskClick(
@@ -213,7 +214,27 @@ const Dashboard = () => {
                                                             )
                                                         }
                                                     >
-                                                        {nt.task.title}
+                                                       <i
+                                                        style={{
+                                                            paddingLeft: 20,
+                                                            fontSize: 20,
+                                                        }}
+                                                        className={`bi ${
+                                                            nt.task
+                                                                ?.priority ===
+                                                            "critical"
+                                                                ? "bi-exclamation-square-fill text-danger"
+                                                                : nt.task
+                                                                      ?.priority ===
+                                                                  "high"
+                                                                ? "bi-exclamation-square-fill text-warning"
+                                                                : nt.task
+                                                                      ?.priority ===
+                                                                  "medium"
+                                                                ? "bi-exclamation-square-fill text-primary"
+                                                                : "bi-exclamation-square-fill text-secondary"
+                                                        }`}
+                                                    /> <span style={{paddingLeft:10}}></span> {nt.task.title}
                                                     </a>
                                                 </div>
                                             </div>
