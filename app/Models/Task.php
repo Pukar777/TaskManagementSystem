@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\TaskUser;
+use App\Models\Notification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -31,6 +32,10 @@ class Task extends Model
     }
 
     
+    public function notification()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }
 
 

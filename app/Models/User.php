@@ -6,11 +6,12 @@ namespace App\Models;
 use App\Models\Task;
 use App\Models\TaskUser;
 // use Laravel\Sanctum\HasApiTokens;
+use App\Models\Notification;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -100,6 +101,11 @@ class User extends Authenticatable
         return $this->hasMany(TaskUser::class);
     }
 
+
+    public function notification()
+    {
+        return $this->hasMany(Notification::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.

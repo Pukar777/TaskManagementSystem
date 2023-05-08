@@ -8,12 +8,11 @@ const Dashboard = () => {
     const { user, setUser, error, handleLogout } = useAuth();
     const [isLoading, setIsLoading] = useState(true);
     let [status, setStatus] = useState("");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [selectedTaskId, setSelectedTaskId] = useState(null);
+    
 
-    // const [showOptions, setShowOptions] = useState(false);
-
-    // const handleClick = () => {
-    //     setShowOptions(!showOptions);
-    // };
+    // const [newTasks, setNewTasks] = useState(0);
 
     const loadUser = async () => {
         try {
@@ -79,7 +78,24 @@ const Dashboard = () => {
         loadUser();
     };
 
-    // console.log(user);
+    const fontSize = {
+        fontSize: 20,
+    };
+
+    const handleIconClick = () => {
+        setShowDropdown(!showDropdown);
+        // setNewTasks(0); // reset new tasks count when dropdown is opened
+    };
+
+    // function handleAddTask() {
+    //     setNewTasks(newTasks + 1);
+    // }
+
+    const handleTaskClick = (taskId) => {
+        setSelectedTaskId(taskId);
+    };
+
+    // console.log(user.notification);
     return (
         // <div>
         //   <h1>Welcome, {user.name}</h1>
@@ -100,7 +116,7 @@ const Dashboard = () => {
                         {/* <p>Role: {user.role.name}</p> */}
                         {/* <p>Super: {user.isSuper}</p>  */}
                         <p>
-                            {user.isSuper ? "Super" : "Role"} : {" "}
+                            {user.isSuper ? "Super" : "Role"} :{" "}
                             {user.isSuper
                                 ? "Yes"
                                 : user.role
@@ -118,14 +134,110 @@ const Dashboard = () => {
 
                 <div className="mt-5">
                     <div className="card">
-                        <div className="card-header">
+                        <div className="card-header d-flex justify-content-between align-items-center">
                             <h1>My Task Info</h1>
+                            <div className="dropdown">
+                                <i
+                                    className={`bi bi-bell-fill${
+                                        showDropdown ? " active" : ""
+                                    }`}
+                                    style={fontSize}
+                                    onClick={handleIconClick}
+                                >
+                                    {/* {newTasks > 0 && (
+                                        <span className="badge bg-danger">
+                                            {newTasks}
+                                        </span>
+                                    )} */}
+                                </i>
+
+                                <div
+                                    className={`dropdown-menu position-absolute end-0 ${
+                                        showDropdown ? "d-block" : ""
+                                    } `}
+                                >
+                                    {user.notification &&
+                                    user.notification.length > 0 ? (
+                                        user.notification.map((nt) => (
+                                            // <div key={nt.task.id}>
+                                            //     <a
+                                            //         className="dropdown-item"
+                                            //         href="#task_detail"
+                                            //     >
+                                            //         {nt.task.title}
+                                            //     </a>
+
+                                            // </div>
+                                            <div
+                                                className="row"
+                                                key={nt.task.id}
+                                            >
+                                                <div className="col-2">
+                                                    <i
+                                                        style={{
+                                                            paddingLeft: 20,
+                                                            fontSize: 20,
+                                                        }}
+                                                        className={`bi ${
+                                                            nt.task
+                                                                ?.priority ===
+                                                            "critical"
+                                                                ? "bi-exclamation-square-fill text-danger"
+                                                                : nt.task
+                                                                      ?.priority ===
+                                                                  "high"
+                                                                ? "bi-exclamation-square-fill text-warning"
+                                                                : nt.task
+                                                                      ?.priority ===
+                                                                  "medium"
+                                                                ? "bi-exclamation-square-fill text-primary"
+                                                                : "bi-exclamation-square-fill text-secondary"
+                                                        }`}
+                                                    ></i>
+                                                </div>
+                                                <div className="col-9">
+                                                    <a
+                                                        style={{
+                                                            textDecoration:
+                                                                "none",
+                                                            width: "200px",
+                                                            overflow: "hidden",
+                                                            textOverflow:
+                                                                "ellipsis",
+                                                        }}
+                                                        className="dropdown-item"
+                                                        href={`#${nt.task.id}`}
+                                                        onClick={() =>
+                                                            handleTaskClick(
+                                                                nt.task.id
+                                                            )
+                                                        }
+                                                    >
+                                                        {nt.task.title}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p
+                                            style={{
+                                                textAlign: "center",
+                                                paddingTop: 10,
+                                            }}
+                                        >
+                                            No Notfication
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
                         </div>
+
                         <div className="card-body">
-                            {user.task_user && user.task_user.length > 0 ? (
-                                user.task_user.map((tk, index) => (
+                            {/* {user.task_user && user.task_user.length > 0 ? (
+                                user.task_user.map((tk, index) =>
+                                tk.task.id === selectedTaskId ? 
+                                (
                                     <div key={tk.task.id}>
-                                        {/* <p>Id :{tk.task.id}</p> */}
                                         <p>Title: {tk.task.title}</p>
                                         <p>
                                             Description: {tk.task.description}
@@ -144,7 +256,6 @@ const Dashboard = () => {
                                                 <select
                                                     id="status"
                                                     value={tk.task.status}
-                                                    // onChange={(event) => handleOptChange(event.target.value,index)}
                                                     onChange={(event) =>
                                                         handleOptChange(
                                                             event.target.value,
@@ -175,7 +286,125 @@ const Dashboard = () => {
 
                                         <hr></hr>
                                     </div>
-                                ))
+                                ): null)
+                            ) : (
+                                <h4 style={{ textAlign: "center" }}>
+                                    No Task Assigned
+                                </h4>
+                            )} */}
+                            {user.task_user && user.task_user.length > 0 ? (
+                                user.task_user.map((tk, index) =>
+                                    tk.task.id === selectedTaskId ? (
+                                        <div key={tk.task.id}>
+                                            <p>Title: {tk.task.title}</p>
+                                            <p>
+                                                Description:{" "}
+                                                {tk.task.description}
+                                            </p>
+                                            <p>DueDate: {tk.task.dueDate}</p>
+                                            <p>Priority: {tk.task.priority}</p>
+                                            <p>Status: {tk.task.status}</p>
+                                            <form>
+                                                <div className="mb-3">
+                                                    <label
+                                                        htmlFor="status"
+                                                        className="form-label"
+                                                    >
+                                                        Change Status:
+                                                    </label>
+                                                    <select
+                                                        id="status"
+                                                        value={tk.task.status}
+                                                        onChange={(event) =>
+                                                            handleOptChange(
+                                                                event.target
+                                                                    .value,
+                                                                tk.task.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <option value="">
+                                                            Select Status
+                                                        </option>
+                                                        <option value="ready to start">
+                                                            Ready to Start
+                                                        </option>
+                                                        <option value="waiting to review">
+                                                            Waiting to Review
+                                                        </option>
+                                                        <option value="done">
+                                                            Done
+                                                        </option>
+                                                        <option value="stuck">
+                                                            Stuck
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                            <p>Type: {tk.task.type}</p>
+                                            <p>
+                                                Created By: {tk.task.user?.name}
+                                            </p>
+
+                                            <hr></hr>
+                                        </div>
+                                    ) : selectedTaskId === null &&
+                                      index === 0 ? (
+                                        <div key={tk.task.id}>
+                                            <p>Title: {tk.task.title}</p>
+                                            <p>
+                                                Description:{" "}
+                                                {tk.task.description}
+                                            </p>
+                                            <p>DueDate: {tk.task.dueDate}</p>
+                                            <p>Priority: {tk.task.priority}</p>
+                                            <p>Status: {tk.task.status}</p>
+                                            <form>
+                                                <div className="mb-3">
+                                                    <label
+                                                        htmlFor="status"
+                                                        className="form-label"
+                                                    >
+                                                        Change Status:
+                                                    </label>
+                                                    <select
+                                                        id="status"
+                                                        value={tk.task.status}
+                                                        onChange={(event) =>
+                                                            handleOptChange(
+                                                                event.target
+                                                                    .value,
+                                                                tk.task.id
+                                                            )
+                                                        }
+                                                    >
+                                                        <option value="">
+                                                            Select Status
+                                                        </option>
+                                                        <option value="ready to start">
+                                                            Ready to Start
+                                                        </option>
+                                                        <option value="waiting to review">
+                                                            Waiting to Review
+                                                        </option>
+                                                        <option value="done">
+                                                            Done
+                                                        </option>
+                                                        <option value="stuck">
+                                                            Stuck
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                            <p>Type: {tk.task.type}</p>
+                                            <p>
+                                                Created By: {tk.task.user?.name}
+                                            </p>
+
+                                            <hr></hr>
+                                        </div>
+                                    ) : null
+                                )
                             ) : (
                                 <h4 style={{ textAlign: "center" }}>
                                     No Task Assigned

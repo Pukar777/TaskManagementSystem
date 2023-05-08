@@ -2,6 +2,7 @@
 
 namespace App\Repositories;   //folder 
 
+use App\Models\Notification;
 use App\Models\Task;
 use App\Models\TaskUser;
 use App\Repositories\RepoIface;
@@ -12,18 +13,19 @@ use Illuminate\Support\Facades\DB;
 class TaskRepo implements RepoIface
 {
 
-    protected $task, $taskUser;
+    protected $task, $taskUser, $notification;
 
-    public function __construct(Task $task, TaskUser $taskUser)
+    public function __construct(Task $task, TaskUser $taskUser, Notification $notification)
     {
         $this->task = $task;
         $this->taskUser = $taskUser;
+        $this->notification = $notification;
     }
 
 
     public function all()
     {
-        return $this->task->all()->load('user','task_user.user');
+        return $this->task->all()->load('user', 'task_user.user');
     }
 
 
@@ -32,7 +34,7 @@ class TaskRepo implements RepoIface
         return  $this->task::with('task_user.user', 'user')->get();
     }
 
- 
+
 
 
     public function showAssociateUsers($id)
@@ -81,6 +83,14 @@ class TaskRepo implements RepoIface
 
                 ]);
             }
+            foreach ($userIds as $userId) {
+                $this->notification->create([
+                    'user_id' => $userId,
+                    'task_id' => $dataentry->id,
+                    'type' => $dataentry->priority,
+
+                ]);
+            }
 
 
             DB::commit();
@@ -121,7 +131,7 @@ class TaskRepo implements RepoIface
 
         try {
             // Update the Role entry
-            $this->task::where('id', $id)->update([
+             $this->task::where('id', $id)->update([
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'dueDate' => $data['dueDate'],
@@ -138,7 +148,7 @@ class TaskRepo implements RepoIface
 
             // Delete any existing permission_role entries for the Role
             $this->taskUser::where('task_id', $id)->delete();
-
+            $this->notification::where('task_id', $id)->delete();
 
             // Loop through the permission ids and create a new permission_role entry for each
             foreach ($userIds as $userId) {
@@ -147,11 +157,21 @@ class TaskRepo implements RepoIface
                     'task_id' => $id,
                 ]);
             }
+            
+
+            foreach ($userIds as $userId) {
+                $this->notification->create([
+                    'user_id' => $userId,
+                    'task_id' => $id,
+                    'type' => $data['priority'],
+                ]);
+            }
             // $permissionIds = [4, 5];
             // $this->role->permission_role()->sync($permissionIds);
             DB::commit();
 
             return true;
+            // return $dataentry;
         } catch (\Exception $e) {
             DB::rollback();
             throw $e;
@@ -200,6 +220,7 @@ class TaskRepo implements RepoIface
         try {
             $this->task->destroy($id);
             $this->taskUser::where('task_id', $id)->delete();
+            $this->notification::where('task_id', $id)->delete();
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
