@@ -1,0 +1,126 @@
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+export const TaskView = () => {
+    const [tasks, setTasks] = useState("");
+    const [isTasks, setIsTasks] = useState(false);
+    const [selection, setSelection] = useState([]);
+
+    const handleSelectionChange = (taskId) => {
+        if (selection.includes(taskId)) {
+            setSelection(selection.filter((id) => id !== taskId));
+        } else {
+            setSelection([...selection, taskId]);
+        }
+    };
+
+    useEffect(() => {
+        console.log(selection);
+    }, [selection]);
+    console.log(selection);
+
+    const getCookieValue = (cookieName) => {
+        var cookies = document.cookie.split("; ");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].split("=");
+            if (cookie[0] === cookieName) {
+                return cookie[1];
+            }
+        }
+        return null;
+    };
+
+    var token = getCookieValue("token");
+
+    useEffect(() => {
+        axios
+            .get("http://localhost/api/task", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    Accept: "application/json",
+                },
+            })
+            .then((response) => {
+                const { message, tasks } = response.data;
+                // console.log(tasks);
+                // console.log(Array.isArray(tasks), "1st");
+                if (response.status == 204) {
+                    setIsTasks(false);
+                } else {
+                    setIsTasks(true);
+                    setTasks(tasks);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        // console.log(Array.isArray(tasks), "2nd");
+    }, []);
+
+    return (
+        <>
+            <div className="cwrap">
+                <h2 className="text-center">List of Tasks</h2>
+                <table className="table table-striped table-dark text-light text-center .caption-top">
+                    {/* <caption>List of Tasks</caption> */}
+                    <thead>
+                        <tr>
+                            <th className="col-1">Select</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Assigned By</th>
+                            <th scope="col">DueDate</th>
+                            <th scope="col">Priority</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    {isTasks ? (
+                        <tbody>
+                            {tasks.map((task, i) => {
+                                return (
+                                    <tr id={i} key={i}>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                onChange={() =>
+                                                    handleSelectionChange(
+                                                        task.id
+                                                    )
+                                                }
+                                                checked={selection.includes(
+                                                    task.id
+                                                )}
+                                            />
+                                        </td>
+                                        <td>{task.title}</td>
+                                        <td>{task.description}</td>
+                                        <td>{task.assigned_by.name}</td>
+                                        <td>{task.duedate}</td>
+                                        <td>{task.priority}</td>
+                                        <td>{task.status}</td>
+                                        <td>{task.type}</td>
+                                        <td>
+                                            <button>Edit</button>
+                                            <button>Delete</button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    ) : (
+                        <tbody>
+                            <tr>
+                                <td colSpan="8">No tasks found.</td>
+                            </tr>
+                        </tbody>
+                    )}
+
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </>
+    );
+};
