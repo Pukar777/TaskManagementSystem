@@ -20,6 +20,7 @@ function EditUser() {
         roles,
         fetchRoles,
         fetchRolesDropDown,
+        message
     } = userHandle();
 
     useEffect(() => {
@@ -62,6 +63,18 @@ function EditUser() {
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Update User</h1>
                     {/* {error && <div className="alert alert-danger">{error}</div>} */}
+                    {message && (
+                    <div className="alert alert-success alert-dismissible">
+                        <button
+                            type="button"
+                            className="close"
+                            data-dismiss="alert"
+                        >
+                            &times;
+                        </button>
+                        <strong>{message}</strong> 
+                    </div>
+                )}
                     {errorAuthorization && (
                         <div className="alert alert-danger alert-dismissible">
                             <button

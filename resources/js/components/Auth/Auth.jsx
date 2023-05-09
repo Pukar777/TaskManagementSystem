@@ -10,6 +10,8 @@ const useAuth = () => {
     const [isLoading, setIsLoading] = useState(true);
     // const [isLogged, setIsLogged] = useState(false);
     const {isLogged, setIsLogged} = useContext(AuthContext);
+    let timeoutId;
+
 
     // console.log(isLogged);
 
@@ -35,12 +37,38 @@ const useAuth = () => {
             // console.log(isLogged);
 
             navigate("/dashboard-react");
+
+            timeoutId = setTimeout(() => {
+                handleLogout();
+                alert("Session timed out");
+            }, 30 * 60 * 1000); // 30 minutes
             // console.log(localStorage.getItem('accessToken'));
+            // console.log(timeoutId);
         } catch (error) {
             setError(error.response.data.error);
         }
     };
 
+    const handleUserActivity = () => {
+        if(isLogged==true) {
+            clearTimeout(timeoutId);
+    
+            // Restart the timer
+            // console.log(timeoutId);
+            timeoutId = setTimeout(() => {
+                handleLogout();
+                alert("Session timed out");
+            }, 30 * 60 * 1000); // 30 minutes
+        }
+        // Clear the session timeout timer
+       
+    };
+
+
+    
+    // Add event listeners for user activity
+    document.addEventListener("click", handleUserActivity);
+    document.addEventListener("keydown", handleUserActivity);
 
     const fetchMe = async() => {
         try {
@@ -82,7 +110,9 @@ const useAuth = () => {
             setUser(null);
             localStorage.removeItem("accessToken");
             setIsLogged(false);
+            clearTimeout(timeoutId); // clear the timeout
             navigate("/login");
+
         } catch (error) {
             setError(error.response.data.error);
         }

@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 function ViewTask() {
     const [tasks, setTasks] = useState([]);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState("");
 
     const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ function ViewTask() {
             const accessToken = localStorage.getItem("accessToken");
             // console.log(accessToken);
             await deleteTask(accessToken, id);
+            setMessage("Task Deleted Successfully");
             fetchTasks();
         } catch (error) {
             setError(error.response.data);
@@ -60,6 +62,18 @@ function ViewTask() {
                         </li>
                     ))}
                 </ul> */}
+                {message && (
+                    <div className="alert alert-danger alert-dismissible">
+                        <button
+                            type="button"
+                            className="close"
+                            data-dismiss="alert"
+                        >
+                            &times;
+                        </button>
+                        <strong>{message}</strong> 
+                    </div>
+                )}
                  {error && (
                     <div className="alert alert-danger alert-dismissible">
                         <button

@@ -7,6 +7,7 @@ import userHandle from "../User/Handle";
 function ViewRole() {
     const { error, setError, roles, fetchRoles } = userHandle();
     const navigate = useNavigate();
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         fetchRoles();
@@ -18,6 +19,7 @@ function ViewRole() {
             const accessToken = localStorage.getItem("accessToken");
             // console.log(accessToken);
             await deleteRole(accessToken, id);
+            setMessage("Role Deleted Successfully");
             fetchRoles();
         } catch (error) {
             setError(error.response.data);
@@ -34,6 +36,18 @@ function ViewRole() {
             <SideNavBar />
             <div className="container row">
                 <h1>All Roles</h1>
+                {message && (
+                    <div className="alert alert-danger alert-dismissible">
+                        <button
+                            type="button"
+                            className="close"
+                            data-dismiss="alert"
+                        >
+                            &times;
+                        </button>
+                        <strong>{message}</strong> 
+                    </div>
+                )}
                 {error && (
                     <div className="alert alert-danger alert-dismissible">
                         <button
@@ -43,7 +57,8 @@ function ViewRole() {
                         >
                             &times;
                         </button>
-                        <strong>{error.message}</strong> Your are not allowed to delete
+                        <strong>{error.message}</strong> Your are not allowed to
+                        delete
                     </div>
                 )}
                 <table className="table col-md-4 border-1">
@@ -107,9 +122,7 @@ function ViewRole() {
                     )}
                 </table>
             </div>
-            
         </>
-        
     );
 }
 

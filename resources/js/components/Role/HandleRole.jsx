@@ -7,16 +7,25 @@ const roleHandle = () => {
     const [errorAuthorization, setAuthorizationError] = useState(null);
     const [permissions, setPermissions] = useState([]);
     const navigate = useNavigate();
+    const [message, setMessage] = useState("");
 
     const handleCreate = async (name, permission_id) => {
         try {
             // console.log(permission_id);
             const accessToken = localStorage.getItem("accessToken");
             // console.log(accessToken);
-            await createRole(accessToken, name, permission_id);
+            await createRole(accessToken, name, permission_id).then(
+                (response) => {
+                    // console.log(response.message);
+                    setMessage(response.message);
+                }
+            );
             setError(null);
-            navigate("/view-role");
+            // navigate("/view-role");
         } catch (error) {
+            if (error.response.status == "403") {
+                setAuthorizationError(error.response.data);
+            }
             // console.log(error.response.data.errors);
             setError(error.response.data.errors);
         }
@@ -56,6 +65,7 @@ const roleHandle = () => {
         permissions,
         fetchPermissons,
         handleUpdate,
+        message,
     };
 };
 

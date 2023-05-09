@@ -18,6 +18,8 @@ function CreateUser() {
         roles,
         fetchRoles,
         fetchRolesDropDown,
+        message,
+        errorAuthorization
     } = userHandle();
 
     const handleSubmit = (event) => {
@@ -41,6 +43,31 @@ function CreateUser() {
             <div className="row container justify-content-center">
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Create User</h1>
+                    {message && (
+                        <div className="alert alert-success alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{message}</strong>
+                        </div>
+                    )}
+                    {errorAuthorization && (
+                        <div className="alert alert-danger alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{errorAuthorization.message}</strong> Your
+                            are not allowed to Create
+                        </div>
+                    )}
                     {/* {error && <div className="alert alert-danger">{error.name}</div>} */}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
@@ -160,9 +187,7 @@ function CreateUser() {
                                 type="password"
                                 id="password-confirmation"
                                 className={`form-control ${
-                                    error &&
-                                    error.password &&
-                                    "is-invalid"
+                                    error && error.password && "is-invalid"
                                 }`}
                                 value={passwordConfirmation}
                                 onChange={(event) =>

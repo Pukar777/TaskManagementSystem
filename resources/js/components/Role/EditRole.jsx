@@ -14,6 +14,7 @@ function EditRole() {
         permissions,
         errorAuthorization,
         fetchPermissons,
+        message,
     } = roleHandle();
 
     useEffect(() => {
@@ -62,6 +63,19 @@ function EditRole() {
             <div className="row container justify-content-center">
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Update Role</h1>
+
+                    {message && (
+                        <div className="alert alert-success alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{message}</strong>
+                        </div>
+                    )}
                     {/* {error && <div className="alert alert-danger">{error}</div>} */}
                     {errorAuthorization && (
                         <div className="alert alert-danger alert-dismissible">

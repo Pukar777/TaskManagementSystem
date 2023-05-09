@@ -11,6 +11,7 @@ const userHandle = () => {
     const [error, setError] = useState(null);
     const [errorAuthorization, setAuthorizationError] = useState(null);
     const [roles, setRoles] = useState([]);
+    const [message,setMessage] = useState("");
 
     const navigate = useNavigate();
 
@@ -33,10 +34,15 @@ const userHandle = () => {
                 address,
                 password,
                 role_id
-            );
+            ).then((response)=>{
+                setMessage(response.message);
+            });
             setError(null);
-            navigate("/view-user");
+            // navigate("/view-user");
         } catch (error) {
+            if (error.response.status == "403") {
+                setAuthorizationError(error.response.data);
+            }
             // console.log(error.response.data.errors)
             setError(error.response.data.errors);
         }
@@ -63,9 +69,11 @@ const userHandle = () => {
                 address,
                 password,
                 role_id
-            );
+            ).then((response)=>{
+                setMessage(response.message);
+            });;
             setError(null);
-            navigate("/view-user");
+            // navigate("/view-user");
         } catch (error) {
             // console.log(error.response.data.errors);
             if (error.response.status == "403") {
@@ -107,7 +115,9 @@ const userHandle = () => {
         roles,
         fetchRoles,
         fetchRolesDropDown,
+        message
     };
+    
 };
 
 export default userHandle;

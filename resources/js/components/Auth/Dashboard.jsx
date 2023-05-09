@@ -10,7 +10,7 @@ const Dashboard = () => {
     let [status, setStatus] = useState("");
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedTaskId, setSelectedTaskId] = useState(null);
-    
+    const [newTasks, setNewTasks] = useState(0); // Add state variable for new tasks
 
     // const [newTasks, setNewTasks] = useState(0);
 
@@ -21,9 +21,25 @@ const Dashboard = () => {
             const userDetails = await getUser(accessToken);
             // console.log(userDetails);
             setUser(userDetails);
+            // console.log(userDetails.id);
             setStatus(userDetails.task_user.map((tk) => tk.task.status));
             // console.log(userDetails.task_user.map((tk) => tk.task.status));
             // console.log(userDetails);
+            // console.log(userDetails.notification.filter(
+            //     (nt) => nt.user_id === userDetails.id).length)
+            // const newTasks = userDetails.notification.filter((nt) => {
+            //     const taskExists = userDetails.task_user.some(
+            //         (tu) => tu.task.id === nt.task_id
+            //     );
+            //     return nt.user_id === userDetails.id && !taskExists;
+            // }).length;
+            // console.log(newTasks);
+            setNewTasks(
+                userDetails.notification.filter(
+                    (nt) => nt.user_id === userDetails.id 
+                ).length
+                // newTasks
+            );
         } catch (error) {
             handleLogout();
         } finally {
@@ -84,7 +100,7 @@ const Dashboard = () => {
 
     const handleIconClick = () => {
         setShowDropdown(!showDropdown);
-        // setNewTasks(0); // reset new tasks count when dropdown is opened
+        setNewTasks(0); // reset new tasks count when dropdown is opened
     };
 
     // function handleAddTask() {
@@ -93,6 +109,7 @@ const Dashboard = () => {
 
     const handleTaskClick = (taskId) => {
         setSelectedTaskId(taskId);
+        setShowDropdown(false);
     };
 
     // console.log(user.notification);
@@ -144,11 +161,11 @@ const Dashboard = () => {
                                     style={fontSize}
                                     onClick={handleIconClick}
                                 >
-                                    {/* {newTasks > 0 && (
+                                    {newTasks > 0 && ( // Conditionally render badge
                                         <span className="badge bg-danger">
                                             {newTasks}
                                         </span>
-                                    )} */}
+                                    )}
                                 </i>
 
                                 <div
@@ -159,42 +176,10 @@ const Dashboard = () => {
                                     {user.notification &&
                                     user.notification.length > 0 ? (
                                         user.notification.map((nt) => (
-                                            // <div key={nt.task.id}>
-                                            //     <a
-                                            //         className="dropdown-item"
-                                            //         href="#task_detail"
-                                            //     >
-                                            //         {nt.task.title}
-                                            //     </a>
-
-                                            // </div>
                                             <div
                                                 className="row"
                                                 key={nt.task.id}
                                             >
-                                                {/* <div className="col-2">
-                                                    <i
-                                                        style={{
-                                                            paddingLeft: 20,
-                                                            fontSize: 20,
-                                                        }}
-                                                        className={`bi ${
-                                                            nt.task
-                                                                ?.priority ===
-                                                            "critical"
-                                                                ? "bi-exclamation-square-fill text-danger"
-                                                                : nt.task
-                                                                      ?.priority ===
-                                                                  "high"
-                                                                ? "bi-exclamation-square-fill text-warning"
-                                                                : nt.task
-                                                                      ?.priority ===
-                                                                  "medium"
-                                                                ? "bi-exclamation-square-fill text-primary"
-                                                                : "bi-exclamation-square-fill text-secondary"
-                                                        }`}
-                                                    />
-                                                </div> */}
                                                 <div className="col-12">
                                                     <a
                                                         style={{
@@ -204,7 +189,6 @@ const Dashboard = () => {
                                                             overflow: "hidden",
                                                             textOverflow:
                                                                 "ellipsis",
-
                                                         }}
                                                         className="dropdown-item hover-none"
                                                         href={`#${nt.task.id}`}
@@ -214,27 +198,33 @@ const Dashboard = () => {
                                                             )
                                                         }
                                                     >
-                                                       <i
-                                                        style={{
-                                                            paddingLeft: 20,
-                                                            fontSize: 20,
-                                                        }}
-                                                        className={`bi ${
-                                                            nt.task
-                                                                ?.priority ===
-                                                            "critical"
-                                                                ? "bi-exclamation-square-fill text-danger"
-                                                                : nt.task
-                                                                      ?.priority ===
-                                                                  "high"
-                                                                ? "bi-exclamation-square-fill text-warning"
-                                                                : nt.task
-                                                                      ?.priority ===
-                                                                  "medium"
-                                                                ? "bi-exclamation-square-fill text-primary"
-                                                                : "bi-exclamation-square-fill text-secondary"
-                                                        }`}
-                                                    /> <span style={{paddingLeft:10}}></span> {nt.task.title}
+                                                        <i
+                                                            style={{
+                                                                paddingLeft: 20,
+                                                                fontSize: 20,
+                                                            }}
+                                                            className={`bi ${
+                                                                nt.task
+                                                                    ?.priority ===
+                                                                "critical"
+                                                                    ? "bi-exclamation-square-fill text-danger"
+                                                                    : nt.task
+                                                                          ?.priority ===
+                                                                      "high"
+                                                                    ? "bi-exclamation-square-fill text-warning"
+                                                                    : nt.task
+                                                                          ?.priority ===
+                                                                      "medium"
+                                                                    ? "bi-exclamation-square-fill text-primary"
+                                                                    : "bi-exclamation-square-fill text-secondary"
+                                                            }`}
+                                                        />{" "}
+                                                        <span
+                                                            style={{
+                                                                paddingLeft: 10,
+                                                            }}
+                                                        ></span>{" "}
+                                                        {nt.task.title}
                                                     </a>
                                                 </div>
                                             </div>
@@ -254,65 +244,6 @@ const Dashboard = () => {
                         </div>
 
                         <div className="card-body">
-                            {/* {user.task_user && user.task_user.length > 0 ? (
-                                user.task_user.map((tk, index) =>
-                                tk.task.id === selectedTaskId ? 
-                                (
-                                    <div key={tk.task.id}>
-                                        <p>Title: {tk.task.title}</p>
-                                        <p>
-                                            Description: {tk.task.description}
-                                        </p>
-                                        <p>DueDate: {tk.task.dueDate}</p>
-                                        <p>Priority: {tk.task.priority}</p>
-                                        <p>Status: {tk.task.status}</p>
-                                        <form>
-                                            <div className="mb-3">
-                                                <label
-                                                    htmlFor="status"
-                                                    className="form-label"
-                                                >
-                                                    Change Status:
-                                                </label>
-                                                <select
-                                                    id="status"
-                                                    value={tk.task.status}
-                                                    onChange={(event) =>
-                                                        handleOptChange(
-                                                            event.target.value,
-                                                            tk.task.id
-                                                        )
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        Select Status
-                                                    </option>
-                                                    <option value="ready to start">
-                                                        Ready to Start
-                                                    </option>
-                                                    <option value="waiting to review">
-                                                        Waiting to Review
-                                                    </option>
-                                                    <option value="done">
-                                                        Done
-                                                    </option>
-                                                    <option value="stuck">
-                                                        Stuck
-                                                    </option>
-                                                </select>
-                                            </div>
-                                        </form>
-                                        <p>Type: {tk.task.type}</p>
-                                        <p>Created By: {tk.task.user?.name}</p>
-
-                                        <hr></hr>
-                                    </div>
-                                ): null)
-                            ) : (
-                                <h4 style={{ textAlign: "center" }}>
-                                    No Task Assigned
-                                </h4>
-                            )} */}
                             {user.task_user && user.task_user.length > 0 ? (
                                 user.task_user.map((tk, index) =>
                                     tk.task.id === selectedTaskId ? (
@@ -421,7 +352,6 @@ const Dashboard = () => {
                                             <p>
                                                 Created By: {tk.task.user?.name}
                                             </p>
-
                                             <hr></hr>
                                         </div>
                                     ) : null

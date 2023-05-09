@@ -10,6 +10,7 @@ const taskHandle = () => {
     const { user, setUser } = useAuth(); //get logged in user detail credentials
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const [message, setMessage] = useState("");
 
     const handleCreate = async (
         title,
@@ -34,10 +35,15 @@ const taskHandle = () => {
                 type,
                 created_by,
                 user_id
-            );
+            ).then((response)=>{
+                setMessage(response.message);
+            });
             setError(null);
-            navigate("/view-task");
+            // navigate("/view-task");
         } catch (error) {
+            if (error.response.status == "403") {
+                setAuthorizationError(error.response.data);
+            }
             // console.log(error.response.data.errors);
             setError(error.response.data.errors);
         }
@@ -68,7 +74,9 @@ const taskHandle = () => {
                 type,
                 created_by,
                 user_id
-            );
+            ).then((response)=>{
+                setMessage(response.message);
+            });
             setError(null);
             navigate("/view-task");
         } catch (error) {
@@ -115,6 +123,7 @@ const taskHandle = () => {
         errorAuthorization,
         users,
         fetchUsers,
+        message
     };
 };
 

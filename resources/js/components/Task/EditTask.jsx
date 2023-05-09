@@ -22,6 +22,7 @@ function EditTask() {
         user,
         loadUser,
         isLoading,
+        message,
     } = taskHandle();
 
     useEffect(() => {
@@ -94,19 +95,32 @@ function EditTask() {
             <div className="row container justify-content-center">
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Update Task</h1>
+                    {message && (
+                        <div className="alert alert-success alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{message}</strong>
+                        </div>
+                    )}
                     {/* {error && <div className="alert alert-danger">{error}</div>} */}
                     {errorAuthorization && (
-                    <div className="alert alert-danger alert-dismissible">
-                        <button
-                            type="button"
-                            className="close"
-                            data-dismiss="alert"
-                        >
-                            &times;
-                        </button>
-                        <strong>{errorAuthorization.message}</strong> Your are not allowed to Update
-                    </div>
-                )}
+                        <div className="alert alert-danger alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{errorAuthorization.message}</strong> Your
+                            are not allowed to Update
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="name" className="form-label">

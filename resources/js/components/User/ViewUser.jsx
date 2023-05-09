@@ -49,6 +49,7 @@ function ViewUser() {
     // </>
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
+    const [message, setMessage] = useState("");
 
     const navigate = useNavigate();
 
@@ -68,6 +69,7 @@ function ViewUser() {
             const accessToken = localStorage.getItem("accessToken");
             // console.log(accessToken);
             await deleteUser(accessToken, id);
+            setMessage("User Deleted Successfully");
             fetchUsers();
         } catch (error) {
             setError(error.response.data);
@@ -89,6 +91,18 @@ function ViewUser() {
             <SideNavBar />
             <div className="container row">
                 <h1>All Users</h1>
+                {message && (
+                    <div className="alert alert-danger alert-dismissible">
+                        <button
+                            type="button"
+                            className="close"
+                            data-dismiss="alert"
+                        >
+                            &times;
+                        </button>
+                        <strong>{message}</strong> 
+                    </div>
+                )}
                 {/* <ul>
                     {users.map((user) => (
                         <li key={user.id}>

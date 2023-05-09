@@ -20,6 +20,8 @@ function CreateTask() {
         user,
         loadUser,
         isLoading,
+        message,
+        errorAuthorization
     } = taskHandle();
 
     // console.log(created_by);
@@ -64,6 +66,31 @@ function CreateTask() {
             <div className="row container justify-content-center">
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Create Task</h1>
+                    {message && (
+                    <div className="alert alert-success alert-dismissible">
+                        <button
+                            type="button"
+                            className="close"
+                            data-dismiss="alert"
+                        >
+                            &times;
+                        </button>
+                        <strong>{message}</strong> 
+                    </div>
+                )}
+                 {errorAuthorization && (
+                        <div className="alert alert-danger alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{errorAuthorization.message}</strong> Your
+                            are not allowed to Create
+                        </div>
+                    )}
                     {/* {error && <div className="alert alert-danger">{error}</div>} */}
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
