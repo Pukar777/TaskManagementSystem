@@ -6,7 +6,14 @@ import roleHandle from "./HandleRole";
 function CreateRole() {
     const [name, setName] = useState("");
     const [permission_id, setPermissionId] = useState([]);
-    const { handleCreate, error, permissions, fetchPermissons, message, errorAuthorization } = roleHandle();
+    const {
+        handleCreate,
+        error,
+        permissions,
+        fetchPermissons,
+        message,
+        errorAuthorization,
+    } = roleHandle();
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -34,18 +41,18 @@ function CreateRole() {
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Create Role</h1>
                     {message && (
-                    <div className="alert alert-danger alert-dismissible">
-                        <button
-                            type="button"
-                            className="close"
-                            data-dismiss="alert"
-                        >
-                            &times;
-                        </button>
-                        <strong>{message}</strong> 
-                    </div>
-                )}
-                   {errorAuthorization && (
+                        <div className="alert alert-success alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{message}</strong>
+                        </div>
+                    )}
+                    {errorAuthorization && (
                         <div className="alert alert-danger alert-dismissible">
                             <button
                                 type="button"
@@ -88,17 +95,22 @@ function CreateRole() {
                             >
                                 Permissions:
                             </label>
-                            <div>
+                            <div className="row">
                                 {permissions.map((permission) => (
-                                    <div key={permission.id}>
+                                    <div
+                                        key={permission.id}
+                                        className="col-3 pb-5"
+                                    >
                                         <input
                                             type="checkbox"
                                             id={`permission-${permission.id}`}
                                             value={permission.id}
                                             onChange={handleOnChange}
                                         />
+
                                         <label
                                             htmlFor={`permission-${permission.id}`}
+                                            style={{ paddingLeft: 5 }}
                                         >
                                             {permission.name}
                                         </label>

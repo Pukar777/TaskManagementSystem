@@ -13,6 +13,7 @@ function EditTask() {
     const [type, setType] = useState("");
     let [created_by, setCreatedBy] = useState("");
     const [user_id, setUser] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
     const {
         handleUpdate,
         error,
@@ -82,6 +83,13 @@ function EditTask() {
         // console.log(id);
     };
 
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredUsers = users.filter((user) =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
     // console.log(user);
 
     if (isLoading) {
@@ -287,7 +295,33 @@ function EditTask() {
                                 Users:
                             </label>
                             <div>
-                                {users.map((user) => {
+                                <input
+                                    type="text"
+                                    placeholder="Search users"
+                                    onChange={handleSearch}
+                                    className={`form-control ${
+                                        error && error.user_id && "is-invalid"
+                                    }`}
+                                />
+                                <br></br>
+                                 <p>
+                                            Selected users:{" "}
+                                            {user_id
+                                                .map(
+                                                    (id) =>
+                                                        users.find(
+                                                            (user) =>
+                                                                user.id == id
+                                                        )?.name
+                                                )
+                                                .filter(Boolean)
+                                                .join(", ")}
+                                        </p>
+
+                               {searchTerm && (
+                                <>
+                                
+                                {filteredUsers.map((user) => {
                                     const role = user.role; // Assuming that the `user` property is loaded with the `role` relationship
                                     // console.log(role);
                                     const roleName = user.isSuper
@@ -316,6 +350,24 @@ function EditTask() {
                                         </div>
                                     );
                                 })}
+                                
+                                </>
+                               )}
+                                {/* <p>Selected users: {user_id.join(", ")}</p> */}
+                                {/* <p>
+                                            Selected users:{" "}
+                                            {user_id
+                                                .map(
+                                                    (id) =>
+                                                        users.find(
+                                                            (user) =>
+                                                                user.id == id
+                                                        )?.name
+                                                )
+                                                .filter(Boolean)
+                                                .join(", ")}
+                                        </p> */}
+
                                 {error && (
                                     <div className="text-danger">
                                         {error.user_id}

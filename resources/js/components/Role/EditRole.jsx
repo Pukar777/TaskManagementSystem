@@ -119,9 +119,9 @@ function EditRole() {
                             >
                                 Permissions:
                             </label>
-                            <div>
+                            <div className="row">
                                 {permissions.map((permission) => (
-                                    <div key={permission.id}>
+                                    <div key={permission.id} className="col-3 pb-5">
                                         <input
                                             type="checkbox"
                                             id={`permission-${permission.id}`}

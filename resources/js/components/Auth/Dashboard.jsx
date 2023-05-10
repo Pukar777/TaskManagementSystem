@@ -11,6 +11,9 @@ const Dashboard = () => {
     const [showDropdown, setShowDropdown] = useState(false);
     const [selectedTaskId, setSelectedTaskId] = useState(null);
     const [newTasks, setNewTasks] = useState(0); // Add state variable for new tasks
+    const [searchTerm, setSearchTerm] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(4);
 
     // const [newTasks, setNewTasks] = useState(0);
 
@@ -36,7 +39,7 @@ const Dashboard = () => {
             // console.log(newTasks);
             setNewTasks(
                 userDetails.notification.filter(
-                    (nt) => nt.user_id === userDetails.id 
+                    (nt) => nt.user_id === userDetails.id
                 ).length
                 // newTasks
             );
@@ -107,10 +110,65 @@ const Dashboard = () => {
     //     setNewTasks(newTasks + 1);
     // }
 
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredNotifications = user.notification.filter((nt) =>
+        nt.task.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     const handleTaskClick = (taskId) => {
         setSelectedTaskId(taskId);
         setShowDropdown(false);
     };
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredNotifications.slice(
+        indexOfFirstItem,
+        indexOfLastItem
+    );
+
+    const pageNumbers = [];
+    for (
+        let i = 1;
+        i <= Math.ceil(filteredNotifications.length / itemsPerPage);
+        i++
+    ) {
+        pageNumbers.push(i);
+    }
+
+    const renderPageNumbers = pageNumbers.map((number) => {
+        return (
+            <li
+                key={number}
+                className={currentPage === number ? "active" : null}
+            >
+                {/* <a href="" onClick={() => setCurrentPage(number)}>
+                    {number}
+                </a> */}
+                {/* <button
+                    type="button"
+                   
+                    onClick={() => setCurrentPage(number)}
+                >
+                    {number}
+                </button> */}
+                <button style={{marginLeft:10, marginTop:10}}
+                    type="button"
+                    className={`btn btn-sm ${
+                        currentPage === number
+                            ? "btn-primary"
+                            : "btn-outline-primary"
+                    }`}
+                    onClick={() => setCurrentPage(number)}
+                >
+                    {number}
+                </button>
+            </li>
+        );
+    });
 
     // console.log(user.notification);
     return (
@@ -173,9 +231,22 @@ const Dashboard = () => {
                                         showDropdown ? "d-block" : ""
                                     } `}
                                 >
+                                    <div className="px-3">
+                                        <input
+                                            type="text"
+                                            placeholder="Search Notification"
+                                            className={`form-control ${
+                                                error &&
+                                                error.user_id &&
+                                                "is-invalid"
+                                            }`}
+                                            onChange={handleSearch}
+                                        />
+                                    </div>
                                     {user.notification &&
                                     user.notification.length > 0 ? (
-                                        user.notification.map((nt) => (
+                                        // user.notification.
+                                        currentItems.map((nt) => (
                                             <div
                                                 className="row"
                                                 key={nt.task.id}
@@ -239,6 +310,10 @@ const Dashboard = () => {
                                             No Notfication
                                         </p>
                                     )}
+
+                                    <ul className="pagination justify-content-center">
+                                        {renderPageNumbers}
+                                    </ul>
                                 </div>
                             </div>
                         </div>

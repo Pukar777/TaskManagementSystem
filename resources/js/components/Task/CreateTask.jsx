@@ -12,6 +12,8 @@ function CreateTask() {
     const [type, setType] = useState("");
     let [created_by, setCreatedBy] = useState("");
     const [user_id, setUser] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+
     const {
         handleCreate,
         error,
@@ -21,7 +23,7 @@ function CreateTask() {
         loadUser,
         isLoading,
         message,
-        errorAuthorization
+        errorAuthorization,
     } = taskHandle();
 
     // console.log(created_by);
@@ -49,11 +51,21 @@ function CreateTask() {
 
     const handleOnChange = (e) => {
         if (e.target.checked) {
-            setUser((current) => [...current, e.target.value]);
+            setUser((current) => [...current, +e.target.value]);
         } else {
-            setUser((current) => current.filter((id) => id !== e.target.value));
+            setUser((current) =>
+                current.filter((id) => id !== +e.target.value)
+            );
         }
     };
+
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+
+    const filteredUsers = users.filter((user) =>
+        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     if (isLoading) {
         return <div className="row justify-content-center">Loading...</div>;
@@ -67,18 +79,18 @@ function CreateTask() {
                 <div className="py-5 mt-0 col-md-6 ml-5 mb-5 pb-5">
                     <h1 className="row justify-content-center">Create Task</h1>
                     {message && (
-                    <div className="alert alert-success alert-dismissible">
-                        <button
-                            type="button"
-                            className="close"
-                            data-dismiss="alert"
-                        >
-                            &times;
-                        </button>
-                        <strong>{message}</strong> 
-                    </div>
-                )}
-                 {errorAuthorization && (
+                        <div className="alert alert-success alert-dismissible">
+                            <button
+                                type="button"
+                                className="close"
+                                data-dismiss="alert"
+                            >
+                                &times;
+                            </button>
+                            <strong>{message}</strong>
+                        </div>
+                    )}
+                    {errorAuthorization && (
                         <div className="alert alert-danger alert-dismissible">
                             <button
                                 type="button"
@@ -235,7 +247,6 @@ function CreateTask() {
                                     {error.type[0]}
                                 </div>
                             )}
-                            
                         </div>
                         {/* <div className="mb-3">
                             <label htmlFor="name" className="form-label">
@@ -255,7 +266,7 @@ function CreateTask() {
                             <label htmlFor="user_id" className="form-label">
                                 Users:
                             </label>
-                            <div>
+                            {/* <div>
                                 {users.map((user) => {
                                     const role = user.role; // Assuming that the `user` property is loaded with the `role` relationship
                                     // console.log(role);
@@ -282,10 +293,144 @@ function CreateTask() {
                                         </div>
                                     );
                                 })}
-                                 {error && (
-                                    <div
-                                        className="text-danger"
-                                    >
+                                {error && (
+                                    <div className="text-danger">
+                                        {error.user_id}
+                                    </div>
+                                )}
+                            </div> */}
+                            {/* //========================================================================================================================= */}
+                            {/* <div>
+                                <input
+                                    type="text"
+                                    placeholder="Search users"
+                                    onChange={handleSearch}
+                                />
+                                {filteredUsers.map((user) => {
+                                    const role = user.role;
+                                    const roleName = user.isSuper
+                                        ? "Yes"
+                                        : role
+                                        ? role.name
+                                        : "No Role";
+                                    return (
+                                        <div key={user.id}>
+                                            <input
+                                                type="checkbox"
+                                                id={`user-${user.id}`}
+                                                value={user.id}
+                                                onChange={handleOnChange}
+                                            />
+                                            <label htmlFor={`user-${user.id}`}>
+                                                {user.name}{" "}
+                                                {user.isSuper
+                                                    ? "Super"
+                                                    : "Role"}{" "}
+                                                : {roleName}
+                                            </label>
+                                        </div>
+                                    );
+                                })}
+                                <p>Selected users: {user_id.join(", ")}</p>
+                                {error && (
+                                    <div className="text-danger">
+                                        {error.user_id}
+                                    </div>
+                                )}
+                            </div>  */}
+                            {/* ================================================================================================================================================ */}
+                            <div>
+                                <input
+                                    type="text"
+                                    placeholder="Search users"
+                                    className={`form-control ${
+                                        error && error.user_id && "is-invalid"
+                                    }`}
+                                    onChange={handleSearch}
+                                />
+                                {/* <p>
+                                    Selected users:{" "}
+                                    {user_id
+                                        .map(
+                                            (id) =>
+                                                users.find(
+                                                    (user) => user.id == id
+                                                )?.name
+                                        )
+                                        .filter(Boolean)
+                                        .join(", ")}
+                                </p> */}
+                                <br></br>
+                                <p>
+                                    {user_id.length > 0
+                                        ? `Selected users: ${user_id
+                                              .map(
+                                                  (id) =>
+                                                      users.find(
+                                                          (user) =>
+                                                              user.id == id
+                                                      )?.name
+                                              )
+                                              .filter(Boolean)
+                                              .join(", ")}`
+                                        : " "}
+                                </p>
+                                {searchTerm && (
+                                    <>
+                                        {filteredUsers.map((user) => {
+                                            const role = user.role;
+                                            const roleName = user.isSuper
+                                                ? "Yes"
+                                                : role
+                                                ? role.name
+                                                : "No Role";
+
+                                            return (
+                                                <div key={user.id}>
+                                                    <input
+                                                        type="checkbox"
+                                                        id={`user-${user.id}`}
+                                                        value={user.id}
+                                                        checked={user_id.includes(
+                                                            user.id
+                                                        )}
+                                                        onChange={
+                                                            handleOnChange
+                                                        }
+                                                    />
+                                                    <label
+                                                        htmlFor={`user-${user.id}`}
+                                                    >
+                                                        {user.name}{" "}
+                                                        {user.isSuper
+                                                            ? "Super"
+                                                            : "Role"}{" "}
+                                                        : {roleName}
+                                                    </label>
+                                                </div>
+                                            );
+                                        })}
+                                        {/* <p>
+                                            Selected users: {user_id.join(", ")}
+                                        </p> */}
+                                        {/* <p>
+                                            Selected users:{" "}
+                                            {user_id
+                                                .map(
+                                                    (id) =>
+                                                        users.find(
+                                                            (user) =>
+                                                                user.id == id
+                                                        )?.name
+                                                )
+                                                .filter(Boolean)
+                                                .join(", ")}
+                                        </p> */}
+                                    </>
+                                )}
+
+                                {error && (
+                                    <div className="text-danger">
                                         {error.user_id}
                                     </div>
                                 )}

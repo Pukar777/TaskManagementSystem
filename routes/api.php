@@ -37,6 +37,9 @@ Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
 // Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom'); 
 
 // ======================================================================================================================
+Route::get('/reset', function () {
+    return view('auth.reset');
+});
 
 
 Route::middleware(['auth:api'])->group(function () {

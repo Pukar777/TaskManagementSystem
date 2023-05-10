@@ -92,6 +92,7 @@ const App = () => {
                 <Route exact path="/dashboard-react" element={<Dashboard />} />
                 {/* <Route exact path="/register" element={<Register />} /> */}
 
+{/* /* not in use */} 
                 {/* {!(
                     // user.isSuper ||
                     user.role.permission_role.includes("create-user")
@@ -118,7 +119,10 @@ const App = () => {
                     />
                 )} */}
 
-                <Route
+{/* not in use */}
+                
+
+                {/* <Route
                     exact
                     path="/create-user"
                     element={
@@ -150,14 +154,14 @@ const App = () => {
                             <ViewUser />
                         )
                     }
-                />
+                /> */}
 
-                {/* <Route exact path="/create-user" element={<CreateUser />} /> */}
-                {/* <Route exact path="/view-user" element={<ViewUser />} /> */}
+                <Route exact path="/create-user" element={<CreateUser />} />
+                <Route exact path="/view-user" element={<ViewUser />} />
 
                 <Route exact path="/update/:id" element={<EditUser />} />
 
-                <Route
+                {/* <Route
                     exact
                     path="/create-role"
                     element={
@@ -172,9 +176,9 @@ const App = () => {
                             <CreateRole />
                         )
                     }
-                />
+                /> */}
 
-                <Route
+                {/* <Route
                     exact
                     path="/view-role"
                     element={
@@ -189,13 +193,13 @@ const App = () => {
                             <ViewRole />
                         )
                     }
-                />
+                /> */}
 
-                {/* <Route exact path="/create-role" element={<CreateRole />} />
-                <Route exact path="/view-role" element={<ViewRole />} /> */}
+                <Route exact path="/create-role" element={<CreateRole />} />
+                <Route exact path="/view-role" element={<ViewRole />} />
                 <Route exact path="/update-role/:id" element={<EditRole />} />
 
-                <Route
+                {/* <Route
                     exact
                     path="/create-task"
                     element={
@@ -227,10 +231,10 @@ const App = () => {
                             <ViewTask />
                         )
                     }
-                />
+                /> */}
 
-                {/* <Route exact path="/create-task" element={<CreateTask />} />
-                <Route exact path="/view-task" element={<ViewTask />} /> */}
+                <Route exact path="/create-task" element={<CreateTask />} />
+                <Route exact path="/view-task" element={<ViewTask />} />
                 <Route exact path="/update-task/:id" element={<EditTask />} />
                 <Route
                     exact
