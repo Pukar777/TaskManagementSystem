@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { register, login, logout, getUser } from "./Api";
 import { useNavigate } from "react-router-dom";
-import {AuthContext} from "./AuthContext";
+import { AuthContext } from "./AuthContext";
 
 const useAuth = () => {
     const [user, setUser] = useState(null);
@@ -9,9 +9,8 @@ const useAuth = () => {
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     // const [isLogged, setIsLogged] = useState(false);
-    const {isLogged, setIsLogged} = useContext(AuthContext);
+    const { isLogged, setIsLogged } = useContext(AuthContext);
     let timeoutId;
-
 
     // console.log(isLogged);
 
@@ -22,7 +21,6 @@ const useAuth = () => {
     // useEffect(() => {
     //     console.log('isLogged state updated:', isLogged);
     //   }, [isLogged]);
-      
 
     // console.log(user);
     const handleLogin = async (email, password) => {
@@ -50,9 +48,9 @@ const useAuth = () => {
     };
 
     const handleUserActivity = () => {
-        if(isLogged==true) {
+        if (isLogged == true) {
             clearTimeout(timeoutId);
-    
+
             // Restart the timer
             // console.log(timeoutId);
             timeoutId = setTimeout(() => {
@@ -61,26 +59,44 @@ const useAuth = () => {
             }, 30 * 60 * 1000); // 30 minutes
         }
         // Clear the session timeout timer
-       
     };
 
+    // Add event listeners for user activity
+    // document.addEventListener("click", handleUserActivity);
+    // document.addEventListener("keydown", handleUserActivity);
+
+    useEffect(() => {
+        document.addEventListener("click", handleUserActivity);
+        document.addEventListener("keydown", handleUserActivity);
+
+        return () => {
+            document.removeEventListener("click", handleUserActivity);
+            document.removeEventListener("keydown", handleUserActivity);
+        };
+    }, []);
 
     
-    // Add event listeners for user activity
-    document.addEventListener("click", handleUserActivity);
-    document.addEventListener("keydown", handleUserActivity);
+    useEffect(() => {
+        if (!isLogged) {
+            document.removeEventListener("click", handleUserActivity);
+            document.removeEventListener("keydown", handleUserActivity);
+        }
+    }, [isLogged]);
 
-    const fetchMe = async() => {
+
+
+
+    const fetchMe = async () => {
         try {
-        const accessToken = localStorage.getItem("accessToken");
-        const userDetails = await getUser(accessToken);
-        setUser(userDetails);
+            const accessToken = localStorage.getItem("accessToken");
+            const userDetails = await getUser(accessToken);
+            setUser(userDetails);
         } catch (error) {
             console.error(error);
-        }finally{
+        } finally {
             setIsLoading(false);
         }
-    }
+    };
 
     const handleRegister = async (name, email, contact, address, password) => {
         try {
@@ -112,7 +128,6 @@ const useAuth = () => {
             setIsLogged(false);
             clearTimeout(timeoutId); // clear the timeout
             navigate("/login");
-
         } catch (error) {
             setError(error.response.data.error);
         }
@@ -128,7 +143,7 @@ const useAuth = () => {
         handleLogin,
         handleRegister,
         handleLogout,
-        fetchMe
+        fetchMe,
         // setIsLogged
     };
 };

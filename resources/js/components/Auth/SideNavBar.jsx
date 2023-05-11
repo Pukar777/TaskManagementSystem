@@ -10,9 +10,9 @@ const SideNavBar = () => {
         fetchMe();
     }, []);
 
-    if (isLoading) {
-        return <div className="row justify-content-center"></div>;
-    }
+    // if (isLoading) {
+    //     return <div className="row justify-content-center"></div>;
+    // }
 
     // console.log(
     //     user.isSuper
@@ -21,11 +21,12 @@ const SideNavBar = () => {
     //               (pr) => pr.permission.name === "read-role"
     //           )
     // );
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container">
                 <Link className="navbar-brand" to="/dashboard-react">
-                    Dashboard {user.name}
+                    Dashboard {user && user.name}
                 </Link>
                 <button
                     className="navbar-toggler"
@@ -42,12 +43,13 @@ const SideNavBar = () => {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     {/* ------------------------------------------User--------------------------------------------------------------------- */}
                     <ul className="navbar-nav">
-                        {(user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) =>
-                                    pr.permission.name === "create-user" ||
-                                    pr.permission.name === "read-user"
-                            )) && (
+                        {((user && user.isSuper) ||
+                            (user &&
+                                user.role.permission_role.some(
+                                    (pr) =>
+                                        pr.permission.name === "create-user" ||
+                                        pr.permission.name === "read-user"
+                                ))) && (
                             <li className="nav-item dropdown">
                                 <a
                                     className="nav-link dropdown-toggle"
@@ -64,7 +66,7 @@ const SideNavBar = () => {
                                     className="dropdown-menu"
                                     aria-labelledby="navbarDropdown"
                                 >
-                                    {user.isSuper && (
+                                    {user && user.isSuper && (
                                         <>
                                             <Link
                                                 className="dropdown-item"
@@ -75,9 +77,10 @@ const SideNavBar = () => {
                                             <div className="dropdown-divider"></div>
                                         </>
                                     )}
-                                    {user.isSuper
+                                    {user && user.isSuper
                                         ? " "
-                                        : user.role.permission_role.some(
+                                        : user &&
+                                          user.role.permission_role.some(
                                               (pr) =>
                                                   pr.permission.name ===
                                                   "create-user"
@@ -92,7 +95,7 @@ const SideNavBar = () => {
                                                   <div className="dropdown-divider"></div>
                                               </>
                                           )}
-                                    {user.isSuper ? (
+                                    {user && user.isSuper ? (
                                         <Link
                                             className="dropdown-item"
                                             to="/view-user"
@@ -100,6 +103,7 @@ const SideNavBar = () => {
                                             View
                                         </Link>
                                     ) : (
+                                        user &&
                                         user.role.permission_role.some(
                                             (pr) =>
                                                 pr.permission.name ===
@@ -117,15 +121,15 @@ const SideNavBar = () => {
                             </li>
                         )}
                     </ul>
-
                     {/* ---------------------------------------------------------Role------------------------------------------------------------------------------------ */}
                     <ul className="navbar-nav">
-                        {(user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) =>
-                                    pr.permission.name === "create-role" ||
-                                    pr.permission.name === "read-role"
-                            )) && (
+                        {((user && user.isSuper) ||
+                            (user &&
+                                user.role.permission_role.some(
+                                    (pr) =>
+                                        pr.permission.name === "create-role" ||
+                                        pr.permission.name === "read-role"
+                                ))) && (
                             <li className="nav-item dropdown">
                                 <a
                                     className="nav-link dropdown-toggle"
@@ -142,7 +146,7 @@ const SideNavBar = () => {
                                     className="dropdown-menu"
                                     aria-labelledby="navbarDropdown"
                                 >
-                                    {user.isSuper && (
+                                    {user && user.isSuper && (
                                         <>
                                             <Link
                                                 className="dropdown-item"
@@ -153,9 +157,10 @@ const SideNavBar = () => {
                                             <div className="dropdown-divider"></div>
                                         </>
                                     )}
-                                    {user.isSuper
+                                    {user && user.isSuper
                                         ? " "
-                                        : user.role.permission_role.some(
+                                        : user &&
+                                          user.role.permission_role.some(
                                               (pr) =>
                                                   pr.permission.name ===
                                                   "create-role"
@@ -170,7 +175,7 @@ const SideNavBar = () => {
                                                   <div className="dropdown-divider"></div>
                                               </>
                                           )}
-                                    {user.isSuper ? (
+                                    {user && user.isSuper ? (
                                         <Link
                                             className="dropdown-item"
                                             to="/view-role"
@@ -178,6 +183,7 @@ const SideNavBar = () => {
                                             View
                                         </Link>
                                     ) : (
+                                        user &&
                                         user.role.permission_role.some(
                                             (pr) =>
                                                 pr.permission.name ===
@@ -198,12 +204,13 @@ const SideNavBar = () => {
 
                     {/*----------------------------------Task----------------------------------------------------------------------------------  */}
                     <ul className="navbar-nav">
-                        {(user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) =>
-                                    pr.permission.name === "create-task" ||
-                                    pr.permission.name === "read-task"
-                            )) && (
+                        {((user && user.isSuper) ||
+                            (user &&
+                                user.role.permission_role.some(
+                                    (pr) =>
+                                        pr.permission.name === "create-task" ||
+                                        pr.permission.name === "read-task"
+                                ))) && (
                             <li className="nav-item dropdown">
                                 <a
                                     className="nav-link dropdown-toggle"
@@ -220,7 +227,7 @@ const SideNavBar = () => {
                                     className="dropdown-menu"
                                     aria-labelledby="navbarDropdown"
                                 >
-                                    {user.isSuper && (
+                                    {user && user.isSuper && (
                                         <>
                                             <Link
                                                 className="dropdown-item"
@@ -231,9 +238,10 @@ const SideNavBar = () => {
                                             <div className="dropdown-divider"></div>
                                         </>
                                     )}
-                                    {user.isSuper
+                                    {user && user.isSuper
                                         ? " "
-                                        : user.role.permission_role.some(
+                                        : user &&
+                                          user.role.permission_role.some(
                                               (pr) =>
                                                   pr.permission.name ===
                                                   "create-task"
@@ -248,7 +256,7 @@ const SideNavBar = () => {
                                                   <div className="dropdown-divider"></div>
                                               </>
                                           )}
-                                    {user.isSuper ? (
+                                    {user && user.isSuper ? (
                                         <Link
                                             className="dropdown-item"
                                             to="/view-task"
@@ -256,6 +264,7 @@ const SideNavBar = () => {
                                             View
                                         </Link>
                                     ) : (
+                                        user &&
                                         user.role.permission_role.some(
                                             (pr) =>
                                                 pr.permission.name ===

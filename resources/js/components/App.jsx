@@ -40,9 +40,23 @@ const App = () => {
     // console.log(user);
     // console.log(user.isSuper == NULL)
 
-    if (isLoading) {
-        return <div className="row justify-content-center"></div>;
-    }
+    // if (isLoading) {
+    //     return <div className="row justify-content-center">...</div>;
+    // }
+
+    const hasPermission = ($permission) => {
+        return !(
+            // console.log($permission),
+            (
+                (user && user.isSuper) ||
+                (user &&
+                    user.role.permission_role.some(
+                        (pr) => pr.permission.name == $permission
+                    ))
+            )
+        );
+    };
+
     return (
         <>
             {/* <Router> */}
@@ -92,123 +106,113 @@ const App = () => {
                 <Route exact path="/dashboard-react" element={<Dashboard />} />
                 {/* <Route exact path="/register" element={<Register />} /> */}
 
-{/* /* not in use */} 
-                {/* {!(
-                    // user.isSuper ||
-                    user.role.permission_role.includes("create-user")
-                ) ? (
-                    <Navigate to="/dashboard-react" />
-                ) : (
-                    <Route
-                        exact
-                        path="/create-user"
-                        element={<CreateUser />}
-                        // onEnter={() => {
-                        //     if (
-                        //         !(
-                        //             user.isSuper ||
-                        //             user.role.permission_role.includes(
-                        //                 "create-user"
-                        //             )
-                        //         )
-                        //     ) {
-                        //         // Redirect user to unauthorized page if not authorized
-                        //         return <Navigate to="/dashboard-react" />;
-                        //     }
-                        // }}
-                    />
-                )} */}
-
-{/* not in use */}
-                
-
-                {/* <Route
+                <Route
                     exact
                     path="/create-user"
                     element={
-                        !(
-                            user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) => pr.permission.name == "create-user"
-                            )
-                        ) ? (
+                        //     // !(
+                        //     //    user && user.isSuper ||
+                        //     //    user && user.role.permission_role.some(
+                        //     //         (pr) => pr.permission.name == "create-user"
+                        //     //     )
+                        //     // )
+
+                        isLoading === false && hasPermission("create-user") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <CreateUser />
                         )
                     }
+
+                    // element={(() => {
+                    //     const hasPerm = hasPermission("create-user");
+                    //     // console.log("loaded");
+                    //     return hasPerm ? (
+                    //         <Navigate to="/dashboard-react" />
+                    //     ) : (
+                    //         <CreateUser />
+                    //     );
+                    // })()}
                 />
 
                 <Route
                     exact
                     path="/view-user"
                     element={
-                        !(
-                            user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) => pr.permission.name == "read-user"
-                            )
-                        ) ? (
+                        // !(
+                        //     user && user.isSuper ||
+                        //     user && user.role.permission_role.some(
+                        //         (pr) => pr.permission.name == "read-user"
+                        //     )
+                        // )
+
+                        isLoading === false && hasPermission("read-user") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <ViewUser />
                         )
                     }
-                /> */}
+                />
 
-                <Route exact path="/create-user" element={<CreateUser />} />
-                <Route exact path="/view-user" element={<ViewUser />} />
+                {/* <Route exact path="/create-user" element={<CreateUser />} />
+                <Route exact path="/view-user" element={<ViewUser />} /> */}
 
-                <Route exact path="/update/:id" element={<EditUser />} />
+                <Route
+                    exact
+                    path="/update/:id"
+                    element={
+                        // <EditUser />
+                        isLoading === false && hasPermission("update-user") ? (
+                            <Navigate to="/dashboard-react" />
+                        ) : (
+                            <EditUser />
+                        )
+                    }
+                />
 
-                {/* <Route
+                <Route
                     exact
                     path="/create-role"
                     element={
-                        !(
-                            user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) => pr.permission.name == "create-role"
-                            )
-                        ) ? (
+                        isLoading === false && hasPermission("create-role") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <CreateRole />
                         )
                     }
-                /> */}
+                />
 
-                {/* <Route
+                <Route
                     exact
                     path="/view-role"
                     element={
-                        !(
-                            user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) => pr.permission.name == "read-role"
-                            )
-                        ) ? (
+                        isLoading === false && hasPermission("read-role") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <ViewRole />
                         )
                     }
-                /> */}
+                />
+                {/* <Route exact path="/create-role" element={<CreateRole />} />
+                <Route exact path="/view-role" element={<ViewRole />} /> */}
+                <Route
+                    exact
+                    path="/update-role/:id"
+                    element={
+                        // <EditRole />
+                        isLoading === false && hasPermission("update-role") ? (
+                            <Navigate to="/dashboard-react" />
+                        ) : (
+                            <EditRole />
+                        )
+                    }
+                />
 
-                <Route exact path="/create-role" element={<CreateRole />} />
-                <Route exact path="/view-role" element={<ViewRole />} />
-                <Route exact path="/update-role/:id" element={<EditRole />} />
-
-                {/* <Route
+                <Route
                     exact
                     path="/create-task"
                     element={
-                        !(
-                            user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) => pr.permission.name == "create-task"
-                            )
-                        ) ? (
+                        isLoading === false && hasPermission("create-task") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <CreateTask />
@@ -220,22 +224,34 @@ const App = () => {
                     exact
                     path="/view-task"
                     element={
-                        !(
-                            user.isSuper ||
-                            user.role.permission_role.some(
-                                (pr) => pr.permission.name == "read-task"
-                            )
-                        ) ? (
+                        // !(
+                        //     user.isSuper ||
+                        //     user.role.permission_role.some(
+                        //         (pr) => pr.permission.name == "read-task"
+                        //     )
+                        // )
+                        isLoading === false && hasPermission("read-task") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <ViewTask />
                         )
                     }
-                /> */}
+                />
 
-                <Route exact path="/create-task" element={<CreateTask />} />
-                <Route exact path="/view-task" element={<ViewTask />} />
-                <Route exact path="/update-task/:id" element={<EditTask />} />
+                {/* <Route exact path="/create-task" element={<CreateTask />} />
+                <Route exact path="/view-task" element={<ViewTask />} /> */}
+                <Route
+                    exact
+                    path="/update-task/:id"
+                    element={
+                        // <EditTask />
+                        isLoading === false && hasPermission("update-task") ? (
+                            <Navigate to="/dashboard-react" />
+                        ) : (
+                            <EditTask />
+                        )
+                    }
+                />
                 <Route
                     exact
                     path="/detail-task/:id"

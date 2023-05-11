@@ -32,8 +32,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
     <script>
+        // $(document).ready(function() {
+        //     $('#myTable').DataTable();
+        // });
+
         $(document).ready(function() {
-            $('#myTable').DataTable();
+            // console.log("xyz")
+            setTimeout(() => {
+                $('#myTable').DataTable();   
+            }, 5*1000);
+            
         });
     </script>
 
