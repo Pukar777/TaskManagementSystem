@@ -42,6 +42,11 @@ Route::get('/reset', function () {
 });
 
 
+Route::put('/password-reset/{token}', [UserController::class, 'updatePassword'])->name('password.update');
+
+Route::get('/password/reset/{token}/{email}', [UserController::class, 'showResetForm'])->name('password.reset');
+
+
 Route::middleware(['auth:api'])->group(function () {
 
 //-------------------------------------------Task------------------------------------------------------------------------------------

@@ -27,6 +27,8 @@ const App = () => {
     const { isLogged } = React.useContext(AuthContext);
     const { user, isLoading, fetchMe } = useAuth();
 
+    // console.log(user);
+    // console.log(isLoading);
     React.useEffect(() => {
         fetchMe();
     }, []);
@@ -117,7 +119,7 @@ const App = () => {
                         //     //     )
                         //     // )
 
-                        isLoading === false && hasPermission("create-user") ? (
+                        isLoading == false && hasPermission("create-user") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <CreateUser />
@@ -146,7 +148,7 @@ const App = () => {
                         //     )
                         // )
 
-                        isLoading === false && hasPermission("read-user") ? (
+                        isLoading == false && hasPermission("read-user") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <ViewUser />
@@ -162,7 +164,7 @@ const App = () => {
                     path="/update/:id"
                     element={
                         // <EditUser />
-                        isLoading === false && hasPermission("update-user") ? (
+                        isLoading == false && hasPermission("update-user") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <EditUser />
@@ -174,7 +176,7 @@ const App = () => {
                     exact
                     path="/create-role"
                     element={
-                        isLoading === false && hasPermission("create-role") ? (
+                        isLoading == false && hasPermission("create-role") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <CreateRole />
@@ -186,7 +188,7 @@ const App = () => {
                     exact
                     path="/view-role"
                     element={
-                        isLoading === false && hasPermission("read-role") ? (
+                        isLoading == false && hasPermission("read-role") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <ViewRole />
@@ -200,7 +202,7 @@ const App = () => {
                     path="/update-role/:id"
                     element={
                         // <EditRole />
-                        isLoading === false && hasPermission("update-role") ? (
+                        isLoading == false && hasPermission("update-role") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <EditRole />
@@ -212,7 +214,7 @@ const App = () => {
                     exact
                     path="/create-task"
                     element={
-                        isLoading === false && hasPermission("create-task") ? (
+                        isLoading == false && hasPermission("create-task") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <CreateTask />
@@ -230,7 +232,7 @@ const App = () => {
                         //         (pr) => pr.permission.name == "read-task"
                         //     )
                         // )
-                        isLoading === false && hasPermission("read-task") ? (
+                        isLoading == false && hasPermission("read-task") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <ViewTask />
@@ -245,7 +247,7 @@ const App = () => {
                     path="/update-task/:id"
                     element={
                         // <EditTask />
-                        isLoading === false && hasPermission("update-task") ? (
+                        isLoading == false && hasPermission("update-task") ? (
                             <Navigate to="/dashboard-react" />
                         ) : (
                             <EditTask />

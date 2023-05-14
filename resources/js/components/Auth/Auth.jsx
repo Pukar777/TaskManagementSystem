@@ -38,24 +38,36 @@ const useAuth = () => {
 
             timeoutId = setTimeout(() => {
                 handleLogout();
-                alert("Session timed out");
+                // alert("Session timed out");
+                setTimeout(() => {
+                    alert("Session timed out");
+                }, 0);
             }, 30 * 60 * 1000); // 30 minutes
             // console.log(localStorage.getItem('accessToken'));
-            // console.log(timeoutId);
+            // console.log(`login: ${timeoutId}`);
         } catch (error) {
             setError(error.response.data.error);
         }
     };
 
     const handleUserActivity = () => {
+        if (!isLogged) {
+            // console.log(timeoutId);
+            return;
+        }
+
         if (isLogged == true) {
             clearTimeout(timeoutId);
 
             // Restart the timer
-            // console.log(timeoutId);
+            // console.log(`activity: ${timeoutId}`);
             timeoutId = setTimeout(() => {
                 handleLogout();
-                alert("Session timed out");
+                // alert("Session timed out");
+                setTimeout(() => {
+                    // console.log("this triggered")
+                    alert("Session timed out");
+                }, 0);
             }, 30 * 60 * 1000); // 30 minutes
         }
         // Clear the session timeout timer
@@ -75,16 +87,12 @@ const useAuth = () => {
         };
     }, []);
 
-    
     useEffect(() => {
         if (!isLogged) {
             document.removeEventListener("click", handleUserActivity);
             document.removeEventListener("keydown", handleUserActivity);
         }
     }, [isLogged]);
-
-
-
 
     const fetchMe = async () => {
         try {
@@ -126,6 +134,7 @@ const useAuth = () => {
             setUser(null);
             localStorage.removeItem("accessToken");
             setIsLogged(false);
+            // console.log(`logout: ${timeoutId}`);
             clearTimeout(timeoutId); // clear the timeout
             navigate("/login");
         } catch (error) {

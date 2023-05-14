@@ -8,6 +8,10 @@ use App\Repositories\RepoIface;
 
 use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Support\Facades\Password;
+
+use Illuminate\Support\Facades\Mail;
+
 
 
 class UserRepo implements RepoIface
@@ -54,9 +58,22 @@ class UserRepo implements RepoIface
             'address' => $data['address'],
             'role_id' => $data['role_id'],
             
-          
+        
         ]);  
     
+        
+        $token = Password::createToken($dataentry);
+        // $csrf = csrf_token();
+        // dd($csrf);
+        $url = url('password/reset/'.$token);
+    
+        Mail::send('emails.password_reset', ['url' => $url,'token'=>$token, 'email'=>$dataentry->email], function ($message) use ($dataentry) {
+            $message->to($dataentry->email, $dataentry->name)
+                    ->subject('Reset your password');
+        });
+
+        
+
         return $dataentry;
     }
 
@@ -68,7 +85,7 @@ class UserRepo implements RepoIface
 
     
     public function update(array $data, $id){
-        return $this->user::where('id',$id)->update([
+        $this->user::where('id',$id)->update([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -76,6 +93,17 @@ class UserRepo implements RepoIface
             'address' => $data['address'],
             'role_id' => $data['role_id'],
         ]);
+
+        $userData = $this->user::where('email', $data['email'])->first();
+
+        $token = Password::createToken($userData);
+
+        Mail::send('emails.password_reset', ['token'=>$token, 'email'=>$data['email']], function ($message) use ($data) {
+            $message->to($data['email'], $data['name'])
+                    ->subject('Reset your password');
+        });
+        
+
     }
 
 
