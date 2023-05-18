@@ -1,0 +1,141 @@
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+export const TaskView = () => {
+    const [tasks, setTasks] = useState("");
+    const [isTasks, setIsTasks] = useState(false);
+
+    // useEffect(() => {
+    //     setTasks("tasks");
+    //     console.log("yap");
+    // }, []);
+
+    // const query = () => {
+    //     return fetch("your-api-endpoint")
+    //         .then((response) => response.json())
+    //         .then((data) => data.tasks);
+    // };
+
+    // useEffect(() => {
+    //     query()
+    //         .then((data) => setTasks(data))
+    //         .catch((error) => console.log(error));
+    // }, []);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost/api/task", {
+                headers: {
+                    Authorization: `Bearer 7|Zvsmd5JrFrdqvPgRZlhWXL7NpreMRxExIqYUiD58`,
+                    Accept: "application/json",
+                },
+            })
+            .then((response) => {
+                //multiple return var
+                // const { message, data: { tasks, user } = {} } = response.data;
+                const { message, tasks } = response.data;
+
+                // console.log(tasks);
+                if (response.status == 204) {
+                    setIsTasks(false);
+                    // return; //this exits outofFull useEffect to my understanding
+                } else {
+                    setIsTasks(true);
+                    setTasks(tasks);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        console.log("test");
+    }, []);
+
+    return (
+        <>
+            <div className="cwrap">
+                <h2 className="text-center">List of Tasks</h2>
+                <table className="table table-striped table-dark text-light text-center .caption-top">
+                    {/* <caption>List of Tasks</caption> */}
+                    <thead>
+                        <tr>
+                            <th className="col-1">Select</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">DueDate</th>
+                            <th scope="col">Priority</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* <tr>
+                            <td>X</td>
+                            <td>Task001</td>
+                            <td>Lorem Ipsum</td>
+                            <td>2023-4-4</td>
+                            <td>High</td>
+                            <td>Ready to Start</td>
+                            <td>Bug</td>
+                            <td>
+                                <button>Edit</button>
+                                <button>Delete</button>
+                            </td>
+                        </tr> */}
+
+                        {/* {isTasks &&} */}
+
+                        {/* {Object.keys(tasks).map((task, i) => {
+                            <tr id={i} key={i}>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>{task.title}</td>
+                                <td>{task.description}</td>
+                                <td>{task.duedate}</td>
+                                <td>{task.priority}</td>
+                                <td>{task.status}</td>
+                                <td>{task.type}</td>
+                                <td>
+                                    <button>Edit</button>
+                                    <button>Delete</button>
+                                </td>
+                            </tr>;
+                        })} */}
+
+                        {tasks.map((task, i) => {
+                            <tr id={i} key={i}>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                                <td>{task.title}</td>
+                                <td>{task.description}</td>
+                                <td>{task.duedate}</td>
+                                <td>{task.priority}</td>
+                                <td>{task.status}</td>
+                                <td>{task.type}</td>
+                                <td>
+                                    <button>Edit</button>
+                                    <button>Delete</button>
+                                </td>
+                            </tr>;
+                        })}
+                    </tbody>
+
+                    {/* <tbody>
+                        {Brands.map((brand, i) => (
+                            <tr id={i} key={i}>
+                                <td>{brand.name}</td>
+                                <td>{brand.year}</td>
+                                <td>{brand.country}</td>
+                                <td>Delete</td>
+                            </tr>
+                        ))}
+                    </tbody> */}
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </>
+    );
+};

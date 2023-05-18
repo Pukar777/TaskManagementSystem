@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Role;
 use App\Models\User;
 use App\Repositories\IRepo;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserRepo implements IRepo
@@ -25,7 +26,10 @@ class UserRepo implements IRepo
     }
     public function store($user)
     {
-        $this->user->create($user);
+        
+        $user += ['password' => Hash::make('password')];
+        $user = $this->user->create($user);
+        return  $this->user->with('role:id,name')->find($user->id)->toArray();
     }
     public function edit($id)
     {

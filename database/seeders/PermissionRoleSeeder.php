@@ -25,7 +25,7 @@ class PermissionRoleSeeder extends Seeder
         $userPermissions = [6, 8];
         $this->seedRolePermissions(4, $userPermissions);
 
-        $noPermissions = [4];
+        $noPermissions = [];
         $this->seedRolePermissions(1000, $noPermissions);
 
     }

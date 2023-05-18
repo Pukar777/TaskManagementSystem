@@ -22,13 +22,16 @@ class UserService
 
     public function store($users)
     {
+        $newUsers = [];
         try {
             DB::beginTransaction();
             foreach ($users as $user) {
-                $this->userRepo->store($user);
+
+                $newUsers[] =
+                    $this->userRepo->store($user);
             }
             DB::commit();
-            return true;
+            return $newUsers;
         } catch (Exception $e) {
             DB::rollback();
 

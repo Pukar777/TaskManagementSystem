@@ -1,19 +1,18 @@
 // import './bootstrap';
 
 import React, { useContext, useEffect } from "react";
-import ReactDOM from "react-dom/client";
 
-import { BrowserRouter, Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Routes, Route, Link } from "react-router-dom";
 
-import DashBoard from "./components/dashboard/DashBoard";
-import UserPage from "./components/users/UserPage";
-// import TaskPage from "./components/tasks/TaskPage";
-import TaskPage from "./components/tasks/TaskPage";
-import AuthPage from "./components/auth/AuthPage";
-import LoginForm from "./components/auth/LoginForm";
-import Logout from "./components/auth/Logout";
-import { AuthContext } from "./components/auth/AuthContext";
+import DashBoard from "../components/dashboard/DashBoard";
+import UserPage from "../components/users/UserPage";
+import TaskPage from "../components/tasks/TaskPage";
+import RolePage from "../components/roles/RolePage";
+import AuthPage from "../components/auth/AuthPage";
+import LoginForm from "../components/auth/LoginForm";
+import Logout from "../components/auth/Logout";
+import { AuthContext } from "../components/auth/AuthContext";
 
 import TopBar from "./TopBar";
 import "./styles.css";
@@ -40,7 +39,7 @@ const Index = () => {
                     <Route exact path="/" element={<DashBoard />} />
                     <Route exact path="/user/*" element={<UserPage />} />
                     <Route exact path="/task/*" element={<TaskPage />} />
-                    <Route exact path="/role/*" element={<></>} />
+                    <Route exact path="/role/*" element={<RolePage />} />
                     <Route exact path="/login" element={<LoginForm />} />
                     <Route exact path="/logout" element={<Logout />} />
                 </Routes>

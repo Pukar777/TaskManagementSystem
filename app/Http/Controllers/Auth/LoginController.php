@@ -36,16 +36,17 @@ class LoginController extends Controller
 
         // Log::debug('Credentials', $request->input());
 
-        $user = User::where('email', $credentials['email'])->first();
-        // $user = [
-        //     'email' => 'a@a.a',
-        //     'password' => Hash::make('aaaaaaaa'),
-        // ];
-
-        // Log::debug('test', $user);
+        $user = User::with('role.permissions')->where('email', $credentials['email'])->first();
 
         if ($user && Hash::check($credentials['password'], $user['password'])) {
             $token = $user->createToken('auth-token')->plainTextToken;
+
+            $user= [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'permissions' => $user->role->permissions->pluck('name')->toArray(),
+            ];
 
             return response()->json([
                 'user' => $user,

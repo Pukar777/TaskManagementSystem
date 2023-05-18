@@ -1,0 +1,156 @@
+import React from "react";
+import { useState, useEffect, useContext } from "react";
+import { RoleContext } from "./RoleContext";
+import { Container, Row, Col, Table, Button } from "react-bootstrap";
+
+export const RoleView = () => {
+    const { roles, permissions } = useContext(RoleContext);
+    console.log(roles);
+
+    return (
+        <div className="bg-dark text-light">
+            <Container className="py-4">
+                <Row>
+                    <Col>
+                        <h1>Roles</h1>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Table striped bordered hover variant="dark">
+                            <thead>
+                                <tr>
+                                    <th>Roles & Modules</th>
+                                    {permissions.map((permission, $i) => (
+                                        <th key={$i}>
+                                            {permission["name"].toUpperCase()}
+                                        </th>
+                                    ))}
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {/* {roles.map((role, rI) => (
+                                    <tr key={rI}>
+                                        <td>{role.name}</td>
+                                        {role.modules.map((module, mI) => (
+                                            <td key={mI}>
+                                                {(() => {
+                                                    let $value = "";
+                                                    switch (mI) {
+                                                        case 0:
+                                                            if (module.crud[0])
+                                                                $value += "C";
+                                                            break;
+                                                        case 1:
+                                                            if (module.crud[1])
+                                                                $value += "R";
+                                                            break;
+                                                        case 2:
+                                                            if (module.crud[2])
+                                                                $value += "U";
+                                                            break;
+                                                        case 3:
+                                                            if (module.crud[3])
+                                                                $value += "D";
+                                                            break;
+                                                        default:
+                                                            break;
+                                                    }
+                                                    return $value;
+                                                })()}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))} */}
+                                {roles.map((role, rI) => (
+                                    <tr key={rI}>
+                                        <td>{role.name}</td>
+                                        {role.modules.map((module, mI) => (
+                                            <td key={mI}>
+                                                {(() => {
+                                                    let $value = "";
+                                                    switch (mI) {
+                                                        case 0:
+                                                            if (module.crud[0])
+                                                                $value += "C";
+                                                            break;
+                                                        case 1:
+                                                            if (
+                                                                module
+                                                                    .crud[1] ==
+                                                                true
+                                                            ) {
+                                                                $value.concat(
+                                                                    "R"
+                                                                );
+                                                            }
+                                                            break;
+                                                        case 2:
+                                                            if (
+                                                                module
+                                                                    .crud[1] ==
+                                                                true
+                                                            ) {
+                                                                $value.concat(
+                                                                    "U"
+                                                                );
+                                                            }
+                                                            break;
+                                                        case 3:
+                                                            if (
+                                                                module
+                                                                    .crud[1] ==
+                                                                true
+                                                            ) {
+                                                                $value.concat(
+                                                                    "D"
+                                                                );
+                                                            }
+                                                            break;
+                                                        default:
+                                                    }
+                                                    return $value;
+                                                })()}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                                \
+                            </tbody>
+                        </Table>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
+    );
+};
+
+// const [isSelection, setIsSelection] = useState();
+//
+// const { roles } = useContext(RoleContext);
+// const { selection, setSelection, handleSelectionChange, handleEdit } =
+//     useContext(RoleContext);
+//
+// const handleIsSelection = () => {
+//     setIsSelection(!isSelection);
+//     setSelection([]);
+// };
+//
+// const handleMultiSelectionEdit = () => {
+//     if (!selection.length) {
+//         console.log("selection is null");
+//         setMultiSelect(false);
+//         setSelection([]);
+//         console.log(roles);
+//         setRenderData(roles);
+//         handleSelectionChange;
+//     }
+//     const selectedRoles = roles.filter((role) =>
+//         selection.includes(role.id)
+//     );
+//     setRenderData(selectedRoles);
+//     setMultiSelect(false);
+//     setSelection([]);
+//     console.log(selectedRoles);
+// };

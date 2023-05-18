@@ -18,7 +18,7 @@ Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');
 
-Route::get('roles', [RoleController::class, 'index']);
+// Route::get('roles', [RoleController::class, 'index']);
 
 
 // require __DIR__ . '/auth.php';

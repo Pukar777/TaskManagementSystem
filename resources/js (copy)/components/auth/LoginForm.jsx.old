@@ -1,0 +1,152 @@
+import React, { useContext, useState, useEffect } from "react";
+import axios from "axios";
+import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
+// import { ReactSession } from "react-client-session";
+
+// const login = async() => {
+//     const [credentials, setCredentials] = useState([
+//         'email' = "",
+//         'password' = "",
+//     ]);
+// }
+
+// const useEffect(() => {
+//     setCredentials = "";
+// }, [])
+
+// const handleChange(event) {
+//     const { name, value} = event.target;
+
+//     setCredentials((fnc) => {
+//         return {
+//             ...fnc,
+//             [name]: value
+//         };
+//     });
+// }
+
+const LoginForm = () => {
+    const navigate = useNavigate();
+    const [credentials, setCredentials] = useState({
+        email: "",
+        password: "",
+    });
+    const [errorMessage, setErrorMessage] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+
+    useEffect(() => {
+        document.cookie = `isAuthenticated=${isAuthenticated}; path=/`;
+    }, [isAuthenticated]);
+
+    const handleSubmit = (e) => {
+        console.log(credentials);
+        // console.log("route login");
+        e.preventDefault();
+        axios
+            .post("http://localhost/api/auth/login", credentials)
+            .then((response) => {
+                // console.log(response);
+                const { user, message, token } = response.data;
+                console.log(user, message, token);
+
+                document.cookie = `token=${token}; path=/;`;
+                setIsAuthenticated(true);
+                document.cookie = `isAuthenticated=${isAuthenticated}; path=/`;
+
+                // const gettoken = document.cookie
+                //     .split("; ")
+                //     .find((row) => row.startsWith("token="))
+                //     ?.split("=")[1];
+
+                // console.log(gettoken);
+                // const expirationDate = new Date();
+
+                // // Add 5 minutes to the current time
+                // expirationDate.setTime(
+                //     expirationDate.getTime() + 5 * 60 * 1000
+                // );
+
+                // const newExpiry = expirationDate.toUTCString();
+
+                // document.cookie = `token=${currentToken}; expires=${newExpiry}; path=/;`;
+
+                setSuccessMessage(message);
+                setErrorMessage("");
+                console.log(successMessage);
+                navigate("/dashboard");
+
+                // ReactSession.set("username", "test_user");
+            })
+            .catch((error) => {
+                const { message } = error.response.data;
+                setErrorMessage(message);
+                setSuccessMessage("");
+            });
+        // console.log("update test");
+        // axios
+        //     .post("https://127.0.0.1:8000/api/auth/login", credentials)
+        //     .then((response) => {
+        //         // const { token } = response.data;
+        //         // document.cookie = "token=${token}; path=/";
+        //         // //log
+        //         // console.log("Cookie Token set: ", token);
+        //         console.log("sucess");
+        //         setErrorMessage("");
+        //         setSuccessMessage("Login successful!");
+        //     })
+        //     .catch((error) => {
+        //         console.error(error);
+        //         console.log("error");
+
+        //         setSuccessMessage("");
+        //         if (error.response && error.response.data.message) {
+        //             setErrorMessage(error.response.data.message);
+        //         } else {
+        //             setErrorMessage("An error occurred during login.");
+        //         }
+        //     });
+    };
+
+    return (
+        <>
+            <div className="cwrap">
+                <form onSubmit={handleSubmit} action="">
+                    <input
+                        name="email"
+                        value={credentials.email}
+                        // onChange={handleChange}
+                        onChange={(e) =>
+                            setCredentials({
+                                ...credentials,
+                                email: e.target.value,
+                            })
+                        }
+                        // {(event) => setState(event.target.value)}
+                        type="email"
+                        placeholder="Enter an Email"
+                    />
+                    <input
+                        name="password"
+                        value={credentials.password}
+                        onChange={(e) =>
+                            setCredentials({
+                                ...credentials,
+                                password: e.target.value,
+                            })
+                        }
+                        type="password"
+                        placeholder="Enter a Password"
+                    />
+
+                    <button type="submit">Login</button>
+                </form>
+            </div>
+            {errorMessage && <p>{errorMessage}</p>}
+            {successMessage && <p>{successMessage}</p>}
+        </>
+    );
+};
+
+export default LoginForm;

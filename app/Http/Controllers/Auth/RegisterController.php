@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 
+use App\Mail\PasswordResetMail;
+
 class RegisterController extends Controller
 {
     public function index()

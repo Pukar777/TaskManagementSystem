@@ -1,0 +1,63 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #272b36;
+    padding-top: 1rem;
+    z-index: 1000;
+    width: 200px; /* set the width of the expanded navbar */
+    transition: width 0.2s ease-in-out; /* add transition effect */
+}
+
+.sidebar:not(.expanded) {
+    width: 60px; /* set the width of the collapsed navbar */
+}
+
+.sidebar .navbar-toggler {
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar .navbar-toggler:focus {
+    outline: none;
+}
+
+.sidebar .nav-link {
+    color: #fff;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* align the link content to the start */
+}
+
+.sidebar .nav-link:hover {
+    background-color: #1c2029;
+    color: #fff;
+}
+
+.sidebar .nav-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.sidebar .collapse-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1c2029;
+    cursor: pointer; /* add pointer cursor on hover */
+}
+
+.sidebar .collapse-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}

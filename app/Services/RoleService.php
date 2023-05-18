@@ -17,7 +17,7 @@ class RoleService implements IService
     }
     public function all()
     {
-        $this->roleRepo->all();
+        return $this->roleRepo->all();
     }
     public function store($data)
     {
@@ -33,6 +33,6 @@ class RoleService implements IService
     }
     public function delete($id)
     {
-        return $this->roleRepo->delete($id);
+        $this->roleRepo->delete($id);
     }
 }

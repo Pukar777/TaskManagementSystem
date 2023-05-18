@@ -37,8 +37,8 @@ class TaskController extends Controller
         // dd('test');
 
         //multiple return var
-        // $data = $this->taskService->all();
-        $tasks = $this->taskService->all();
+        $data = $this->taskService->all();
+        // $tasks = $this->taskService->all();
 
 
         // $data['tasks'] = [];
@@ -48,12 +48,12 @@ class TaskController extends Controller
         // dd($data * ($data != null));
         // dd(!$data['tasks']);
 
-        if ($tasks) {
+        if ($data) {
             return response()->json([
                 'message' => 'success',
                 //  multiple return var
-                // 'data' => $data,
-                'tasks' => $tasks,
+                'data' => $data,
+                // 'tasks' => $tasks,
             ], 200);
         }
         return response()->json([
@@ -75,13 +75,11 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
-        $response = $this->taskService->store($request->input());
-
+        $this->taskService->store($request->input());
         if (request()->expectsJson()) {
             return response()->json([
-                'status' => 'success',
-                'response' => $response
-            ]);
+                'message' => 'success',
+            ], 200);
         }
     }
 

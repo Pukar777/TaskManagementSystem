@@ -25,20 +25,32 @@ class RoleController extends Controller
 
         // dd($obj);
 
-        return $this->roleService->all();
+        $data = $this->roleService->all();
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'success',
+                'data' => $data,
+            ], 200);
+        }
     }
 
     public function create()
     {
     }
 
-    public function store(RoleRequest $request)
+    public function store(Request $request)
     {
-        $this->roleService->store($request->validated());
+        $id = $this->roleService->store($request->input());
         // dd($request->validated()["permission_ids"]);
         // dd(getType($request->input()["permission_ids"]));
 
-        return;
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'success',
+                'id' => $id,
+            ], 200);
+        }
     }
 
     public function show(Role $role)
@@ -56,6 +68,15 @@ class RoleController extends Controller
 
     public function destroy($id)
     {
-        return $this->roleService->delete($id);
+         $this->roleService->delete($id);
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'success',
+            ], 200);
+        }
+
+        return;
+
     }
 }

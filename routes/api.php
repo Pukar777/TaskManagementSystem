@@ -27,6 +27,7 @@ use App\Http\Controllers\UserController;
 // })->middleware('auth:sanctum');
 
 
+// Route::post('user', [UserController::class, 'store'])->name('store');
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -53,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('role', [RoleController::class, 'index'])->name('index')->middleware('can:read_role');
         Route::post('role', [RoleController::class, 'store'])->name('store')->middleware('can:create_role');
         Route::put('role', [RoleController::class, 'update'])->name('update')->middleware('can:_update_role');
-        Route::delete('role', [RoleController::class, 'destroy'])->name('destroy')->middleware('can:delete_role');
+        Route::delete('role/{id}', [RoleController::class, 'destroy'])->name('destroy')->middleware('can:delete_role');
     });
 
     // Route::resource('role', RoleController::class)->only(['index', 'store', 'update', 'destroy'])

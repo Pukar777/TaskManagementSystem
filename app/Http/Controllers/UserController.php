@@ -40,15 +40,14 @@ class UserController extends Controller
         return view('users.create', compact('roles'));
     }
 
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
-        $this->userService->store($request->validated());
+        $users = $this->userService->store($request->input());
 
         if (request()->expectsJson()) {
             return response()->json([
-                'status' => 'success',
                 'message' => 'User created successfully',
-                'data' => $request->input(),
+                'data' => $users,
             ]);
         }
 

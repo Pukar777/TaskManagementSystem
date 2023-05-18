@@ -5,116 +5,119 @@ import { AuthContext } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+
+import { handleApiLogin } from "./AuthApiHandle";
+
 const LoginForm = () => {
-    //VARIABLES
-
-    //outside varaibles (AuthContext, useNavigate)
-    const { isAuthenticated } = useContext(AuthContext); //boolean variables
-    const { message, error } = useContext(AuthContext);
-    const { handleIsAuthenticated, handleToken } = useContext(AuthContext); //functions
-    const { handleMessage, handleError } = useContext(AuthContext);
-
-    //local variables
-    //---------------
-    // 1. hook variables
-    const navigate = useNavigate();
-
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
-        // remember: false,
     });
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const navigate = useNavigate();
 
-    //other variables
+    const {
+        user,
+        setUser,
+        isAuthenticated,
+        setIsAuthenticated,
+        token,
+        setToken,
+        message,
+        setMessage,
+        error,
+        setError,
+        handleUser,
+        handleToken,
+        handleIsAuthenticated,
+        handleMessage,
+        handleError,
+    } = useContext(AuthContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const {
                 data: { user, message, token },
-            } = await axios.post(
-                "http://localhost/api/auth/login",
-                credentials
-            );
-            handleToken(token);
-            handleIsAuthenticated(true);
-            handleMessage(message);
-            handleError("");
+            } = await handleApiLogin(credentials);
+            setUser(user);
+            setToken(token);
+            setIsAuthenticated(true);
+            setMessage(message);
+            setError("");
             navigate("/dashboard");
         } catch (error) {
-            handleMessage("");
-            handleError(error.response.data.message);
+            setMessage("");
+            setError(error.response.data.message);
         }
     };
 
     return (
         <>
-            <div className="container-fluid bg-dark text-white py-5">
-                <div className="container">
-                    <div className="row justify-content-center">
-                        <div className="col-md-6 col-lg-4">
-                            <h1 className="text-center mb-4">Login</h1>
-                            <form onSubmit={handleSubmit}>
-                                <div className="form-group">
-                                    <label htmlFor="email">Email</label>
-                                    <input
-                                        type="email"
-                                        className="form-control"
-                                        id="email"
-                                        name="email"
-                                        value={credentials.email}
-                                        onChange={(e) =>
-                                            setCredentials({
-                                                ...credentials,
-                                                email: e.target.value,
-                                            })
-                                        }
-                                        required
-                                    />
+            <div className="d-flex bg-secondary text-white justify-content-center align-items-center vh-100">
+                <Container fluid className="py-5">
+                    <Container>
+                        <Row className="justify-content-center">
+                            <Col md={6} lg={4}>
+                                <h1 className="text-center mb-4">Login</h1>
+                                <Form onSubmit={handleSubmit}>
+                                    <Form.Group controlId="email">
+                                        <Form.Label>Email</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            value={credentials.email}
+                                            onChange={(e) =>
+                                                setCredentials({
+                                                    ...credentials,
+                                                    email: e.target.value,
+                                                })
+                                            }
+                                            required
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group controlId="password">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            value={credentials.password}
+                                            onChange={(e) =>
+                                                setCredentials({
+                                                    ...credentials,
+                                                    password: e.target.value,
+                                                })
+                                            }
+                                            required
+                                        />
+                                    </Form.Group>
+
+                                    <div className="d-flex justify-content-center">
+                                        <Button
+                                            variant="primary"
+                                            type="submit"
+                                            className="my-3 custom-bg-color"
+                                        >
+                                            Login
+                                        </Button>
+                                    </div>
+                                </Form>
+
+                                <div className="mt-3 d-flex justify-content-center">
+                                    <p>
+                                        Don't have an account?{" "}
+                                        <a href="/register" className="my-link">
+                                            Register
+                                        </a>
+                                    </p>
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="password">Password</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="password"
-                                        name="password"
-                                        value={credentials.password}
-                                        onChange={(e) =>
-                                            setCredentials({
-                                                ...credentials,
-                                                password: e.target.value,
-                                            })
-                                        }
-                                        required
-                                    />
-                                </div>
-                                <div className="d-flex justify-content-center">
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary my-3 custom-bg-color"
-                                    >
-                                        Login
-                                    </button>
-                                </div>
-                            </form>
-                            <div className="mt-3 d-flex justify-content-center">
-                                <p>
-                                    Don't have an account?{" "}
-                                    <a href="/register" className=" my-link">
-                                        Register
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </Col>
+                        </Row>
+                    </Container>
+                </Container>
             </div>
 
-            {error && <p className="text-danger">{error}</p>}
-            {message && <p className="text-success">{message}</p>}
+            {error && <Alert variant="danger">{error}</Alert>}
+            {message && <Alert variant="success">{message}</Alert>}
         </>
     );
 };

@@ -140,13 +140,13 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, useNavigate, Navigate } from "react-router-dom";
 import { Routes, Route, Link } from "react-router-dom";
 
-import DashBoard from "./components/dashboard/DashBoard";
-import UserPage from "./components/users/UserPage";
+import DashBoard from "../components/dashboard/DashBoard";
+import UserPage from "../components/users/UserPage";
 // import TaskPage from "./components/tasks/TaskPage";
-import TaskPage from "./components/tasks/TaskPage";
-import AuthPage from "./components/auth/AuthPage";
-import LoginForm from "./components/auth/LoginForm";
-import { AuthContext } from "./components/auth/AuthContext";
+import TaskPage from "../components/tasks/TaskPage";
+import AuthPage from "../components/auth/AuthPage";
+import LoginForm from "../components/auth/LoginForm";
+import { AuthContext } from "../components/auth/AuthContext";
 import "./styles.css";
 
 // import Users from "./components/users/Users";
