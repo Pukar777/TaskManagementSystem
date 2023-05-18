@@ -139,6 +139,9 @@ class TaskController extends Controller
             ->get();
 
 
+            
+
+
         if (request()->expectsJson()) {
             return response()->json($tasks);
         }
@@ -190,6 +193,15 @@ class TaskController extends Controller
         // abort(403, 'Unauthorized action.');
     }
 
+
+
+
+    public function queryTaskNumber(){
+
+        
+
+
+    }
 
 
 
