@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SideNavBar from "../Auth/SideNavBar";
 import { useParams } from "react-router-dom";
 import userHandle from "./Handle";
+import {API_URL} from "../Auth/Api";
 
 function EditUser() {
     const { id } = useParams();
@@ -26,7 +27,7 @@ function EditUser() {
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");
         axios
-            .get(`http://127.0.0.1:8000/api/users/${id}`, {
+            .get(`${API_URL}/users/${id}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     Accept: "application/json",
@@ -72,7 +73,7 @@ function EditUser() {
                         >
                             &times;
                         </button>
-                        <strong>{message}</strong> 
+                        <strong>{message}</strong>
                     </div>
                 )}
                     {errorAuthorization && (

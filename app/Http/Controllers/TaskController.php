@@ -17,6 +17,7 @@ class TaskController extends Controller
 {
 
     protected $taskService;
+
     //public $test;
 
     public function __construct(TaskService $taskService,)
@@ -72,7 +73,7 @@ class TaskController extends Controller
         // }
 
         // return response()->json($tasks);
-        $response  = ResponseHelper::generateGetResponse($tasks);
+        $response = ResponseHelper::generateGetResponse($tasks);
 
         return $response;
         // }
@@ -91,7 +92,6 @@ class TaskController extends Controller
         // }
         // abort(403, 'Unauthorized action.');
     }
-
 
 
     public function queryShowAssoUser()
@@ -122,7 +122,6 @@ class TaskController extends Controller
         // ->get();
 
 
-
         // $tasks = DB::table('tasks')
         //     ->join('task_users', 'tasks.id', '=', 'task_users.task_id')
         //     ->join('users', 'users.id', '=', 'task_users.user_id')
@@ -137,9 +136,6 @@ class TaskController extends Controller
             ->selectRaw('tasks.title, group_concat(users.name, " ") as user_names')
             ->groupBy('tasks.id', 'tasks.title')
             ->get();
-
-
-            
 
 
         if (request()->expectsJson()) {
@@ -176,8 +172,9 @@ class TaskController extends Controller
 
         // if (Gate::check('create-task')) {
         // dd($request->all());
+        // dd($request->validated());
         $data = $this->taskService->store($request->validated());
-        // if ($request->expectsJson()) {
+        // if ($request->expectsJsoFn()) {
         //     return response()->json([
         //         'status' => 'success',
         //         'message' => 'Task created successfully',
@@ -194,98 +191,143 @@ class TaskController extends Controller
     }
 
 
+//    public function queryTaskNumber()
+//    {
+//        $tasks = DB::table('roles')
+//            ->join('users', 'roles.id', '=', 'users.role_id')
+//            ->join('task_users', 'users.id', '=', 'task_users.user_id')
+//            ->selectRaw('roles.name, group_concat(task_users.task_id, " ") as task_users_task_id')
+//            ->groupBy('roles.id', 'roles.name')
+//            ->get();
+//
+//
+//        if (request()->expectsJson()) {
+//            return response()->json($tasks);
+//        }
+//        return response()->json($tasks);
+//    }
 
-
-    public function queryTaskNumber(){
-
-        
-
-
-    }
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
+//correct need this
+    public function queryTaskNumber()
     {
-        //
-    }
+        $tasks = DB::table('roles')
+            ->join('users', 'roles.id', '=', 'users.role_id')
+            ->join('task_users', 'users.id', '=', 'task_users.user_id')
+            ->selectRaw('roles.name, Count(DISTINCT task_users.task_id) as task_count')
+            ->groupBy('roles.id', 'roles.name')
+            ->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        $task = $this->taskService->edit($id);
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(TaskRequest $request, $id)
-    {
-
-        // if (Gate::check('update-task')) {
-        $data = $this->taskService->update($request->validated(), $id);
-        // if ($request->expectsJson()) {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'Task updated successfully',
-        //         'data' => $data,
-
-        //     ]);
-        // }
-        if (!empty($data)) {
-            return ResponseHelper::generateResponse($request, 'success', 'task updated successfully', $request->input(), 200);
-        } else {
-            return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
+        if (request()->expectsJson()) {
+            return response()->json($tasks);
         }
-        // }
-        // abort(403, 'Unauthorized action.');
+        return response()->json($tasks);
     }
 
 
-    public function updatStatus(Request $request, $id)
-    {
-        $task = Task::find($id);
-        $task->status = $request->input('status');
-        if ($task->save()) {
+//    public function queryTaskNumber()
+//    {
+//        $tasks = DB::table('roles')
+//            ->join('users', 'roles.id', '=', 'users.role_id')
+//            ->join('task_users', 'users.id', '=', 'task_users.user_id')
+//            ->selectRaw('roles.name, roles.id, task_users.user_id, task_users.task_id')
+////            ->groupBy('roles.id', 'roles.name')
+//            ->get();
+//
+//
+//        if (request()->expectsJson()) {
+//            return response()->json($tasks);
+//        }
+//        return response()->json($tasks);
+//    }
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'status upadte successfully',
 
 
-            ]);
-        }
+
+/**
+ * Display the specified resource.
+ */
+public
+function show(Task $task)
+{
+    //
+}
+
+/**
+ * Show the form for editing the specified resource.
+ */
+public
+function edit($id)
+{
+    $task = $this->taskService->edit($id);
+}
+
+/**
+ * Update the specified resource in storage.
+ */
+public
+function update(TaskRequest $request, $id)
+{
+
+    // if (Gate::check('update-task')) {
+    $data = $this->taskService->update($request->validated(), $id);
+    // if ($request->expectsJson()) {
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Task updated successfully',
+    //         'data' => $data,
+
+    //     ]);
+    // }
+    if (!empty($data)) {
+        return ResponseHelper::generateResponse($request, 'success', 'task updated successfully', $request->input(), 200);
+    } else {
+        return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
     }
-    // return redirect()->back()->with('failed','Could not update'); 
+    // }
+    // abort(403, 'Unauthorized action.');
+}
 
 
+public
+function updatStatus(Request $request, $id)
+{
+    $task = Task::find($id);
+    $task->status = $request->input('status');
+    if ($task->save()) {
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'status upadte successfully',
 
 
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        // if (Gate::check('delete-task')) {
-        $this->taskService->delete($id);
-        // if (request()->expectsJson()) {
-        //     return response()->json([
-        //         'status' => 'success',
-        //         'message' => 'Task deleted successfully',
-        //     ]);
-        // }
-        if (!empty($id)) {
-            return ResponseHelper::generateResponse(request(), 'success', 'task deleteded successfully', $id, 200);
-        } else {
-            return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
-        }
-        // }
-        // abort(403, 'Unauthorized action.');
+        ]);
     }
+}
+
+// return redirect()->back()->with('failed','Could not update');
+
+
+/**
+ * Remove the specified resource from storage.
+ */
+public
+function destroy($id)
+{
+    // if (Gate::check('delete-task')) {
+    $this->taskService->delete($id);
+    // if (request()->expectsJson()) {
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Task deleted successfully',
+    //     ]);
+    // }
+    if (!empty($id)) {
+        return ResponseHelper::generateResponse(request(), 'success', 'task deleteded successfully', $id, 200);
+    } else {
+        return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
+    }
+    // }
+    // abort(403, 'Unauthorized action.');
+}
 }

@@ -21,6 +21,7 @@ import ViewTask from "./Task/ViewTask";
 import EditTask from "./Task/EditTask";
 import ViewTaskDetail from "./Task/ViewTaskDetail";
 import { AuthContext } from "./Auth/AuthContext";
+import TaskReport from "./Report/TaskReport";
 
 const App = () => {
     // const { isLogged } = useAuth();
@@ -242,6 +243,9 @@ const App = () => {
 
                 {/* <Route exact path="/create-task" element={<CreateTask />} />
                 <Route exact path="/view-task" element={<ViewTask />} /> */}
+
+                <Route exact path="/view-taskReport" element={<TaskReport />} />
+
                 <Route
                     exact
                     path="/update-task/:id"

@@ -39,22 +39,22 @@ class DatabaseSeeder extends Seeder
         // ]
 
 
-        // $data = [
-        //     ['name' => 'create-user'],
-        //     ['name' => 'read-user'],
-        //     ['name' => 'update-user'],
-        //     ['name' => 'delete-user'],
-        //     ['name' => 'create-role'],
-        //     ['name' => 'read-role'],
-        //     ['name' => 'update-role'],
-        //     ['name' => 'delete-role'],
-        //     ['name' => 'create-task'],
-        //     ['name' => 'read-task'],
-        //     ['name' => 'update-task'],
-        //     ['name' => 'delete-task'],
-        // ];
+        $data = [
+            ['name' => 'create-user'],
+            ['name' => 'read-user'],
+            ['name' => 'update-user'],
+            ['name' => 'delete-user'],
+            ['name' => 'create-role'],
+            ['name' => 'read-role'],
+            ['name' => 'update-role'],
+            ['name' => 'delete-role'],
+            ['name' => 'create-task'],
+            ['name' => 'read-task'],
+            ['name' => 'update-task'],
+            ['name' => 'delete-task'],
+        ];
 
-        // Permission::insert($data);
+        Permission::insert($data);
         User::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',

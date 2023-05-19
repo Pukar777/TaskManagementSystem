@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useAuth from "./Auth";
-import { getUser } from "./Api";
+import { getUser, API_URL } from "./Api";
 import axios from "axios";
 import SideNavBar from "./SideNavBar";
 
@@ -74,7 +74,7 @@ const Dashboard = () => {
     const handleOptChange = (value, id) => {
         const accessToken = localStorage.getItem("accessToken");
         axios.put(
-            `http://127.0.0.1:8000/api/update-status/${id}`,
+            `${API_URL}/update-status/${id}`,
             {
                 status: value,
             },
@@ -150,7 +150,7 @@ const Dashboard = () => {
                 </a> */}
                 {/* <button
                     type="button"
-                   
+
                     onClick={() => setCurrentPage(number)}
                 >
                     {number}

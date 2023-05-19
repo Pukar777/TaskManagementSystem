@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://127.0.0.1:8000/api";
+export const API_URL = "http://127.0.0.1:80/api";
+
+// i docker the port has been set to 80 in place of 8000
 
 const config = {
     headers: {
@@ -283,6 +285,19 @@ export const createTask = async (
 //     return responseTask.data;
 // };
 
+
+export const getTaskCount = async (accessToken) => {
+    const  responseCountTask = await  axios.get(`${API_URL}/getTaskNumber`,{
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+
+            Accept: "application/json",
+        },
+    });
+
+    return responseCountTask.data;
+}
+
 export const getStoredTasks = async (accessToken) => {
     const responseTask = await axios.get(`${API_URL}/showAssUsers`, {
         headers: {
@@ -342,3 +357,5 @@ export const updateTask = async (
 
     return responseUpdate.data;
 };
+
+

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import SideNavBar from "../Auth/SideNavBar";
 import { useParams } from "react-router-dom";
 import roleHandle from "./HandleRole";
+import {API_URL} from "../Auth/Api";
 
 function EditRole() {
     const { id } = useParams();
@@ -20,7 +21,7 @@ function EditRole() {
     useEffect(() => {
         const accessToken = localStorage.getItem("accessToken");
         axios
-            .get(`http://127.0.0.1:8000/api/roles/${id}`, {
+            .get(`${API_URL}/roles/${id}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     Accept: "application/json",

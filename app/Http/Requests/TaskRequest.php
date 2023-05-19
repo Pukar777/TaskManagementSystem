@@ -27,7 +27,7 @@ class TaskRequest extends FormRequest
             // 'title' => 'required|string|max:255|unique:tasks',
             'description' => 'required|string|max:255',
             'dueDate' => 'required|string|max:255',
-            'priority' => 'required|string|in:critical,high,medium,low',
+            'priority' => 'required|in:critical,high,medium,low',
             'status' => 'required|string|in:ready to start,waiting to review,done,stuck',
             'type' => 'required|string|in:feature,bug',
             'created_by' => 'required|exists:users,id',

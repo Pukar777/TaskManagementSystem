@@ -47,6 +47,28 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        ports: DB_HOST=127.0.0.1
+
+    mailtrap:
+        image: 'eaudeweb/mailtrap'
+        ports: 
+            - 8016:80    
+
+    phpmyadmin:
+        depends_on: 
+            - mysql
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - 8015:80
+        environment:
+            - PMA_HOST=mysql
+            - PAM_PORT=${DB_PORT}
+        networks: 
+            - sail
+
 networks:
     sail:
         driver: bridge

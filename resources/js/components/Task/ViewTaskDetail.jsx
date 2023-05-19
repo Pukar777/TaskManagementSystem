@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SideNavBar from "../Auth/SideNavBar";
 import { useParams } from "react-router-dom";
+import {API_URL} from "../Auth/Api";
 
 function ViewTaskDetail() {
     const { id } = useParams();
@@ -9,7 +10,7 @@ function ViewTaskDetail() {
     const Detail = () => {
         const accessToken = localStorage.getItem("accessToken");
         axios
-            .get(`http://127.0.0.1:8000/api/tasks/${id}`, {
+            .get(`${API_URL}/tasks/${id}`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                     Accept: "application/json",
@@ -60,7 +61,7 @@ function ViewTaskDetail() {
                 <h3>All Associated User </h3>
                 {/* {taskDetails.task_user.map((ur) => (
                     <p key={ur.user.id}> {ur.user.name} </p>
-                    
+
                 ))} */}
                 {/* {taskDetails.task_user.map((ur) => (
                     <p key={ur.user.id}>

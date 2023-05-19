@@ -25,16 +25,16 @@ use App\Http\Controllers\PermissionController;
 
 //==============================Auth===============================================================================
 
-// Route::get('dashboard', [AuthController::class, 'dashboard']); 
+// Route::get('dashboard', [AuthController::class, 'dashboard']);
 // Route::get('login', [AuthController::class, 'index'])->name('login');
-Route::post('custom-login', [AuthController::class, 'customLogin'])->name('login.custom'); 
+Route::post('custom-login', [AuthController::class, 'customLogin'])->name('login.custom');
 Route::get('registration', [AuthController::class, 'registration'])->name('register-user');
-Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom'); 
+Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom');
 // Route::get('signout', [AuthController::class, 'signOut'])->name('signout');
 Route::post('/signout', [AuthController::class, 'signOut'])->middleware('auth:api');
 // Route::middleware('auth:api')->get('/getUser', [AuthController::class, 'getUser']);
 Route::middleware('auth:api')->get('/me', [AuthController::class, 'me']);
-// Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom'); 
+// Route::post('custom-registration', [AuthController::class, 'customRegistration'])->name('register.custom');
 
 // ======================================================================================================================
 Route::get('/reset', function () {
@@ -46,6 +46,11 @@ Route::put('/password-reset/{token}', [UserController::class, 'updatePassword'])
 
 Route::get('/password/reset/{token}/{email}', [UserController::class, 'showResetForm'])->name('password.reset');
 
+// show number of task asscoiated to a role start
+
+//Route::get('getTaskNumber',[TaskController::class,'queryTaskNumber']);
+
+// show number of task asscoiated to a role end
 
 Route::middleware(['auth:api'])->group(function () {
 
@@ -71,6 +76,9 @@ Route::get('queryUsers', [TaskController::class,'queryShowAssoUser']);
 Route::resource('task', TaskController::class);
 
 
+Route::get('getTaskNumber',[TaskController::class,'queryTaskNumber']);
+
+
 
 
 
@@ -86,7 +94,7 @@ Route::get('/roles/{id}', [RoleController::class, 'showAssociatePermissionId']);
 // Route::get('/showPermission/{id}', [RoleController::class, 'show_permission']);
 
 
-//not used 
+//not used
 Route::get('roleOnPer',[RoleController::class, 'getAllPermissionBasedOnRole']);
 
 //used in create updating and viewing role page and also in user dropdown
@@ -116,7 +124,7 @@ Route::resource('permission', PermissionController::class);
 Route::get('getrole/{id}', [PermissionController::class,'show_role']);//get associated role based on permissions id
 //not used
 Route::get('getAllRole', [PermissionController::class,'showall_role']);
-//get associated role based on permissions 
+//get associated role based on permissions
 // Route::get('getrole', [PermissionController::class,'show_role']);
 
 });

@@ -15,6 +15,11 @@ class Task extends Model
     protected $fillable= ['title', 'description', 'dueDate', 'priority', 'status', 'type', 'created_by'];
 
 
+//    public function setPriorityAttribure($value){
+//        return strtolower($value);
+//    }
+
+
     public function user()
     {
         return $this->belongsTo(User::class, 'created_by');
@@ -31,7 +36,7 @@ class Task extends Model
         return $this->hasMany(TaskUser::class);
     }
 
-    
+
     public function notification()
     {
         return $this->hasMany(Notification::class);
