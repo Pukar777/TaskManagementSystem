@@ -224,6 +224,35 @@ class TaskController extends Controller
         return response()->json($tasks);
     }
 
+    public function queryTaskNumberFilter(Request $request)
+    {
+//        dd("testing");
+        $desiredRoleName = $request->input('role');
+        $desiredDueDate = $request->input('due_date');
+
+//        dd($desiredRoleName, $desiredDueDate);
+
+        $tasks = DB::table('roles')
+            ->join('users', 'roles.id', '=', 'users.role_id')
+            ->join('task_users', 'users.id', '=', 'task_users.user_id')
+            ->join('tasks', 'task_users.task_id', '=', 'tasks.id')
+            ->selectRaw('roles.name, COUNT(DISTINCT task_users.task_id) as task_count')
+            ->where([
+                ['roles.name', '=', $desiredRoleName],
+                ['tasks.dueDate', '=',$desiredDueDate]
+            ])
+//            ->where('roles.name', '=', $desiredRoleName)
+//            ->where('tasks.dueDate', '=',$desiredDueDate)
+            ->groupBy('roles.id', 'roles.name')
+            ->get();
+
+        if (request()->expectsJson()) {
+//            dd("testing");
+            return response()->json($tasks);
+        }
+        return response()->json($tasks);
+    }
+
 
 //    public function queryTaskNumber()
 //    {
@@ -242,92 +271,90 @@ class TaskController extends Controller
 //    }
 
 
-
-
-/**
- * Display the specified resource.
- */
-public
-function show(Task $task)
-{
-    //
-}
-
-/**
- * Show the form for editing the specified resource.
- */
-public
-function edit($id)
-{
-    $task = $this->taskService->edit($id);
-}
-
-/**
- * Update the specified resource in storage.
- */
-public
-function update(TaskRequest $request, $id)
-{
-
-    // if (Gate::check('update-task')) {
-    $data = $this->taskService->update($request->validated(), $id);
-    // if ($request->expectsJson()) {
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => 'Task updated successfully',
-    //         'data' => $data,
-
-    //     ]);
-    // }
-    if (!empty($data)) {
-        return ResponseHelper::generateResponse($request, 'success', 'task updated successfully', $request->input(), 200);
-    } else {
-        return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
+    /**
+     * Display the specified resource.
+     */
+    public
+    function show(Task $task)
+    {
+        //
     }
-    // }
-    // abort(403, 'Unauthorized action.');
-}
 
-
-public
-function updatStatus(Request $request, $id)
-{
-    $task = Task::find($id);
-    $task->status = $request->input('status');
-    if ($task->save()) {
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'status upadte successfully',
-
-
-        ]);
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public
+    function edit($id)
+    {
+        $task = $this->taskService->edit($id);
     }
-}
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public
+    function update(TaskRequest $request, $id)
+    {
+
+        // if (Gate::check('update-task')) {
+        $data = $this->taskService->update($request->validated(), $id);
+        // if ($request->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Task updated successfully',
+        //         'data' => $data,
+
+        //     ]);
+        // }
+        if (!empty($data)) {
+            return ResponseHelper::generateResponse($request, 'success', 'task updated successfully', $request->input(), 200);
+        } else {
+            return ResponseHelper::generateResponse($request, 'error', 'task update failed', null, 400);
+        }
+        // }
+        // abort(403, 'Unauthorized action.');
+    }
+
+
+    public
+    function updatStatus(Request $request, $id)
+    {
+        $task = Task::find($id);
+        $task->status = $request->input('status');
+        if ($task->save()) {
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'status upadte successfully',
+
+
+            ]);
+        }
+    }
 
 // return redirect()->back()->with('failed','Could not update');
 
 
-/**
- * Remove the specified resource from storage.
- */
-public
-function destroy($id)
-{
-    // if (Gate::check('delete-task')) {
-    $this->taskService->delete($id);
-    // if (request()->expectsJson()) {
-    //     return response()->json([
-    //         'status' => 'success',
-    //         'message' => 'Task deleted successfully',
-    //     ]);
-    // }
-    if (!empty($id)) {
-        return ResponseHelper::generateResponse(request(), 'success', 'task deleteded successfully', $id, 200);
-    } else {
-        return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
+    /**
+     * Remove the specified resource from storage.
+     */
+    public
+    function destroy($id)
+    {
+        // if (Gate::check('delete-task')) {
+        $this->taskService->delete($id);
+        // if (request()->expectsJson()) {
+        //     return response()->json([
+        //         'status' => 'success',
+        //         'message' => 'Task deleted successfully',
+        //     ]);
+        // }
+        if (!empty($id)) {
+            return ResponseHelper::generateResponse(request(), 'success', 'task deleteded successfully', $id, 200);
+        } else {
+            return ResponseHelper::generateResponse(request(), 'error', 'task deletion failed', null, 400);
+        }
+        // }
+        // abort(403, 'Unauthorized action.');
     }
-    // }
-    // abort(403, 'Unauthorized action.');
-}
 }

@@ -78,6 +78,11 @@ Route::resource('task', TaskController::class);
 
 Route::get('getTaskNumber',[TaskController::class,'queryTaskNumber']);
 
+Route::get('getTaskNumberFilter',[TaskController::class,'queryTaskNumberFilter']);
+
+
+//    Route::post('getTaskNumberFilter',[TaskController::class,'queryTaskNumberFilter']);
+
 
 
 

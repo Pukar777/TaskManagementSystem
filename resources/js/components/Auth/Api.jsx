@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const API_URL = "http://127.0.0.1:80/api";
 
-// i docker the port has been set to 80 in place of 8000
+// in docker the port has been set to 80 in place of 8000
 
 const config = {
     headers: {
@@ -297,6 +297,29 @@ export const getTaskCount = async (accessToken) => {
 
     return responseCountTask.data;
 }
+
+export const getTaskCountFilter = async (accessToken, role, dueDate) => {
+
+    // console.log(role, dueDate);
+
+    const responseCountTaskFilter = await axios.get(
+        `${API_URL}/getTaskNumberFilter`,
+        {
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+            },
+            params: {
+                role: role,
+                due_date: dueDate,
+            },
+
+        }
+
+    );
+
+    return responseCountTaskFilter.data;
+};
 
 export const getStoredTasks = async (accessToken) => {
     const responseTask = await axios.get(`${API_URL}/showAssUsers`, {
